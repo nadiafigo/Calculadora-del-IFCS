@@ -1,0 +1,10 @@
+.main-nav {
+    background-color: ;
+    display: inline-flex;
+    justify-content: flex-end;
+}
+
+.mnav-item {
+    list-style: none;
+    display: inline-block;
+}
