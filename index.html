@@ -97,9 +97,190 @@
 
     <main>
         <section class="intro">
-            <img class="img1" src="./img/mobile/img1.jpg" alt="Imagen de personas mayores bajando un puente peatonal">
+            <img class="img1" src="./img/mobile/portada_small.jpg" alt="Imagen de personas mayores bajando un puente peatonal">
+            <div class="quote-container">
+                <p class="quote">"Las ciudades tienen la capacidad de proporcionar algo para todas la personas, sólo porque, y sólo cuando, se crean por y para todas las personas." <br><br> —Jane Jacobs, 1961.</p>
+            </div>
+        </section>
+
+        <section class="calc-form">
+            <div class="form-title">
+                <h2 class="form-start">¡COMIENZA CON EL CÁLCULO!</h2>
+                <p class="form-desc">Deposita los datos recolectados aquí:</p>
+                <a href="">¿Cómo recolecto los datos?</a>
+            </div>
+            <!-- --------------------------------------------- Sección 1 -->
+            <div class="form-section">
+                <div class="form-subtitle">
+                    <p class="subt-num subt-1">1</p>
+                    <p class="subt-1-desc">Datos de ubicación:</p>
+                </div>
+                <div class="input-container inp-cont-1">
+                    <div class="form-input">
+                        <p class="input-desc">País:</p>
+                        <input type="text" placeholder="Ej. México" id="loc-pais">
+                    </div>
+                    <div class="form-input">
+                        <p class="input-desc">Ciudad o localidad:</p>
+                        <input type="text" placeholder="Ej. Morelia" id="loc-ciudad">
+                    </div>
+                    <div class="form-input">
+                        <p class="input-desc">Nombre de la vialidad:</p>
+                        <input type="text" placeholder="Ej. Periférico Independencia" id="loc-via">
+                    </div>
+                    <div class="form-input">
+                        <p class="input-desc">Colonia:</p>
+                        <input type="text" placeholder="Ej. Camelinas" id="loc-colonia">
+                    </div>
+                </div>
+            </div>
+            <!-- --------------------------------------------- Sección 2 -->
+            <div class="form-section sect2">
+                <div class="form-subtitle">
+                    <p class="subt-num subt-2">2</p>
+                    <p class="subt-2-desc">Características de la vialidad:</p>
+                </div>
+                <div class="desc-2">
+                    <p>Captura los datos relativos a la vialidad en el contexto inmediato al puente antipeatonal.</p>
+                </div>
+                <div class="input-container inp-cont-2">
+                    <div class="form-input">
+                        <p class="input-desc">Número de carriles:</p>
+                        <input type="number" placeholder="Número" id="vial-num_carr">
+                    </div>
+                    <div class="form-input">
+                        <p class="input-desc">Distancia de cruce bajo el puente:</p>
+                        <input type="number" placeholder="Número en metros" id="vial-dist_bajo">
+                    </div>
+                    <div class="form-input">
+                        <p class="input-desc">Distancia a un semáforo:</p>
+                        <input type="text" placeholder="Número en metros" id="vial-dist_semaf">
+                    </div>
+                    <div class="form-input">
+                        <p class="input-desc">¿Hay cruce peatonal?</p>
+                        <input type="text" placeholder="Sí/No" id="vial-cruce_peat">
+                    </div>
+                    <div class="form-input">
+                        <p class="input-desc">¿Hay barreras peatonales?¿De qué tipo?</p>
+                        <input type="text" id="vial_barreras">
+                    </div>
+                    <div class="form-input">
+                        <p class="input-desc">Número de camellones existentes:</p>
+                        <input type="number" placeholder="Número" id="vial-dist_semaf">
+                    </div>
+                    <div class="form-input">
+                        <p class="input-desc">¿Existen reductores de velocidad?</p>
+                        <input type="text" placeholder="Sí/No" id="vial-cruce_peat">
+                    </div>
+                </div>
+            </div>
+
+            <!-- --------------------------------------------- Sección 3 -->
+            <div class="form-section sect3">
+                <div class="form-subtitle">
+                    <p class="subt-num subt-3">3</p>
+                    <p class="subt-3-desc">Datos de equipamientos:</p>
+                </div>
+                <div class="input-container inp-cont-3">
+                    <div class="form-input">
+                        <p class="input-desc">¿Hay equipamientos cerca del puente?</p>
+                        <input type="text" placeholder="Sí/No" id="equip-exist">
+                    </div>
+                    <div class="form-input">
+                        <p class="input-desc">¿A cuántos metros?</p>
+                        <input type="number" placeholder="Número en metros" id="equip-dist">
+                    </div>
+                    <div class="form-input">
+                        <p class="input-desc">Tipo de equipamiento</p>
+                        <input type="text" id="equip-tipo">
+                    </div>
+                </div>
+            </div>
+            <!-- --------------------------------------------- Imagen -->
+            
+            <img class="img2" src="./img/mobile/img2.jpg" alt="Mujeres y niño encontrándose en escaleras congestionadas de un puente antipeatonal">
+
+            <!-- --------------------------------------------- Sección 4 -->
+            <div class="form-section sect4">
+                <div class="form-subtitle">
+                    <p class="subt-num subt-4">4</p>
+                    <p class="subt-4-desc">Características del puente:</p>
+                </div>
+                <div class="desc-4">
+                    <p>Captura los datos relativos al puente antipeatonal en revisión.</p>
+                </div>
+                <div class="input-container inp-cont-4">
+                    <div class="form-input">
+                        <p class="input-desc">Logitud caminada:</p>
+                        <input type="number" placeholder="Número en metros" id="puent-long">
+                    </div>
+                    <div class="form-input">
+                        <p class="input-desc">¿Obstaculiza banquetas?:</p>
+                        <input type="text" placeholder="Sí/No" id="puent-obst">
+                    </div>
+                    <div class="form-input">
+                        <p class="input-desc">Tipo de acceso:</p>
+                        <input type="text" id="puent-tipo_acceso">
+                    </div>
+                    <div class="form-input">
+                        <p class="input-desc">Ancho de acceso:</p>
+                        <input type="number" placeholder="Número en metros" id="puent-ancho_acceso">
+                    </div>
+                    <div class="form-input">
+                        <p class="input-desc">Pendiente de la rampa:</p>
+                        <input type="number" id="puent-pend_ramp">
+                    </div>
+                    <div class="form-input">
+                        <p class="input-desc">Distancia entre descansos:</p>
+                        <input type="number" placeholder="Número" id="puent-dist_desc">
+                    </div>
+                    <div class="form-input">
+                        <p class="input-desc">¿Cuenta con iluminación al interior?</p>
+                        <input type="text" placeholder="Sí/No" id="puent-ilum">
+                    </div>
+                    <div class="form-input">
+                        <p class="input-desc">Materiales del puente:</p>
+                        <input type="text" id="puent-mater">
+                    </div>
+                    <div class="form-input">
+                        <p class="input-desc">¿Alberga publicidad en su estructura?</p>
+                        <input type="text" placeholder="Sí/No" id="puent-publicidad">
+                    </div>
+                </div>
+            </div>
+            <!-- --------------------------------------------- Sección 5 -->
+            <div class="form-section sect5">
+                <div class="form-subtitle">
+                    <p class="subt-num subt-5">5</p>
+                    <p class="subt-5-desc">Fuente de los datos:</p>
+                </div>
+                <div class="input-container inp-cont-5">
+                    <div class="form-input">
+                        <p class="input-desc">¿Cuál es tu nombre?</p>
+                        <input type="text" placeholder="Nombre completo" id="fuente_nombre">
+                    </div>
+                    <div class="form-input">
+                        <p class="input-desc">Fecha del levantamiento de los datos</p>
+                        <input type="date" id="fuente_fecha">
+                    </div>
+                    <div class="form-input">
+                        <p class="input-desc">Colectivo o institución que representas:</p>
+                        <input type="text" id="fuente_inst">
+                    </div>
+                    <div class="form-input">
+                        <p class="input-desc">Correo electrónico:</p>
+                        <input type="email" id="fuente_email">
+                    </div>
+                    <div class="desc-5">
+                        <input type="checkbox">
+                        <p>Al realizar el cálculo, acepto que los datos aquí depositados se plasmen en el mapa de Índices de Factibilidad de Cruces Seguros para la Sustitución de Puentes Antipeatonales, en donde se hará mención de mi nombre, colectivo o institución como fuente de estos.</p>
+                    </div>
+                </div>
+            </div>
         </section>
     </main>
+
+
 
 
     <script src="./scripts.js"></script>

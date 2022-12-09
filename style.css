@@ -6,6 +6,8 @@
     --darkBlue: hsl(209, 74%, 27%);
     --green: hsl(77, 52%, 74%);
     --yellow: hsl(40, 76%, 55%);
+    --gray: hsl(0, 0%, 94%);
+    --grayText: hsl(0, 0%, 71%);
 
 }
 
@@ -14,7 +16,7 @@ html {
 }
 
 *, *::before, *:after {
-    box-sizing: inherit;
+    /* box-sizing: inherit; */
     margin: 0;
     padding: 0;
     font-family: 'Source Sans Pro', sans-serif;
@@ -23,7 +25,7 @@ html {
 /* --------------------------BARRA DE NAVEGACIÓN------------------------- */
 
 .header {
-    background: var(--blue);
+    background: var(--darkBlue);
     height: 75vh;
 }
 
@@ -116,7 +118,7 @@ html {
     display: none;
     transition: 0.2s;
     z-index: 1;
-    color: var(--darkBlue);
+    color: var(--white);
     padding: 20px 0;
 }
 
@@ -155,11 +157,6 @@ html {
     justify-content: space-around;
 }
 
-.img1 {
-    width: 100%;
-}
-
-
 /* ----------------------------- PORTADA -------------------------------  */
 
 .hero {
@@ -195,10 +192,10 @@ html {
 .hero-paragraph {
     width: 80%;
     text-align: center;
-    font-size: 110%;
+    font-size: 120%;
     font-weight: 500;
     color: var(--white);
-    line-height: 1;
+    line-height: 1.2;
 }
 
 .button-container {
@@ -235,4 +232,249 @@ html {
     border: 2px solid var(--white);
     color: var(--white);
     background-color: transparent;
+}
+
+
+/* ----------------------------- MAIN -------------------------------  */
+
+.img1 {
+    width: 100%;
+    border: 0;
+    margin: 0;
+}
+
+.quote-container {
+    padding: 2rem 1rem 3rem 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--white);
+}
+
+.quote {
+    text-align: center;
+    color: var(--darkBlue);
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+/* ----------------------------- FORM -------------------------------  */
+
+.calc-form {
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    row-gap: 0;
+}
+
+.form-title {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--yellow);
+    padding: 1rem;
+}
+
+.form-start {
+    color: var(--white);
+}
+
+.form-desc {
+    color: var(--darkBlue);
+    font-weight: 600;
+    font-size: 110%;
+}
+
+.form-title a {
+    color: var(--white);
+    font-weight: 300;
+    font-size: 105%;
+    margin-top: .6rem;
+}
+
+/* ----------------------------- FORM SECTION 1-------------------------------  */
+
+.form-section {
+    padding: 2rem 3rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.form-subtitle {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-weight: 700;
+    font-size: 120%;
+}
+
+.subt-num {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 1rem;
+    margin-right: .6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.subt-1 {
+    background-color: var(--blue);
+    color: var(--white);
+}
+
+.subt-1-desc {
+    color: var(--darkBlue);
+}
+
+.input-container {
+    margin-top: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    row-gap: 1rem;
+}
+
+.input-container input {
+    width: 100%;
+    height: 2rem;
+    background-color: var(--gray);
+    border: none;
+    border-radius: .5rem;
+}
+
+.input-container ::placeholder {
+    padding: 1rem;
+    color: var(--grayText);
+    font-size: 120%;
+}
+
+.inp-cont-1 p {
+    color: var(--darkBlue);
+    margin-left: .4rem;
+    margin-bottom: .2rem;
+}
+
+
+/* ----------------------------- FORM SECTION 2-------------------------------  */
+
+.sect2 {
+    background-color: var(--blue);
+}
+
+.subt-2 {
+    background-color: var(--yellow);
+    color: var(--blue);
+}
+
+.subt-2-desc {
+    color: var(--white);
+}
+
+.inp-cont-2 p {
+    color: var(--white);
+    font-weight: 400;
+    margin-left: .4rem;
+    margin-bottom: .2rem;
+}
+
+.desc-2 {
+    background-color: var(--green);
+    margin-top: 1rem;
+    border-radius: .5rem;
+    padding: .5rem;
+    font-size: 80%;
+    color: var(--darkBlue);
+    font-weight: 600;
+}
+
+/* ----------------------------- FORM SECTION 3-------------------------------  */
+
+.subt-3 {
+    background-color: var(--green);
+    color: var(--white);
+}
+
+.subt-3-desc {
+    color: var(--darkBlue);
+}
+
+.inp-cont-3 p {
+    color: var(--darkBlue);
+    font-weight: 400;
+    margin-left: .4rem;
+    margin-bottom: .2rem;
+}
+
+/* -----------------------------IMG 2-------------------------------  */
+
+.img2 {
+    width: 100%;
+    border: 0;
+    margin: 0;
+}
+
+/* ----------------------------- FORM SECTION 4-------------------------------  */
+
+.sect4 {
+    background-color: var(--green);
+}
+
+.subt-4 {
+    background-color: var(--darkBlue);
+    color: var(--white);
+}
+
+.subt-4-desc {
+    color: var(--darkBlue);
+}
+
+.inp-cont-4 p {
+    color: var(--darkBlue);
+    font-weight: 400;
+    margin-left: .4rem;
+    margin-bottom: .2rem;
+}
+
+.desc-4 {
+    background-color: var(--yellow);
+    margin-top: 1rem;
+    border-radius: .5rem;
+    padding: .5rem;
+    font-size: 80%;
+    color: var(--white);
+    font-weight: 600;
+}
+
+/* ----------------------------- FORM SECTION 5-------------------------------  */
+
+.subt-5 {
+    background-color: var(--green);
+    color: var(--white);
+}
+
+.subt-5-desc {
+    color: var(--darkBlue);
+}
+
+.inp-cont-5 p {
+    color: var(--darkBlue);
+    font-weight: 400;
+    margin-left: .4rem;
+    margin-bottom: .2rem;
+}
+
+.desc-5 {
+    display: flex;
+    flex-direction: row;
+    font-size: 70%;
+    margin-top: 1rem;
+}
+
+.desc-5 input {
+    width: 30%;
 }
