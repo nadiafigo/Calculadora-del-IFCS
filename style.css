@@ -62,7 +62,7 @@ html {
     width: 90%;
     border-radius: 5px;
     text-align: center;
-    padding-bottom: 10px;
+    padding-bottom: 20px;
 }
 
 .menu__item {
@@ -113,12 +113,13 @@ html {
     background-color: var(--green);
     border-radius: 5px;
     text-align: center;
-    width: 90%;
+    width: 70%;
     opacity: 0;
     display: none;
     transition: 0.2s;
     z-index: 1;
     color: var(--white);
+    font-weight: 600;
     padding: 20px 0;
 }
 
@@ -225,7 +226,7 @@ html {
 
 .btn--white {
     background-color: var(--white);
-    color: var(--blue)
+    color: var(--darkBlue)
 }
 
 .btn--transparent {
@@ -262,11 +263,13 @@ html {
 /* ----------------------------- FORM -------------------------------  */
 
 .calc-form {
+    width: 100%;
     padding: 0;
     margin: 0;
     display: flex;
     flex-direction: column;
     row-gap: 0;
+    align-items: center;
 }
 
 .form-title {
@@ -276,7 +279,8 @@ html {
     justify-content: center;
     align-items: center;
     background-color: var(--yellow);
-    padding: 1rem;
+    padding: 1rem 0;
+    width: 100%;
 }
 
 .form-start {
@@ -296,7 +300,11 @@ html {
     margin-top: .6rem;
 }
 
-/* ----------------------------- FORM SECTION 1-------------------------------  */
+/* ----------------------------- FORM SECTION GENERAL-------------------------------  */
+
+.form-section-cont {
+    width: 100%;
+}
 
 .form-section {
     padding: 2rem 3rem;
@@ -323,15 +331,6 @@ html {
     justify-content: center;
 }
 
-.subt-1 {
-    background-color: var(--blue);
-    color: var(--white);
-}
-
-.subt-1-desc {
-    color: var(--darkBlue);
-}
-
 .input-container {
     margin-top: 1.2rem;
     display: flex;
@@ -353,12 +352,26 @@ html {
     font-size: 120%;
 }
 
+/* ----------------------------- FORM SECTION 1-------------------------------  */
+
+.subt-1 {
+    background-color: var(--blue);
+    color: var(--white);
+}
+
+.subt-1-desc {
+    color: var(--darkBlue);
+}
+
+.sect1 {
+    background-color: var(--white);
+}
+
 .inp-cont-1 p {
     color: var(--darkBlue);
     margin-left: .4rem;
     margin-bottom: .2rem;
 }
-
 
 /* ----------------------------- FORM SECTION 2-------------------------------  */
 
@@ -471,10 +484,62 @@ html {
 .desc-5 {
     display: flex;
     flex-direction: row;
-    font-size: 70%;
+    font-size: 80%;
     margin-top: 1rem;
+    margin-bottom: 0rem;
+    text-align: justify;
+    line-height: 1.05;
 }
 
 .desc-5 input {
-    width: 30%;
+    width: 50%;
+}
+
+.calc-btn-cont {
+    margin: 2rem 4rem 4rem 4rem;
+    background-color: var(--yellow);
+    height: 4rem;
+    width: 12rem;
+    border-radius: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-yellow {
+    color: var(--white);
+    text-decoration: none;
+    font-size: 170%;
+    font-weight: 600;
+}
+
+/* ----------------------------- FOOTER-------------------------------  */
+
+.footer {
+    background-color: var(--darkBlue);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 3rem 3rem 5rem 3rem;
+}
+
+.footer-logo {
+    width: 70%;
+    margin-bottom: 2rem;
+}
+
+.footer-menu {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    row-gap: 2rem;
+    text-align: center;
+}
+
+.footer-menu a {
+    color: var(--white);
+    text-decoration: none;
+    font-size: 130%;
+    font-weight: 700;
+    letter-spacing: .08rem;
 }
