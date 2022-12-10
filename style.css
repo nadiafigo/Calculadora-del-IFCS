@@ -331,7 +331,7 @@ html {
     justify-content: center;
 }
 
-.input-container {
+.input-container, .input-container2 {
     margin-top: 1.2rem;
     display: flex;
     flex-direction: column;
@@ -502,7 +502,12 @@ html {
     margin-top: 1rem;
     margin-bottom: 0;
     text-align: justify;
-    line-height: 1.05;
+    line-height: 1.1;
+}
+
+.desc-5 a {
+    color: var(--darkBlue);
+    font-weight: 600;
 }
 
 .desc-5 input {
