@@ -107,7 +107,7 @@
             <div class="form-title">
                 <h2 class="form-start">¡COMIENZA CON EL CÁLCULO!</h2>
                 <p class="form-desc">Deposita los datos recolectados aquí:</p>
-                <a href="">¿Cómo recolecto los datos?</a>
+                <a href="#">¿Cómo recolecto los datos?</a>
             </div>
             <!-- --------------------------------------------- Sección 1 -->
             <div class="form-section-cont">
@@ -152,29 +152,98 @@
                             <p class="input-desc">Número de carriles:</p>
                             <input type="number" placeholder="Número" id="vial-num_carr">
                         </div>
-                        <div class="form-input">
+                        <!-- <div class="form-input">
                             <p class="input-desc">Distancia de cruce bajo el puente:</p>
                             <input type="number" placeholder="Número en metros" id="vial-dist_bajo">
-                        </div>
+                        </div> -->
                         <div class="form-input">
+                            <label for="vial-dist_bajo">
+                                <span>Distancia de cruce bajo el puente:</span>
+                                <select name="vial-dist_bajo" id="vial-dist_bajo">
+                                    <option value="" id=""></option>
+                                    <option id="dist-bajo_19-o-menos">19 metros o menos</option>
+                                    <option id="dist-bajo_20-29">20 a 29 metros</option>
+                                    <option id="dist-bajo_30-39">30 a 39 metros</option>
+                                    <option id="dist-bajo_40-49">40 a 49 metros</option>
+                                    <option id="dist-bajo_50-59">50 a 59 metros</option>
+                                    <option id="dist-bajo_60-69">60 a 69 metros</option>
+                                    <option id="dist-bajo_70-o-mas">70 metros o más</option>
+                                </select>
+                            </label>
+                        </div>
+                        <!-- <div class="form-input">
                             <p class="input-desc">Distancia a un semáforo:</p>
                             <input type="text" placeholder="Número en metros" id="vial-dist_semaf">
-                        </div>
+                        </div> -->
                         <div class="form-input">
+                            <label for="vial-dist_semaf">
+                                <span>Distancia a un semáforo:</span>
+                                <select name="vial-dist_semaf" id="vial-dist_semaf">
+                                    <option value="" id=""></option>
+                                    <option id="dist-semaf_249-o-menos">0 a 249 metros</option>
+                                    <option id="dist-semaf_250-499">250 a 499 metros</option>
+                                    <option id="dist-semaf_500-749">500 a 749 metros</option>
+                                    <option id="dist-semaf_750-999">750 a 999 metros</option>
+                                    <option id="dist-semaf_1000-o-mas">1000 metros o más</option>
+                                </select>
+                            </label>
+                        </div>
+                        <!-- <div class="form-input">
                             <p class="input-desc">¿Hay cruce peatonal?</p>
                             <input type="text" placeholder="Sí/No" id="vial-cruce_peat">
-                        </div>
-                        <div class="form-input">
-                            <p class="input-desc">¿Hay barreras peatonales?¿De qué tipo?</p>
+                        </div> -->
+                        <!-- <div class="form-input">
+                            <p class="input-desc">¿Hay barreras peatonales? ¿De qué tipo?</p>
                             <input type="text" id="vial_barreras">
-                        </div>
+                        </div> -->
                         <div class="form-input">
+                            <label for="vial_barreras">
+                                <span>¿Hay barreras peatonales bajo el puente?</span>
+                                <select name="vial_barreras" id="vial_barreras">
+                                    <option value="" id=""></option>
+                                    <option id="vial_barreras_1">No hay</option>
+                                    <option id="vial_barreras_2">Guarnición por camellón (menor a 30cm)</option>
+                                    <option id="vial_barreras_3">Guarnición alta (más de 30cm)</option>
+                                    <option id="vial_barreras_4">Canaleta</option>
+                                    <option id="vial_barreras_5">Barrera de contención</option>
+                                    <option id="vial_barreras_6">Valla o barda</option>
+                                    <option id="vial_barreras_7">Cambio pronunciado de nivel (más de 1.5mts</option>
+                                    <option id="vial_barreras_8">Puente vehicular</option>
+                                    <option id="vial_barreras_9">Túnel vehicular</option>
+                                </select>
+                            </label>
+                        </div>
+                        <!-- <div class="form-input">
                             <p class="input-desc">Número de camellones existentes:</p>
-                            <input type="number" placeholder="Número" id="vial-dist_semaf">
-                        </div>
+                            <input type="number" placeholder="Número" id="vial_camellones">
+                        </div> -->
                         <div class="form-input">
+                            <label for="vial_camellones">
+                                <span>Número de camellones existentes:</span>
+                                <select name="vial_camellones" id="vial_camellones">
+                                    <option value="" id=""></option>
+                                    <option id="vial_camellones_0">No hay</option>
+                                    <option id="vial_camellones_1">1 camellón</option>
+                                    <option id="vial_camellones_2">2 camellones</option>
+                                    <option id="vial_camellones_3">3 camellones</option>
+                                    <option id="vial_camellones_4">4 camellones</option>
+                                    <option id="vial_camellones_5mas">5 camellones o más</option>
+                                </select>
+                            </label>
+                        </div>
+                        <!-- <div class="form-input">
                             <p class="input-desc">¿Existen reductores de velocidad?</p>
-                            <input type="text" placeholder="Sí/No" id="vial-cruce_peat">
+                            <input type="text" placeholder="Sí/No" id="vial-revo">
+                        </div> -->
+                        <div class="form-input">
+                            <label for="vial-dist_semaf">
+                                <span>¿Existen reductores de velocidad?</span>
+                                <select name="vial-revo" id="vial-revo">
+                                    <option value="" id=""></option>
+                                    <option id="vial-revo_si">Sí</option>
+                                    <option id="vial-revo_no">No</option>
+                                </select>
+                            </label>
                         </div>
                     </div>
                 </div>
@@ -188,14 +257,26 @@
                         <p class="subt-3-desc">Datos de equipamientos:</p>
                     </div>
                     <div class="input-container inp-cont-3">
-                        <div class="form-input">
+                        <!-- <div class="form-input">
                             <p class="input-desc">¿Hay equipamientos cerca del puente?</p>
                             <input type="text" placeholder="Sí/No" id="equip-exist">
-                        </div>
-                        <div class="form-input">
-                            <p class="input-desc">¿A cuántos metros?</p>
+                        </div> -->
+                        <!-- <div class="form-input">
+                            <p class="input-desc">Distancia al equipamiento más próximo:</p>
                             <input type="number" placeholder="Número en metros" id="equip-dist">
-                        </div>
+                        </div> -->
+                        <label for="equip-dist">
+                            <span>Distancia al equipamiento más próximo:</span>
+                            <select name="equip-dist" id="equip-dist">
+                                <option value="" id=""></option>
+                                <option id="equip-dist_0-199">0 a 199 metros</option>
+                                <option id="equip-dist_200-399">200 a 399 metros</option>
+                                <option id="equip-dist_400-599">400 a 599 metross</option>
+                                <option id="equip-dist_600-799">600 a 799 metros</option>
+                                <option id="equip-dist_800-999">800 a 999 metros</option>
+                                <option id="equip-dist_1000mas">1000 o más</option>
+                            </select>
+                        </label>
                         <div class="form-input">
                             <p class="input-desc">Tipo de equipamiento</p>
                             <input type="text" id="equip-tipo">
@@ -241,6 +322,10 @@
                         <div class="form-input">
                             <p class="input-desc">Distancia entre descansos:</p>
                             <input type="number" placeholder="Número" id="puent-dist_desc">
+                        </div>
+                        <div class="form-input">
+                            <p class="input-desc">Ancho de pasarela:</p>
+                            <input type="number" placeholder="Número" id="puent-ancho_pasarela">
                         </div>
                         <div class="form-input">
                             <p class="input-desc">¿Cuenta con iluminación al interior?</p>
@@ -308,6 +393,19 @@
             </div>
         </section>
     </main>
+
+    
+        <!-- <div class="form-input">
+            <label for="form_pais" class="filter-list-container">
+                <span>País:</span>
+                <select name="loc-pais" id="loc-pais">
+                    <option value="" id=""></option>
+                    <option value="Duration" id="duration_filter">Duration</option>
+                    <option value="Year" id="year_filter">Year</option>
+                    <option value="Audience Score" id="score_filter">Audience Score</option>
+                </select>
+            </label>
+        </div> -->
 
 
 
