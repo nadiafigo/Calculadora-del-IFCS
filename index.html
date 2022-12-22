@@ -271,7 +271,7 @@
                                 <option value="" id=""></option>
                                 <option id="equip-dist_0-199">0 a 199 metros</option>
                                 <option id="equip-dist_200-399">200 a 399 metros</option>
-                                <option id="equip-dist_400-599">400 a 599 metross</option>
+                                <option id="equip-dist_400-599">400 a 599 metros</option>
                                 <option id="equip-dist_600-799">600 a 799 metros</option>
                                 <option id="equip-dist_800-999">800 a 999 metros</option>
                                 <option id="equip-dist_1000mas">1000 o más</option>
@@ -299,46 +299,118 @@
                         <p>Captura los datos relativos al puente antipeatonal en revisión.</p>
                     </div>
                     <div class="input-container2 inp-cont-4">
-                        <div class="form-input">
+                        <!-- <div class="form-input">
                             <p class="input-desc">Logitud caminada:</p>
                             <input type="number" placeholder="Número en metros" id="puent-long">
-                        </div>
-                        <div class="form-input">
+                        </div> -->
+                        <label for="puent-long">
+                            <span>Logitud caminada:</span>
+                            <select name="puent-long" id="puent-long">
+                                <option value="" id=""></option>
+                                <option id="puent-long_0-24">0 a 24 metros</option>
+                                <option id="puent-long_25-49">25 a 49 metros</option>
+                                <option id="puent-long_50-99">50 a 99 metros</option>
+                                <option id="puent-long_100-149">100 a 149 metros</option>
+                                <option id="puent-long_150-199">150 a 199 metros</option>
+                                <option id="puent-long_200mas">200 o más</option>
+                            </select>
+                        </label>
+                        <!-- <div class="form-input">
                             <p class="input-desc">¿Obstaculiza banquetas?:</p>
                             <input type="text" placeholder="Sí/No" id="puent-obst">
-                        </div>
-                        <div class="form-input">
+                        </div> -->
+                        <label for="puent-obst">
+                            <span>¿Obstaculiza banquetas?:</span>
+                            <select name="puent-obst" id="puent-obst">
+                                <option value="" id=""></option>
+                                <option id="puent-obst_si">Sí</option>
+                                <option id="puent-obst_no-hay">No hay banqueta</option>
+                                <option id="puent-obst_no">No</option>
+                            </select>
+                        </label>
+                        <!-- <div class="form-input">
                             <p class="input-desc">Tipo de acceso:</p>
                             <input type="text" id="puent-tipo_acceso">
-                        </div>
+                        </div> -->
+                        <label for="puent-tipo_acceso">
+                            <span>Tipo de acceso:</span>
+                            <select name="puent-tipo_acceso" id="puent-tipo_acceso">
+                                <option value="" id=""></option>
+                                <option id="puent-tipo_acceso_elev">Elevador</option>
+                                <option id="puent-tipo_acceso_ramp">Rampa</option>
+                                <option id="puent-tipo_acceso_ramp-esc">Rampa y escaleras</option>
+                                <option id="puent-tipo_acceso_esc">Escaleras</option>
+                            </select>
+                        </label>
                         <div class="form-input">
                             <p class="input-desc">Ancho de acceso:</p>
                             <input type="number" placeholder="Número en metros" id="puent-ancho_acceso">
                         </div>
-                        <div class="form-input">
+                        <!-- <div class="form-input">
                             <p class="input-desc">Pendiente de la rampa:</p>
                             <input type="number" id="puent-pend_ramp">
-                        </div>
-                        <div class="form-input">
+                        </div> -->
+                        <label for="puent-pend_ramp">
+                            <span>Pendiente de la rampa:</span>
+                            <select name="puent-pend_ramp" id="puent-pend_ramp">
+                                <option value="" id=""></option>
+                                <option id="puent-pend_ramp-na">No hay rampa</option>
+                                <option id="puent-pend_ramp-6">6% o menos</option>
+                                <option id="puent-pend_ramp-6_1a9">6.1% a 9%</option>
+                                <option id="puent-pend_ramp-9_1_mas">9.1% o más</option>
+                            </select>
+                        </label>
+                        <!-- <div class="form-input">
                             <p class="input-desc">Distancia entre descansos:</p>
                             <input type="number" placeholder="Número" id="puent-dist_desc">
-                        </div>
-                        <div class="form-input">
-                            <p class="input-desc">Ancho de pasarela:</p>
+                        </div> -->
+                        <label for="puent-dist_desc">
+                            <span>Distancia entre descansos:</span>
+                            <select name="puent-dist_desc" id="puent-dist_desc">
+                                <option value="" id=""></option>
+                                <option id="puent-dist_desc-na">No hay rampa</option>
+                                <option id="puent-dist_desc-6menos">6 metros o menos</option>
+                                <option id="puent-dist_desc-6_1a11">6.1 a 11 metros</option>
+                                <option id="puent-dist_desc-12a24">12 a 24 metros</option>
+                                <option id="puent-dist_desc-25_mas">25 metros o más</option>
+                            </select>
+                        </label>
+                        <!-- <div class="form-input">
+                            <p class="input-desc">Ancho de la pasarela del puente:</p>
                             <input type="number" placeholder="Número" id="puent-ancho_pasarela">
-                        </div>
-                        <div class="form-input">
+                        </div> -->
+                        <label for="puent-ancho_pasarela">
+                            <span>Ancho de la pasarela del puente:</span>
+                            <select name="puent-ancho_pasarela" id="puent-ancho_pasarela">
+                                <option value="" id=""></option>
+                                <option id="puent-ancho_pasarela-0a1_49">0 a 1.49 metros</option>
+                                <option id="puent-ancho_pasarela-1_5mas">1.5 metros o más</option>
+                            </select>
+                        </label>
+                        <!-- <div class="form-input">
                             <p class="input-desc">¿Cuenta con iluminación al interior?</p>
                             <input type="text" placeholder="Sí/No" id="puent-ilum">
-                        </div>
-                        <div class="form-input">
-                            <p class="input-desc">Materiales del puente:</p>
-                            <input type="text" id="puent-mater">
-                        </div>
-                        <div class="form-input">
+                        </div> -->
+                        <label for="puent-ilum">
+                            <span>¿Cuenta con iluminación al interior?</span>
+                            <select name="puent-ilum" id="puent-ilum">
+                                <option value="" id=""></option>
+                                <option id="puent-ilum-si">Sí hay</option>
+                                <option id="puent-ilum-no">No hay</option>
+                            </select>
+                        </label>
+                        <!-- <div class="form-input">
                             <p class="input-desc">¿Alberga publicidad en su estructura?</p>
                             <input type="text" placeholder="Sí/No" id="puent-publicidad">
-                        </div>
+                        </div> -->
+                        <label for="puent-publicidad">
+                            <span>¿Alberga publicidad en su estructura?</span>
+                            <select name="puent-publicidad" id="puent-publicidad">
+                                <option value="" id=""></option>
+                                <option id="puent-publicidad-si">Sí</option>
+                                <option id="puent-publicidad-no">No</option>
+                            </select>
+                        </label>
                     </div>
                 </div>
             </div>

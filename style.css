@@ -345,7 +345,7 @@ html {
     border: none;
     border-radius: .5rem;
     color: var(--darkBlue);
-
+    padding-left: 1rem;
 }
 
 .input-container select {
@@ -365,6 +365,7 @@ html {
     border: none;
     border-radius: .5rem;
     color: var(--darkBlue);
+    padding-left: 1rem;
 }
 
 .input-container2 select {
@@ -377,13 +378,11 @@ html {
 }
 
 .input-container ::placeholder {
-    padding: 1rem;
     color: var(--grayText);
     font-size: 120%;
 }
 
 .input-container2 ::placeholder {
-    padding: 1rem;
     color: var(--grayText);
     font-size: 120%;
 }
@@ -503,6 +502,14 @@ html {
     font-weight: 400;
     margin-left: .4rem;
     margin-bottom: .2rem;
+}
+
+.inp-cont-4 span {
+    color: var(--darkBlue);
+    font-weight: 400;
+    margin-left: .4rem;
+    margin-bottom: .2rem;
+    display: block;
 }
 
 .desc-4 {
