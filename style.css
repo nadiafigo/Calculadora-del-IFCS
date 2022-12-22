@@ -365,7 +365,7 @@ html {
     border: none;
     border-radius: .5rem;
     color: var(--darkBlue);
-    padding-left: 1rem;
+    
 }
 
 .input-container2 select {
