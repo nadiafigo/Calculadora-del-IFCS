@@ -11,8 +11,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    min-height: 55vh;
     color: var(--white);
     background: var(--darkBlue);
     text-align: center;
@@ -113,10 +111,6 @@
 /* --- Hero: desktop ------------------------------------------------------- */
 
 @media (min-width: 1024px) {
-    .hero {
-        min-height: 60vh;
-    }
-
     .tittle-cont {
         padding: 3rem 2rem 2rem;
         max-width: 56rem;
