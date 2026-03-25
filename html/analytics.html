@@ -39,8 +39,8 @@
                         </div>
                         <div class="submenu">
                             <ul class="submenu_container">
-                                <li class="submenu__item">Metodología del IFCS</li>
-                                <li class="submenu__item">Diagnóstico de Puentes Peatonales Elevados de Morelia</li>
+                                <li><a class="submenu__item" href="../pdf/MANUAL_IFCS.pdf">Metodología del IFCS</a></li>
+                                <li><a class="submenu__item" href="../pdf/MANUAL_IFCS.pdf">Diagnóstico de Puentes Peatonales Elevados de Morelia</a></li>
                             </ul>
                         </div>
                     </div>
@@ -81,8 +81,8 @@
                         </div>
                         <div class="submenu">
                             <ul class="submenu_container">
-                                <li class="submenu__item">Facebook</li>
-                                <li class="submenu__item">Instagram</li>
+                                <li><a class="submenu__item" href="https://www.facebook.com/bicivilizate.mich.mx/" target="_blank" rel="noopener">Facebook</a></li>
+                                <li><a class="submenu__item" href="https://www.instagram.com/bicivilizate.mx/" target="_blank" rel="noopener">Instagram</a></li>
                             </ul>
                         </div>
                     </div>
@@ -93,6 +93,14 @@
 
     <main class="dashboard" id="dashboard">
         <h1 class="dashboard-title">Dashboard de Evaluaciones</h1>
+
+        <!-- Global city filter -->
+        <div class="global-filter">
+            <label for="filtro-global-ciudad">Filtrar por ciudad:</label>
+            <select id="filtro-global-ciudad">
+                <option value="">Todas las ciudades</option>
+            </select>
+        </div>
 
         <!-- KPIs -->
         <div class="kpi-row">
@@ -111,6 +119,14 @@
             <div class="kpi-card">
                 <div class="kpi-value" id="kpi-ciudades">—</div>
                 <div class="kpi-label">Ciudades evaluadas</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-value" id="kpi-inmediata">—</div>
+                <div class="kpi-label">Factibilidad inmediata</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-value" id="kpi-escaleras">—</div>
+                <div class="kpi-label">% Solo escaleras</div>
             </div>
         </div>
 
@@ -146,20 +162,32 @@
             </div>
         </div>
 
+        <!-- Charts row 3: Problemas -->
+        <div class="chart-row chart-row--full">
+            <div class="chart-card">
+                <h3>Principales problemas detectados</h3>
+                <div class="chart-container chart-container--wide">
+                    <canvas id="chart-problemas"></canvas>
+                </div>
+            </div>
+        </div>
+
         <!-- Data table -->
         <div class="table-section">
             <h3>Últimas evaluaciones</h3>
             <div class="table-wrapper">
-                <table class="data-table">
+                <table class="data-table" id="data-table">
                     <thead>
                         <tr>
-                            <th>Fecha</th>
-                            <th>Ciudad</th>
-                            <th>Vialidad</th>
-                            <th>Referencia</th>
-                            <th>IFCS</th>
-                            <th>Factibilidad</th>
-                            <th>Organización</th>
+                            <th data-sort="fecha">Fecha <span class="sort-icon"></span></th>
+                            <th data-sort="ciudad">Ciudad <span class="sort-icon"></span></th>
+                            <th data-sort="vialidad">Vialidad <span class="sort-icon"></span></th>
+                            <th data-sort="referencia">Referencia</th>
+                            <th data-sort="ifcs">IFCS <span class="sort-icon"></span></th>
+                            <th data-sort="factibilidad">Factibilidad <span class="sort-icon"></span></th>
+                            <th data-sort="acceso">Acceso</th>
+                            <th data-sort="barreras">Barreras</th>
+                            <th data-sort="org">Organización</th>
                         </tr>
                     </thead>
                     <tbody id="tabla-body">
