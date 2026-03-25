@@ -105,8 +105,11 @@ button {
     cursor: pointer;
     display: flex;
     align-items: center;
+    justify-content: center;
     z-index: 110;
-    padding: 0.25rem;
+    padding: 0.5rem;
+    min-width: 2.75rem;
+    min-height: 2.75rem;
 }
 
 .nav__toggle .close {
@@ -163,6 +166,15 @@ button {
     gap: 0.35rem;
     cursor: pointer;
     padding: 0.625rem 1rem;
+    min-height: 2.75rem;
+}
+
+.selected-option a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    min-height: 2.75rem;
+    padding: 0;
 }
 
 .menu__item {
@@ -222,7 +234,10 @@ button {
     color: var(--darkBlue);
     font-weight: 600;
     font-size: 0.9rem;
-    padding: 0.25rem 0;
+    padding: 0.5rem 0.25rem;
+    min-height: 2.75rem;
+    display: flex;
+    align-items: center;
     cursor: pointer;
     transition: color var(--transition);
 }

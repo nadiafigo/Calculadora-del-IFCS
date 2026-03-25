@@ -31,11 +31,12 @@
 }
 
 .global-filter select {
-  padding: .45rem .75rem;
+  padding: .5rem .75rem;
   border: 1px solid var(--gray);
   border-radius: .4rem;
-  font-size: .9rem;
+  font-size: 1rem;
   min-width: 200px;
+  min-height: 2.75rem;
   background: var(--white);
   color: #333;
 }
@@ -245,5 +246,18 @@
 @media (max-width: 480px) {
   .kpi-row {
     grid-template-columns: 1fr 1fr;
+    gap: .5rem;
+  }
+
+  .kpi-card {
+    padding: 1rem .75rem;
+  }
+
+  .kpi-value {
+    font-size: 1.4rem;
+  }
+
+  .kpi-label {
+    font-size: .75rem;
   }
 }

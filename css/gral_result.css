@@ -45,6 +45,41 @@
 }
 
 /* ==========================================================================
+   PDF DOWNLOAD BUTTON
+   ========================================================================== */
+
+.pdf-btn-wrap {
+    text-align: center;
+    padding: 1.25rem 1.5rem;
+}
+
+.btn-pdf {
+    background: #1a237e;
+    color: #fff;
+    border: none;
+    border-radius: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-family: inherit;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    transition: background 0.2s;
+    min-height: 2.75rem;
+}
+
+.btn-pdf:hover {
+    background: #283593;
+}
+
+@media (max-width: 480px) {
+    .btn-pdf {
+        width: 100%;
+        max-width: 20rem;
+        padding: 0.875rem 1.5rem;
+    }
+}
+
+/* ==========================================================================
    TITLE / DESCRIPTION
    ========================================================================== */
 

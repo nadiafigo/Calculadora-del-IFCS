@@ -50,11 +50,14 @@
   align-items: center;
   gap: .5rem;
   cursor: pointer;
+  min-height: 2.75rem;
+  padding: .25rem 0;
 }
 
 .filtro-check input[type="checkbox"] {
-  width: 1.1rem;
-  height: 1.1rem;
+  width: 1.25rem;
+  height: 1.25rem;
+  min-width: 1.25rem;
   accent-color: var(--darkBlue);
 }
 
@@ -75,9 +78,10 @@
   border: 1px solid var(--grayText);
   border-radius: var(--radius);
   font-family: inherit;
-  font-size: .9rem;
+  font-size: 1rem;
   color: var(--darkBlue);
   background: var(--white);
+  min-height: 2.75rem;
 }
 
 .filtro-select:focus {
@@ -101,7 +105,7 @@
 .filtros-toggle {
   display: none;
   position: fixed;
-  top: 70px;
+  top: 4rem;
   left: .75rem;
   z-index: 600;
   background: var(--darkBlue);
@@ -113,6 +117,7 @@
   font-family: inherit;
   cursor: pointer;
   box-shadow: var(--shadow);
+  min-height: 2.75rem;
 }
 
 /* --- Mapa ---- */
