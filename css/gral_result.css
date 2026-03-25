@@ -1,0 +1,145 @@
+/* ==========================================================================
+   CALCULADORA IFCS — Result Page: General Layout
+   Score display, title, intro
+   ========================================================================== */
+
+/* ==========================================================================
+   RESULT SCORE SECTION
+   ========================================================================== */
+
+.res-gral {
+    background-color: var(--darkBlue);
+    padding: 2.5rem 1.5rem;
+    text-align: center;
+    color: var(--white);
+}
+
+.res-gral > p {
+    font-weight: 300;
+    font-size: 1.25rem;
+    letter-spacing: 0.04rem;
+}
+
+.res-gral h1 {
+    font-style: italic;
+    font-weight: 900;
+    font-size: clamp(3.5rem, 12vw, 6rem);
+    line-height: 1;
+    margin: 1rem auto;
+    width: 8rem;
+    height: 8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--yellow), hsl(40, 76%, 48%));
+    box-shadow: 0 0.25rem 1.5rem rgba(0, 0, 0, 0.25);
+}
+
+.res-gral span {
+    font-style: italic;
+    font-weight: 700;
+    display: block;
+    margin-top: 0.5rem;
+    font-size: 1.1rem;
+}
+
+/* ==========================================================================
+   TITLE / DESCRIPTION
+   ========================================================================== */
+
+.tittle-res {
+    display: flex;
+    flex-direction: column;
+}
+
+.res-tittle {
+    padding: 2rem 1.5rem;
+    color: var(--darkBlue);
+    line-height: 1.4;
+}
+
+.res-tittle h1 {
+    font-size: clamp(1.25rem, 3.5vw, 1.75rem);
+    font-weight: 700;
+}
+
+.res-descr {
+    font-weight: 300;
+    font-size: clamp(1rem, 2.5vw, 1.15rem);
+    font-style: italic;
+    margin-top: 0.75rem;
+    text-align: justify;
+    line-height: 1.55;
+}
+
+.res-descr-n {
+    font-weight: 900;
+}
+
+/* ==========================================================================
+   RESPONSIVE — Tablet
+   ========================================================================== */
+
+@media (min-width: 768px) {
+    .res-gral {
+        padding: 3rem 2.5rem;
+    }
+
+    .res-gral h1 {
+        width: 9rem;
+        height: 9rem;
+        margin: 1.25rem auto;
+    }
+
+    .res-tittle {
+        padding: 2.5rem 3rem;
+    }
+
+    .tittle-res {
+        flex-direction: row;
+        align-items: stretch;
+    }
+
+    .tittle-res .res-tittle {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .tittle-res .img1 {
+        width: 45%;
+        object-fit: cover;
+        max-height: none;
+    }
+}
+
+/* ==========================================================================
+   RESPONSIVE — Desktop
+   ========================================================================== */
+
+@media (min-width: 1024px) {
+    .res-gral {
+        padding: 3.5rem max(2.5rem, calc(50% - 25rem));
+    }
+
+    .res-gral h1 {
+        width: 10rem;
+        height: 10rem;
+        font-size: 4.5rem;
+        margin: 1.5rem auto;
+    }
+
+    .res-gral > p {
+        font-size: 1.4rem;
+    }
+
+    .res-gral span {
+        font-size: 1.25rem;
+    }
+
+    .res-tittle {
+        padding: 3rem max(2.5rem, calc(50% - 25rem));
+    }
+}

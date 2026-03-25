@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" sizes="32x32" href="../img/logo_FPNC_32x32.png">
+    <link rel="stylesheet" href="../css/gral.css">
+    <link rel="stylesheet" href="../css/mapa.css">
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <!-- MarkerCluster CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
+    <title>Mapa de Resultados — IFCS</title>
+</head>
+
+<body>
+    <header class="header">
+        <nav class="navbar">
+            <a href="../index.html">
+                <img src="../img/LP.png" alt="logo_LP" class="navbar__logo">
+            </a>
+
+            <input type="checkbox" id="nav__checkbox" class="nav__checkbox">
+            <label for="nav__checkbox" class="nav__toggle">
+                <svg class="menu" width="32" height="18" xmlns="http://www.w3.org/2000/svg">
+                    <g fill="#FFF" fill-rule="evenodd">
+                      <path d="M0 0h32v2H0zM0 8h32v2H0zM0 16h32v2H0z"></path>
+                    </g>
+                </svg>
+                <svg class="close" width="26" height="26" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M23.607.98l1.414 1.413L14.414 13l10.607 10.607-1.414 1.414L13 14.414 2.393 25.021.98 23.607 11.586 13 .98 2.393 2.393.98 13 11.586 23.607.98z"
+                    fill="#FFF" fill-rule="evenodd"/>
+                  </svg>
+            </label>
+            <div class="navbar-content">
+                <div class="menu">
+                    <div class="menu-option">
+                        <div class="selected-option">
+                            <li class="menu__item">Antecedentes</li>
+                            <div class="item-icon"></div>
+                        </div>
+                        <div class="submenu">
+                            <ul class="submenu_container">
+                                <li class="submenu__item">Metodología del IFCS</li>
+                                <li class="submenu__item">Diagnóstico de Puentes Peatonales Elevados de Morelia</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="menu-option">
+                        <div class="selected-option">
+                            <a href="./mapa.html"><li class="menu__item">Mapa de resultados</li></a>
+                        </div>
+                    </div>
+
+                    <div class="menu-option">
+                        <div class="selected-option">
+                            <a href="./analytics.html"><li class="menu__item">Estadísticas</li></a>
+                        </div>
+                    </div>
+
+                    <div class="menu-option">
+                        <div class="selected-option">
+                            <li class="menu__item">Descargables</li>
+                            <div class="item-icon"></div>
+                        </div>
+                        <div class="submenu">
+                            <ul class="submenu_container">
+                                <li>
+                                   <a class="submenu__item" href="../pdf/Tabla 5. Formato de llenado.pdf">Formato de llenado</a>
+                                </li>
+                                <li>
+                                    <a class="submenu__item" href="../pdf/MANUAL_IFCS.pdf">Manual del IFCS</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="menu-option">
+                        <div class="selected-option">
+                            <li class="menu__item">Contacto</li>
+                            <div class="item-icon"></div>
+                        </div>
+                        <div class="submenu">
+                            <ul class="submenu_container">
+                                <li class="submenu__item">Facebook</li>
+                                <li class="submenu__item">Instagram</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <button class="filtros-toggle" id="filtros-toggle">Filtros</button>
+
+    <div class="mapa-wrapper">
+        <aside class="filtros-panel" id="filtros-panel">
+            <h2>Filtros</h2>
+
+            <div class="filtro-grupo">
+                <span>Factibilidad:</span>
+                <label class="filtro-check">
+                    <input type="checkbox" value="Corto plazo" checked>
+                    <span class="filtro-dot filtro-dot--corto"></span> Corto plazo
+                </label>
+                <label class="filtro-check">
+                    <input type="checkbox" value="Mediano plazo" checked>
+                    <span class="filtro-dot filtro-dot--medio"></span> Mediano plazo
+                </label>
+                <label class="filtro-check">
+                    <input type="checkbox" value="Largo plazo" checked>
+                    <span class="filtro-dot filtro-dot--largo"></span> Largo plazo
+                </label>
+            </div>
+
+            <div class="filtro-grupo">
+                <label>
+                    <span>Ciudad:</span>
+                    <select class="filtro-select" id="filtro-ciudad">
+                        <option value="">Todas</option>
+                    </select>
+                </label>
+            </div>
+
+            <div class="filtros-counter" id="filtros-counter">
+                Mostrando <strong>0</strong> de <strong>0</strong> evaluaciones
+            </div>
+        </aside>
+
+        <div id="mapa"></div>
+    </div>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <!-- MarkerCluster JS -->
+    <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+
+    <script src="../js/navbar.js"></script>
+    <script src="../js/config.js"></script>
+    <script src="../js/mapa.js"></script>
+</body>
+</html>

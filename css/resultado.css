@@ -1,0 +1,167 @@
+/* ==========================================================================
+   CALCULADORA IFCS — Result Page: Diagnostic Section
+   Cards, lists, characteristics
+   ========================================================================== */
+
+/* ==========================================================================
+   DIAGNOSTIC GENERAL
+   ========================================================================== */
+
+.dx-gral {
+    color: var(--darkBlue);
+    padding: 2rem 1.5rem;
+    line-height: 1.45;
+}
+
+.dx-gral > h1 {
+    font-size: clamp(1.25rem, 3vw, 1.5rem);
+    font-weight: 700;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 3px solid var(--yellow);
+}
+
+.dx-gral > h2 {
+    font-weight: 400;
+    font-size: clamp(0.95rem, 2.2vw, 1.1rem);
+    line-height: 1.55;
+    text-align: justify;
+    margin-bottom: 1.5rem;
+}
+
+.dx-gral > h2 span {
+    font-weight: 700;
+    font-style: italic;
+    color: var(--blue);
+}
+
+/* ==========================================================================
+   CHARACTERISTICS CONTAINER
+   ========================================================================== */
+
+.caracteristicas {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+/* ==========================================================================
+   DIAGNOSTIC CARDS
+   ========================================================================== */
+
+.dx-card {
+    background-color: var(--gray);
+    border-radius: var(--radius-lg);
+    padding: 1.25rem 1.25rem 1.5rem;
+    border-left: 4px solid var(--blue);
+}
+
+.dx-card:nth-child(2) {
+    border-left-color: var(--green);
+}
+
+.dx-card:nth-child(3) {
+    border-left-color: var(--yellow);
+}
+
+/* Card headings */
+.caracteristicas p,
+.dx-card > p {
+    font-weight: 700;
+    font-size: 1.05rem;
+    margin-bottom: 0.75rem;
+    color: var(--darkBlue);
+}
+
+/* ==========================================================================
+   DIAGNOSTIC LISTS
+   ========================================================================== */
+
+.caract-esp {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.caract-esp li {
+    position: relative;
+    padding-left: 1.5rem;
+    text-align: justify;
+}
+
+/* Custom bullet */
+.caract-esp li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.45rem;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background-color: var(--blue);
+}
+
+.dx-card:nth-child(2) .caract-esp li::before {
+    background-color: var(--green);
+}
+
+.dx-card:nth-child(3) .caract-esp li::before {
+    background-color: var(--yellow);
+}
+
+/* Hidden list items (controlled by JS) - ensure they don't leave gaps */
+.caract-esp li[style*="display: none"] {
+    padding: 0;
+    margin: 0;
+}
+
+/* ==========================================================================
+   INTRO / CLOSING IMAGE
+   ========================================================================== */
+
+.dx-gral + .intro {
+    margin-top: 1rem;
+}
+
+/* ==========================================================================
+   RESPONSIVE — Tablet
+   ========================================================================== */
+
+@media (min-width: 768px) {
+    .dx-gral {
+        padding: 2.5rem 3rem;
+    }
+
+    .dx-card {
+        padding: 1.5rem 1.5rem 1.75rem;
+    }
+
+    .caract-esp {
+        font-size: 1rem;
+    }
+}
+
+/* ==========================================================================
+   RESPONSIVE — Desktop
+   ========================================================================== */
+
+@media (min-width: 1024px) {
+    .dx-gral {
+        padding: 3rem max(2.5rem, calc(50% - 25rem));
+    }
+
+    .dx-card {
+        padding: 1.75rem 2rem;
+        border-left-width: 5px;
+    }
+
+    .dx-card:hover {
+        box-shadow: var(--shadow-sm);
+    }
+
+    .caract-esp {
+        font-size: 1.05rem;
+    }
+}

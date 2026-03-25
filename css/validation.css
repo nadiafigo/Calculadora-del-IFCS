@@ -1,0 +1,68 @@
+/* ==============================================
+   validation.css — Error states, toast, shake
+   ============================================== */
+
+/* ---- Error state on inputs/selects ---- */
+.field-error {
+  border-color: #d32f2f !important;
+  box-shadow: 0 0 0 2px rgba(211, 47, 47, .2) !important;
+}
+
+/* ---- Error message below field ---- */
+.error-msg {
+  color: #d32f2f;
+  font-size: .8rem;
+  margin: .25rem 0 0;
+  display: block;
+}
+
+/* ---- Shake animation ---- */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%      { transform: translateX(-6px); }
+  40%      { transform: translateX(6px); }
+  60%      { transform: translateX(-4px); }
+  80%      { transform: translateX(4px); }
+}
+
+.shake {
+  animation: shake .4s ease;
+}
+
+/* ---- Toast / Snackbar ---- */
+.toast-container {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  pointer-events: none;
+}
+
+.toast {
+  background: #323232;
+  color: #fff;
+  padding: .85rem 1.5rem;
+  border-radius: .5rem;
+  font-size: .95rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,.25);
+  opacity: 0;
+  transform: translateY(1rem);
+  transition: opacity .3s, transform .3s;
+  pointer-events: auto;
+  text-align: center;
+  max-width: 90vw;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.toast--success {
+  background: #2e7d32;
+}
+
+.toast--error {
+  background: #d32f2f;
+}

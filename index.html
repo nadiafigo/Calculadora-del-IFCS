@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" sizes="32x32" href="./img/logo_FPNC_32x32.png">
+    <link rel="stylesheet" href="./css/gral.css">
+    <link rel="stylesheet" href="home.css">
+    <link rel="stylesheet" href="./css/validation.css">
+    <title>Factibilidad de Cruce Seguro</title>
+
+</head>
+
+
+<body>
+    <header class="header">
+        <nav class="navbar">
+            <a href="./index.html">
+                <img src="./img/LP.png" alt="logo_LP" class="navbar__logo">
+            </a>
+
+            <input type="checkbox" id="nav__checkbox" class="nav__checkbox">
+            <label for="nav__checkbox" class="nav__toggle">
+                <svg class="menu" width="32" height="18" xmlns="http://www.w3.org/2000/svg">
+                    <g fill="#FFF" fill-rule="evenodd">
+                      <path d="M0 0h32v2H0zM0 8h32v2H0zM0 16h32v2H0z"></path>
+                    </g>
+                </svg>
+                <svg class="close" width="26" height="26" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M23.607.98l1.414 1.413L14.414 13l10.607 10.607-1.414 1.414L13 14.414 2.393 25.021.98 23.607 11.586 13 .98 2.393 2.393.98 13 11.586 23.607.98z"
+                    fill="#FFF" fill-rule="evenodd"/>
+                  </svg>
+            </label>
+            <div class="navbar-content">
+                <div class="menu">
+
+                    <div class="menu-option">
+                        <div class="selected-option">
+                            <li class="menu__item">Antecedentes</li>
+                            <div class="item-icon"></div>
+                        </div>
+                        <div class="submenu">
+                            <ul class="submenu_container">
+                                <li class="submenu__item">Metodología del IFCS</li>
+                                <li class="submenu__item">Diagnóstico de Puentes Peatonales Elevados de Morelia</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="menu-option">
+                        <div class="selected-option">
+                            <a href="./html/mapa.html"><li class="menu__item">Mapa de resultados</li></a>
+                        </div>
+                    </div>
+
+                    <div class="menu-option">
+                        <div class="selected-option">
+                            <a href="./html/analytics.html"><li class="menu__item">Estadísticas</li></a>
+                        </div>
+                    </div>
+
+                    <div class="menu-option">
+                        <div class="selected-option">
+                            <li class="menu__item">Descargables</li>
+                            <div class="item-icon"></div>
+                        </div>
+                        <div class="submenu">
+                            <ul class="submenu_container">
+                                <li>
+                                   <a class="submenu__item" href="./pdf/Tabla 5. Formato de llenado.pdf">Formato de llenado</a>
+                                </li>
+                                <li>
+                                    <a class="submenu__item" href="./pdf/MANUAL_IFCS.pdf">Manual del IFCS</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="menu-option">
+                        <div class="selected-option">
+                            <li class="menu__item">Contacto</li>
+                            <div class="item-icon"></div>
+                        </div>
+                        <div class="submenu">
+                            <ul class="submenu_container">
+                                <li class="submenu__item">Facebook</li>
+                                <li class="submenu__item">Instagram</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="tittle-cont">
+                <h1 class="hero-tittle">Calculadora de Factibilidad<br>de Cruce Peatonal Seguro</h1>
+                <p class="hero-subt">en Zonas con Puentes AntiPeatonales</p>
+            </div>
+            <div class="paragraph-container">
+                <p class="hero-paragraph">¡Calcula qué tan factible es<br>la sustitución de un Puente AntiPeatonal<br>por un Cruce Seguro en tu Ciudad!</p>
+            </div>
+            <div class="button-container">
+                <a href="#CalcForm" class="btn btn--white">Comenzar</a>
+                <a href="./pdf/MANUAL_IFCS.pdf" class="btn btn--transparent">Conoce más</a>
+            </div>
+        </section>
+        <section class="intro">
+            <img class="img1" src="./img/mobile/portada_small.jpg" alt="Imagen de personas mayores bajando un puente peatonal">
+            <div class="quote-container">
+                <p class="quote">"Las ciudades tienen la capacidad de proporcionar algo para todas la personas, sólo porque, y sólo cuando, se crean por y para todas las personas." <br><br> —Jane Jacobs, 1961.</p>
+            </div>
+        </section>
+
+        <form class="calc-form" id="CalcForm" novalidate>
+            <div class="form-title">
+                <h2 class="form-start">¡COMIENZA CON EL CÁLCULO!</h2>
+                <p class="form-desc">Deposita los datos recolectados aquí:</p>
+                <a href="./pdf/Tabla 5. Formato de llenado.pdf">¿Cómo recolecto los datos?</a>
+            </div>
+            <!-- --------------------------------------------- Sección 1 -->
+            <div class="form-section-cont">
+                <div class="form-section sect1">
+                    <div class="form-subtitle">
+                        <p class="subt-num subt-1">1</p>
+                        <p class="subt-1-desc">Datos de ubicación:</p>
+                    </div>
+                    <div class="input-container inp-cont-1">
+                        <div class="form-input">
+                            <p class="input-desc">País:</p>
+                            <input type="text" placeholder="Ej. México" id="LocPais" name="LocPais" required>
+                        </div>
+                        <div class="form-input">
+                            <p class="input-desc">Ciudad o localidad:</p>
+                            <input type="text" placeholder="Ej. Morelia" id="LocCiudad" name="LocCiudad" required>
+                        </div>
+                        <div class="form-input">
+                            <p class="input-desc">Nombre de la vialidad:</p>
+                            <input type="text" placeholder="Ej. Periférico Independencia" id="LocVia" name="LocVia" required>
+                        </div>
+                        <div class="form-input">
+                            <p class="input-desc">Colonia:</p>
+                            <input type="text" placeholder="Ej. Camelinas" id="LocColonia" name="LocColonia" required>
+                        </div>
+                        <div class="form-input">
+                            <p class="input-desc">Referencia:</p>
+                            <input type="text" placeholder="Ej. Mercado de Abastos" id="LocRef"
+                            name="LocRef" required>
+                        </div>
+                        <div class="form-input">
+                            <p class="input-desc">Coordenada X:</p>
+                            <input type="text" placeholder="Ej. -101.221780" id="LocX"
+                            name="LocX" required>
+                        </div>
+                        <div class="form-input">
+                            <p class="input-desc">Coordenada Y:</p>
+                            <input type="text" placeholder="Ej. 19.676883" id="LocY" name="LocY" required>
+                        </div>
+                    </div>
+                </div>    
+            </div>
+            
+            <!-- --------------------------------------------- Sección 2 -->
+            <div class="form-section-cont">
+                <div class="form-section sect2">
+                    <div class="form-subtitle">
+                        <p class="subt-num subt-2">2</p>
+                        <p class="subt-2-desc">Características de la vialidad:</p>
+                    </div>
+                    <div class="desc-2">
+                        <p>Captura los datos relativos a la vialidad en el contexto inmediato al puente antipeatonal.</p>
+                    </div>
+                    <div class="input-container2 inp-cont-2">
+                        <!----<div class="form-input">
+                            <p class="input-desc">Número de carriles vehiculares:</p>
+                            <input type="number" placeholder="Número" id="via-carriles" name="via-carriles" required>
+                        </div> --->
+                        <div class="form-input">
+                            <label for="ViaCarriles">
+                                <span>Número de carriles vehiculares:</span>
+                                <select name="ViaCarriles" id="ViaCarriles" required>
+                                    <option value="" id=""></option>
+                                    <option value="0" id="ViaCarriles_1a2">1 a 2 carriles</option>
+                                    <option value="0" id="ViaCarriles_3a5">3 a 5 carriles</option>
+                                    <option value="0" id="ViaCarriles_6mas">6 carriles o más</option>
+                                </select>
+                            </label>
+                        </div>
+                        <!-- <div class="form-input">
+                            <p class="input-desc">Distancia de cruce bajo el puente:</p>
+                            <input type="number" placeholder="Número en metros" id="vial-dist_bajo">
+                        </div> -->
+                        <div class="form-input">
+                            <label for="ViaDistCruce">
+                                <span>Distancia de cruce bajo el puente:</span>
+                                <select  id="ViaDistCruce" 
+                                name="ViaDistCruce" required>
+                                    <option value="" id=""></option>
+                                    <option value="10" id="ViaDistCruce_10menos">10 metros o menos</option>
+                                    <option value="8" id="ViaDistCruce_11a19">11 a 19 metros</option>
+                                    <option value="4" id="ViaDistCruce_20a39">20 a 39 metros</option>
+                                    <option value="2" id="ViaDistCruce_40a69">40 a 69 metros</option>
+                                    <option value="0" id="ViaDistCruce_70mas">70 metros o más</option>
+                                </select>
+                            </label>
+                        </div>
+                        <!-- <div class="form-input">
+                            <p class="input-desc">Distancia a un semáforo:</p>
+                            <input type="text" placeholder="Número en metros" id="vial-dist_semaf">
+                        </div> -->
+                        <div class="form-input">
+                            <label for="ViaDistSemaf">
+                                <span>Distancia a un semáforo:</span>
+                                <select 
+                                id="ViaDistSemaf"
+                                name="ViaDistSemaf"required>
+                                    <option value="" id=""></option>
+                                    <option value="7" id="ViaDistSemaf_99menos">0 a 99 metros</option>
+                                    <option value="5" id="ViaDistSemaf_100a249">100 a 249 metros</option>
+                                    <option value="3" id="ViaDistSemaf_250a999">250 a 999 metros</option>
+                                    <option value="1" id="ViaDistSemaf_1000mas">1000 metros o más</option>
+                                </select>
+                            </label>
+                        </div>
+                        <!-- <div class="form-input">
+                            <p class="input-desc">¿Hay cruce peatonal?</p>
+                            <input type="text" placeholder="Sí/No" id="vial-cruce_peat">
+                        </div> -->
+                        <!-- <div class="form-input">
+                            <p class="input-desc">¿Hay barreras peatonales? ¿De qué tipo?</p>
+                            <input type="text" id="vial_barreras">
+                        </div> -->
+                        <div class="form-input">
+                            <label for="ViaBarreras">
+                                <span>¿Hay barreras peatonales bajo el puente?</span>
+                                <select id="ViaBarreras"
+                                name="ViaBarreras" required>
+                                    <option value="" id=""></option>
+                                    <option value="8" id="ViaBarreras_1">No hay</option>
+                                    <option value="8" id="ViaBarreras_2">Guarnición por camellón (menor a 30cm)</option>
+                                    <option value="7" id="ViaBarreras_3">Guarnición alta (30cm o más)</option>
+                                    <option value="7" id="ViaBarreras_4">Canaleta</option>
+                                    <option value="6" id="ViaBarreras_5">Barrera de contención</option>
+                                    <option value="6" id="ViaBarreras_6">Otro</option>
+                                    <option value="4" id="ViaBarreras_7">Valla o barda</option>
+                                    <option value="2" id="ViaBarreras_8">Cambio pronunciado de nivel (más de 1.5m)</option>
+                                    <option value="0" id="ViaBarreras_9">Puente vehicular</option>
+                                    <option value="0" id="ViaBarreras_10">Túnel vehicular</option>
+                                </select>
+                            </label>
+                        </div>
+                        <!-- <div class="form-input">
+                            <p class="input-desc">Número de camellones existentes:</p>
+                            <input type="number" placeholder="Número" id="vial_camellones">
+                        </div> -->
+                        <div class="form-input">
+                            <label for="ViaCamellones">
+                                <span>Número de camellones existentes:</span>
+                                <select name="ViaCamellones" id="ViaCamellones" required>
+                                    <option value="" id=""></option>
+                                    <option value="0" id="ViaCamellones_0">No hay</option>
+                                    <option value="8" id="ViaCamellones_1">1 camellón</option>
+                                    <option value="9" id="ViaCamellones_2a3">2 a 3 camellones</option>
+                                    <option value="10" id="ViaCamellones_4mas">4 camellones o más</option>
+                                </select>
+                            </label>
+                        </div>
+                        <!-- <div class="form-input">
+                            <p class="input-desc">¿Existen reductores de velocidad?</p>
+                            <input type="text" placeholder="Sí/No" id="vial-revo">
+                        </div> -->
+                        <div class="form-input">
+                            <label for="ViaRevo">
+                                <span>¿Existen reductores de velocidad?</span>
+                                <select name="ViaRevo" id="ViaRevo" required>
+                                    <option value="" id=""></option>
+                                    <option value="6" id="ViaRevo_si">Sí</option>
+                                    <option value="0" id="ViaRevo_no">No</option>
+                                </select>
+                            </label>
+                        </div>
+                        <div id="Box_ViaRevoTipo" class="hidden form-input">
+                            <label for="ViaRevoTipo">
+                                <span>Tipo de reductores de velocidad</span>
+                                <select id="ViaRevoTipo" name="ViaRevoTipo">
+                                    <option value="" id=""></option>
+                                    <option value="2" id="ViaRevoTipo_tope">Tope</option>
+                                    <option value="1" id="ViaRevoTipo_lineas">Líneas logarítmicas con botones</option>
+                                    <option value="3" id="ViaRevoTipo_meseta">Meseta peatonal</option>
+                                    <option value="1" id="ViaRevoTipo_pavimento">Pavimento texturizado</option>
+                                    <option value="2" id="ViaRevoTipo_joroba">Joroba</option>
+                                </select>
+                            </label>
+                        </div>
+                        <div class="form-input">
+                            <label for="ViaVelPermi">
+                                <span>Velocidad permitida</span>
+                                <select name="ViaVelPermi" id="ViaVelPermi" required>
+                                    <option value="" id=""></option>
+                                    <option value="8" id="ViaVelPermi_20menos">20 km/hr o menos</option>
+                                    <option value="6" id="ViaVelPermi_30">30 km/hr</option>
+                                    <option value="4" id="ViaVelPermi_50">50 km/hr</option>
+                                    <option value="2" id="ViaVelPermi_60">60 km/hr</option>
+                                    <option value="0" id="ViaVelPermi_80mas">80 km/hr o más</option>
+                                </select>
+                            </label>
+                        </div>
+                        <div class="form-input">
+                            <label for="ViaVelOper">
+                                <span>Velocidad de operación en hora valle</span>
+                                <select name="ViaVelOper" id="ViaVelOper" required>
+                                    <option value="" id=""></option>
+                                    <option value="8" id="ViaVelOper_20menos">20 km/hr o menos</option>
+                                    <option value="6" id="ViaVelOper_21a30">21 a 30 km/hr</option>
+                                    <option value="4" id="ViaVelOper_31a50">31 a 50 km/hr</option>
+                                    <option value="2" id="ViaVelOper_51a60">51 a 60 km/hr</option>
+                                    <option value="1" id="ViaVelOper_61a79">61 a 79 km/hr</option>
+                                    <option value="0" id="ViaVelOper_80mas">80 km/hr o más</option>
+                                </select>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- --------------------------------------------- Sección 3 -->
+            <div class="form-section-cont">
+                <div class="form-section sect3">
+                    <div class="form-subtitle">
+                        <p class="subt-num subt-3">3</p>
+                        <p class="subt-3-desc">Datos de equipamientos:</p>
+                    </div>
+                    <div class="desc-4">
+                        <p>Servicios e instalaciones públicas o privadas destinados a satisfacer necesidades colectivas de la población.</p>
+                    </div>
+                    <div class="input-container inp-cont-3">
+                        <!-- <div class="form-input">
+                            <p class="input-desc">¿Hay equipamientos cerca del puente?</p>
+                            <input type="text" placeholder="Sí/No" id="equip-exist">
+                        </div> -->
+                        <!-- <div class="form-input">
+                            <p class="input-desc">Distancia al equipamiento más próximo:</p>
+                            <input type="number" placeholder="Número en metros" id="equip-dist">
+                        </div> -->
+                        <label for="EquipNum">
+                            <span>Número de equipamientos (en un radio de 250 m):</span>
+                            <select name="EquipNum" id="EquipNum" required>
+                                <option value="" id=""></option>
+                                <option value="0" id="EquipNum_0">No existen equipamientos en un radio de 250 metros</option>
+                                <option value="4" id="EquipNum_1a5">1 a 5</option>
+                                <option value="6" id="EquipNum_6a10">6 a 10</option>
+                                <option value="8" id="EquipNum_11a20">11 a 20</option>
+                                <option value="10" id="EquipNum_21mas">21 o más</option>
+                            </select>
+                        </label>
+                        <label for="EquipDist">
+                            <span>Distancia al equipamiento con mayor afluencia:</span>
+                            <select name="EquipDist" id="EquipDist" required>
+                                <option value="" id=""></option>
+                                <option value="10" id="EquipDist_0a99">0 a 99 metros</option>
+                                <option value="8" id="EquipDist_100a249">100 a 249 metros</option>
+                                <option value="4" id="EquipDist_250a999">250 a 999 metros</option>
+                                <option value="0" id="EquipDist_1000mas">1000 metros o más</option>
+                            </select>
+                        </label>
+                        <!----<div class="form-input">
+                            <p class="input-desc">Tipo de equipamiento</p>
+                            <input type="text" id="equi-tipo" name="equi-tipo" required>
+                        </div>--->
+                        <div class="form-input">
+                            <label for="EquipTipo">
+                                <span>Tipo de equipamiento: </span>
+                                <select name="EquipTipo" id="EquipTipo" required>
+                                    <option value="" id=""></option>
+                                    <option value="5" id="EquipTipo_edu">Educación</option>
+                                    <option value="5" id="EquipTipo_salud">Salud</option>
+                                    <option value="4" id="EquipTipo_abasto">Abasto</option>
+                                    <option value="4" id="EquipTipo_cult">Cultura</option>
+                                    <option value="4" id="EquipTipo_deport">Recreación o deporte</option>
+                                    <option value="4" id="EquipTipo_social">Asistencia social</option>
+                                    <option value="4" id="EquipTipo_Gob">Seguridad, Administración o de Gobierno</option>
+                                    <option value="4" id="EquipTipo_reli">Religión o Funerario</option>
+                                    <option value="0" id="EquipTipo_na">No hay equipamientos próximos</option>
+                                </select>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- --------------------------------------------- Imagen -->
+            
+            <img class="img2" src="./img/mobile/img2.jpg" alt="Mujeres y niño encontrándose en escaleras congestionadas de un puente antipeatonal">
+
+            <!-- --------------------------------------------- Sección 4 -->
+            <div class="form-section-cont">
+                <div class="form-section sect4">
+                    <div class="form-subtitle">
+                        <p class="subt-num subt-4">4</p>
+                        <p class="subt-4-desc">Características del puente:</p>
+                    </div>
+                    <div class="desc-4">
+                        <p>Captura los datos relativos al puente antipeatonal que se busca sustituir.</p>
+                    </div>
+                    <div class="input-container2 inp-cont-4">
+                        <!-- <div class="form-input">
+                            <p class="input-desc">Logitud caminada:</p>
+                            <input type="number" placeholder="Número en metros" id="puent-long">
+                        </div> -->
+                        <!-- <div class="form-input">
+                            <p class="input-desc">¿Obstaculiza banquetas?:</p>
+                            <input type="text" placeholder="Sí/No" id="puent-obst">
+                        </div> -->
+                        <label for="PteObstBanq">
+                            <span>¿Obstaculiza banquetas?:</span>
+                            <select name="PteObstBanq" id="PteObstBanq" required>
+                                <option value="" id=""></option>
+                                <option value="3" id="PteObstBanq_si">Sí</option>
+                                <option value="3" id="PteObstBanq_NoHayBanqueta">No hay banqueta</option>
+                                <option value="0" id="PteObstBanq_no">No</option>
+                            </select>
+                        </label>
+                        <!-- <div class="form-input">
+                            <p class="input-desc">Tipo de acceso:</p>
+                            <input type="text" id="puent-tipo_acceso">
+                        </div> -->
+                    
+                        <div class="form-input">
+                            <label for="PteAnchoAcc">
+                            <span>Ancho de acceso:</span>
+                            <select name="PteAnchoAcc" id="PteAnchoAcc" required>
+                                <option value="" id=""></option>
+                                <option value="1" id="PteAnchoAcc_menor">Menor a 1.5 metros</option>
+                                <option value="0" id="PteAnchoAcc_mayor">1.5 metros o más</option>
+                            </select>
+                        <!---</label>
+                            <p class="input-desc">Ancho de acceso:</p>
+                            <input type="number" placeholder="Número en metros" id="pte-ancho-acceso" name="pte-ancho-acceso" required> --->
+                        </div>
+                        
+                        <label for="PteTipoAcc">
+                            <span>Tipo de acceso:</span>
+                            <select name="PteTipoAcc" id="PteTipoAcc" required>
+                                <option value="" id=""></option>
+                                <option value="0" id="PteTipoAcc_elev">Elevador (en funcionamiento)</option>
+                                <option value="2" id="PteTipoAcc_ramp">Rampa (con o sin escaleras adicionales)</option>
+                                <option value="4" id="PteTipoAcc_esc">Escaleras</option>
+                            </select>
+                        </label>
+
+                        <div class="hidden" id="Box_PteNumEsc">
+                            <label for="PteNumEsc">
+                            <span>Número de escalones:</span>
+                            <select name="PteNumEsc" id="PteNumEsc">
+                                <option value="" id=""></option>
+                                <option value="2" id="PteNumEsc_24menos">24  escalones o menos</option>
+                                <option value="4" id="PteNumEsc_25a49">25 a 49 escalones</option>
+                                <option value="5" id="PteNumEsc_50mas">50 escalones o más</option>
+                            </select>
+                        </label>
+                        </div>
+
+                        <div class="hidden" id="Box_PteLongCami">
+                            <label for="PteLongCami">
+                            <span>Logitud total caminada (incluyendo rampas):</span>
+                            <select name="PteLongCami" id="PteLongCami">
+                                <option value="" id=""></option>
+                                <option value="1" id="PteLongCami_0a99">0 a 99 metros</option>
+                                <option value="1" id="PteLongCami_100a149">100 a 149 metros</option>
+                                <option value="2" id="PteLongCami_150a199">150 a 199 metros</option>
+                                <option value="2" id="PteLongCami_200mas">200 o más</option>
+                            </select>
+                        </label>
+                        </div>
+
+                        <!-- <div class="form-input">
+                            <p class="input-desc">Pendiente de la rampa:</p>
+                            <input type="number" id="puent-pend_ramp">
+                        </div> -->
+                        <div class="hidden" id="Box_PtePendiente">
+                            <label for="PtePendiente">
+                            <span>Pendiente de la rampa:</span>
+                            <select name="PtePendiente" id="PtePendiente">
+                                <option value="" id=""></option>
+                                <option value="0" id="PtePendiente_6menos">6% o menos</option>
+                                <option value="1" id="PtePendiente_6,1a8">6.1% a 8%</option>
+                                <option value="1" id="PtePendiente_8,1mas">8.1% o más</option>
+                            </select>
+                        </label>
+                        </div>
+                        
+                        <!-- <div class="form-input">
+                            <p class="input-desc">Distancia entre descansos:</p>
+                            <input type="number" placeholder="Número" id="puent-dist_desc">
+                        </div> -->
+                        <div class="hidden" id="Box_PteDistDesc">
+                            <label for="PteDistDesc">
+                            <span>Distancia entre descansos:</span>
+                            <select name="PteDistDesc" id="PteDistDesc">
+                                <option value="" id=""></option>
+                                <option value="0" id="PteDistDesc_6menos">6 metros o menos</option>
+                                <option value="1" id="PteDistDesc_7a14">7 a 14 metros</option>
+                                <option value="2" id="PteDistDesc_15mas">15 metros o más</option>
+                            </select>
+                        </div>
+                        
+                        </label>
+                        <!-- <div class="form-input">
+                            <p class="input-desc">Ancho de la pasarela del puente:</p>
+                            <input type="number" placeholder="Número" id="puent-ancho_pasarela">
+                        </div> -->
+                        <label for="PteAnchoPas">
+                            <span>Ancho de la pasarela del puente:</span>
+                            <select name="PteAnchoPas" id="PteAnchoPas" required>
+                                <option value="" id=""></option>
+                                <option value="1" id="PteAnchoPas_menor1,5">Menor a 1.5 metros</option>
+                                <option value="0" id="PteAnchoPas_1,5mas">1.5 metros o más</option>
+                            </select>
+                        </label>
+                        <label for="PteCubierta">
+                            <span>¿Cuenta con cubierta?</span>
+                            <select name="PteCubierta" id="PteCubierta" required>
+                                <option value="" id=""></option>
+                                <option value="0" id="PteCubierta_si">Sí</option>
+                                <option value="1" id="PteCubierta_no">No</option>
+                            </select>
+                        </label>
+                        <!-- <div class="form-input">
+                            <p class="input-desc">¿Cuenta con iluminación al interior?</p>
+                            <input type="text" placeholder="Sí/No" id="puent-ilum">
+                        </div> -->
+                        <label for="PteIluminacion">
+                            <span>¿Cuenta con iluminación al interior?</span>
+                            <select name="PteIluminacion" id="PteIluminacion" required>
+                                <option value="" id=""></option>
+                                <option value="0" id="PteIluminacion_si">Sí hay</option>
+                                <option value="1" id="PteIluminacion_no">No hay</option>
+                            </select>
+                        </label>
+                        <!-- <div class="form-input">
+                            <p class="input-desc">¿Alberga publicidad en su estructura?</p>
+                            <input type="text" placeholder="Sí/No" id="puent-publicidad">
+                        </div> -->
+                        
+                        <label for="PtePubli">
+                            <span>¿Alberga publicidad en su estructura?</span>
+                            <select name="PtePubli" id="PtePubli" required>
+                                <option value="" id=""></option>
+                                <option value="1" id="PtePubli_si">Sí</option>
+                                <option value="0" id="PtePubli_no">No</option>
+                            </select>
+                        </label>
+
+                        <div id="Box_Visibilidad" class="hidden" >
+                            <label for="PtePubliVisib">
+                            <span>¿La publicidad obstaculiza la visibilidad al interior?</span>
+                            <select name="PtePubliVisib" id="PtePubliVisib">
+                                <option value="" id=""></option>
+                                <option value="1" id="PtePubliVisib_si">Sí</option>
+                                <option value="0" id="PtePubliVisib_no">No</option>
+                            </select>
+                        </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- --------------------------------------------- Sección 5 -->
+            <div class="form-section-cont">
+                <div class="form-section sect5">
+                    <div class="form-subtitle">
+                        <p class="subt-num subt-5">5</p>
+                        <p class="subt-5-desc">Fuente de los datos:</p>
+                    </div>
+                    <div class="input-container inp-cont-5">
+                        <div class="form-input">
+                            <p class="input-desc">¿Cuál es tu nombre?</p>
+                            <input type="text" placeholder="Nombre completo" id="FuenteNombre" name="FuenteNombre" required>
+                        </div>
+                        <div class="form-input">
+                            <p class="input-desc">Fecha de levantamiento de los datos</p>
+                            <input type="date" id="FuenteFecha" name="FuenteFecha" required>
+                        </div>
+                        <div class="form-input">
+                            <p class="input-desc">Colectivo o institución que representas:</p>
+                            <input type="text" id="FuenteOrg" name="FuenteOrg" required>
+                        </div>
+                        <div class="form-input">
+                            <p class="input-desc">Correo electrónico:</p>
+                            <input type="email" id="FuenteCorreo" name="FuenteCorreo" required>
+                        </div>
+                        <div class="desc-5">
+                            <input type="checkbox" required>
+                            <p>Al realizar el cálculo, acepto que los datos aquí depositados se plasmen en el <a href="#">Mapa de Índices de Factibilidad de Cruces Seguros para la Sustitución de Puentes Antipeatonales</a>, en donde se hará mención de mi nombre, colectivo o institución como fuente de estos.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="calc-btn-cont">
+                <button id="VerResultado" type="submit" class="btn-yellow">¡CALCULAR!</button>
+            </div>
+        </form>
+        <section class="footer">
+            <div class="footer-logo">
+                <img src="./img/logo_bicivilizate.svg" alt="Logo de Bicivilizate michoacan AC">
+            </div>
+            <ul class="footer-menu">
+                <li><a href="#">Mapa de resultados</a></li>
+                <li><a href="#">Conoce la metodología</a></li>
+                <li><a href="#">Descargables</a></li>
+                <li><a href="#">Contacto</a></li>
+            </ul>
+            <div class="creditos">
+                <p>Metodología, Diseño y Desarrollo Web elaborados por Nadia Figueroa para Bicivilízate, Michoacán A.C.</p>
+            </div>
+        </section>
+    </main>
+
+    
+    <script src="./js/navbar.js"></script>
+    <script src="./js/config.js"></script>
+    <script src="./js/form.js"></script>
+
+</body>
+</html>

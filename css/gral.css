@@ -1,0 +1,416 @@
+/* ==========================================================================
+   CALCULADORA IFCS — Global Styles
+   Reset, variables, typography, navbar, buttons, utilities
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,300;0,400;0,600;0,700;0,900;1,400&display=swap');
+
+/* --- Custom Properties --------------------------------------------------- */
+
+:root {
+    --white: hsl(0, 0%, 100%);
+    --blue: hsl(188, 100%, 33%);
+    --darkBlue: hsl(209, 74%, 27%);
+    --green: hsl(77, 52%, 74%);
+    --yellow: hsl(40, 76%, 55%);
+    --gray: hsl(0, 0%, 94%);
+    --grayText: hsl(0, 0%, 71%);
+
+    --shadow-sm: 0 0.0625rem 0.25rem rgba(0, 0, 0, 0.08);
+    --shadow: 0 0.125rem 0.75rem rgba(0, 0, 0, 0.12);
+    --shadow-lg: 0 0.25rem 1.5rem rgba(0, 0, 0, 0.16);
+    --radius: 0.5rem;
+    --radius-lg: 0.75rem;
+    --transition: 0.25s ease;
+}
+
+/* --- Reset --------------------------------------------------------------- */
+
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    font-family: 'Source Sans Pro', sans-serif;
+    line-height: 1.5;
+    color: var(--darkBlue);
+    background-color: var(--white);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+a {
+    transition: color var(--transition), opacity var(--transition);
+}
+
+ul, ol {
+    list-style: none;
+}
+
+button {
+    font-family: inherit;
+    cursor: pointer;
+}
+
+/* ==========================================================================
+   NAVBAR
+   ========================================================================== */
+
+.header {
+    background: var(--darkBlue);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: var(--shadow-sm);
+}
+
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.625rem 1.25rem;
+    max-width: 75rem;
+    margin: 0 auto;
+    position: relative;
+    min-height: 3.5rem;
+}
+
+.navbar__logo {
+    height: 2.25rem;
+    width: auto;
+    display: block;
+}
+
+/* --- Hamburger toggle (mobile) ------------------------------------------- */
+
+.nav__checkbox {
+    display: none;
+}
+
+.nav__toggle {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    z-index: 110;
+    padding: 0.25rem;
+}
+
+.nav__toggle .close {
+    display: none;
+}
+
+#nav__checkbox:checked ~ label.nav__toggle .close {
+    display: block;
+}
+
+#nav__checkbox:checked ~ label.nav__toggle .menu {
+    display: none;
+}
+
+/* --- Mobile menu panel --------------------------------------------------- */
+
+.navbar-content {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 4%;
+    right: 4%;
+    background-color: var(--white);
+    border-radius: var(--radius-lg);
+    padding: 1rem 0 1.25rem;
+    box-shadow: var(--shadow-lg);
+    z-index: 105;
+}
+
+#nav__checkbox:checked ~ .navbar-content {
+    display: block;
+    animation: fadeSlideIn 0.2s ease-out;
+}
+
+.navbar-content > .menu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* --- Menu items ---------------------------------------------------------- */
+
+.menu-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.selected-option {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    cursor: pointer;
+    padding: 0.625rem 1rem;
+}
+
+.menu__item {
+    color: var(--darkBlue);
+    font-weight: 600;
+    font-size: 1rem;
+    list-style: none;
+    transition: color var(--transition);
+}
+
+.menu li {
+    cursor: pointer;
+}
+
+.item-icon {
+    width: 0.625rem;
+    height: 0.625rem;
+    background: url(../img/icon-arrow-dark.svg) center / contain no-repeat;
+    display: inline-block;
+    transition: transform var(--transition);
+    flex-shrink: 0;
+}
+
+.item-icon__rotate {
+    transform: rotate(180deg);
+}
+
+.select-clicked .menu__item {
+    color: var(--yellow);
+}
+
+/* --- Submenus ------------------------------------------------------------ */
+
+.submenu {
+    display: none;
+    opacity: 0;
+    background-color: var(--green);
+    border-radius: var(--radius);
+    width: 75%;
+    padding: 0.75rem 1rem;
+    transition: opacity var(--transition);
+    text-align: center;
+}
+
+.submenu.menu-open {
+    display: block;
+    opacity: 1;
+}
+
+.submenu_container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.submenu__item {
+    color: var(--darkBlue);
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding: 0.25rem 0;
+    cursor: pointer;
+    transition: color var(--transition);
+}
+
+.submenu__item:hover,
+.submenu__item.active {
+    color: var(--white);
+}
+
+.submenu__item a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.navbar-content li {
+    list-style: none;
+}
+
+/* --- Navbar: tablet ------------------------------------------------------ */
+
+@media (min-width: 768px) {
+    .navbar {
+        padding: 0.625rem 2rem;
+    }
+
+    .navbar__logo {
+        height: 2.5rem;
+    }
+}
+
+/* --- Navbar: desktop ----------------------------------------------------- */
+
+@media (min-width: 1024px) {
+    .navbar {
+        padding: 0.5rem 2.5rem;
+    }
+
+    .navbar__logo {
+        height: 2.75rem;
+    }
+
+    .nav__toggle {
+        display: none;
+    }
+
+    .navbar-content {
+        display: flex;
+        position: static;
+        background: transparent;
+        box-shadow: none;
+        padding: 0;
+        width: auto;
+    }
+
+    .navbar-content > .menu {
+        flex-direction: row;
+        gap: 0.125rem;
+        align-items: center;
+    }
+
+    .menu-option {
+        position: relative;
+        width: auto;
+    }
+
+    .selected-option {
+        padding: 0.5rem 0.75rem;
+    }
+
+    .menu__item {
+        color: var(--white);
+        font-size: 0.95rem;
+        white-space: nowrap;
+    }
+
+    .menu__item:hover {
+        color: var(--yellow);
+    }
+
+    .item-icon {
+        background-image: url(../img/icon-arrow-light.svg);
+    }
+
+    /* Desktop dropdowns */
+    .submenu {
+        position: absolute;
+        top: calc(100% + 0.25rem);
+        left: 50%;
+        transform: translateX(-50%);
+        width: auto;
+        min-width: 15rem;
+        padding: 0.75rem 1.25rem;
+        box-shadow: var(--shadow);
+        z-index: 110;
+        text-align: left;
+    }
+
+    .menu-option:hover > .submenu,
+    .submenu.menu-open {
+        display: block;
+        opacity: 1;
+    }
+
+    .select-clicked .menu__item {
+        color: var(--yellow);
+    }
+}
+
+/* ==========================================================================
+   SHARED IMAGE STYLES
+   ========================================================================== */
+
+.img1, .img2 {
+    width: 100%;
+    border: 0;
+    margin: 0;
+    display: block;
+}
+
+@media (min-width: 1024px) {
+    .img1, .img2 {
+        max-height: 28rem;
+        object-fit: cover;
+    }
+}
+
+/* ==========================================================================
+   UTILITIES
+   ========================================================================== */
+
+.hidden {
+    display: none !important;
+}
+
+/* Conditional field reveal animation */
+[id^="Box_"]:not(.hidden) {
+    animation: fadeSlideIn 0.3s ease-out;
+}
+
+@keyframes fadeSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-0.5rem);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ==========================================================================
+   PRINT STYLES
+   ========================================================================== */
+
+@media print {
+    .header,
+    .button-container,
+    .calc-btn-cont,
+    .footer {
+        display: none !important;
+    }
+
+    body {
+        font-size: 11pt;
+        color: #000;
+        background: #fff;
+    }
+
+    .hero {
+        background: none !important;
+        color: #000 !important;
+        height: auto !important;
+        padding: 1rem 0 !important;
+    }
+
+    .form-section {
+        break-inside: avoid;
+        page-break-inside: avoid;
+        border: 1px solid #ccc;
+        margin-bottom: 0.5rem;
+    }
+
+    .res-gral {
+        background: none !important;
+        color: #000 !important;
+    }
+
+    a[href]::after {
+        content: none;
+    }
+}

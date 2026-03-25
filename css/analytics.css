@@ -1,0 +1,185 @@
+/* ==============================================
+   analytics.css — Estilos para el dashboard
+   ============================================== */
+
+/* --- Layout general ---- */
+.dashboard {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+.dashboard-title {
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  color: var(--darkBlue);
+  margin-bottom: 1.5rem;
+}
+
+/* --- KPI cards ---- */
+.kpi-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.kpi-card {
+  background: var(--white);
+  border: 1px solid var(--gray);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem;
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+}
+
+.kpi-value {
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  font-weight: 900;
+  color: var(--darkBlue);
+  line-height: 1.2;
+}
+
+.kpi-label {
+  font-size: .85rem;
+  color: var(--grayText);
+  margin-top: .25rem;
+}
+
+/* --- Chart rows ---- */
+.chart-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.chart-card {
+  background: var(--white);
+  border: 1px solid var(--gray);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.chart-card h3 {
+  font-size: 1rem;
+  color: var(--darkBlue);
+  margin-bottom: 1rem;
+}
+
+.chart-container {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+}
+
+.chart-container canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* --- Tabla ---- */
+.table-section {
+  margin-bottom: 2rem;
+}
+
+.table-section h3 {
+  font-size: 1.1rem;
+  color: var(--darkBlue);
+  margin-bottom: 1rem;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  border: 1px solid var(--gray);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .9rem;
+}
+
+.data-table th {
+  background: var(--darkBlue);
+  color: var(--white);
+  padding: .75rem .65rem;
+  text-align: left;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.data-table td {
+  padding: .65rem;
+  border-bottom: 1px solid var(--gray);
+  color: #333;
+}
+
+.data-table tbody tr:hover {
+  background: hsl(209, 74%, 97%);
+}
+
+.badge {
+  display: inline-block;
+  padding: .2rem .55rem;
+  border-radius: .25rem;
+  font-size: .8rem;
+  font-weight: 600;
+  color: #fff;
+  white-space: nowrap;
+}
+
+.badge--corto  { background: #2e7d32; }
+.badge--medio  { background: #f9a825; color: #333; }
+.badge--largo  { background: #c62828; }
+
+/* --- Estado vacío ---- */
+.empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: var(--grayText);
+  font-size: 1.1rem;
+}
+
+/* --- Responsive ---- */
+@media (max-width: 1024px) {
+  .kpi-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard {
+    padding: 1.25rem 1rem;
+  }
+
+  .kpi-row {
+    grid-template-columns: 1fr 1fr;
+    gap: .75rem;
+  }
+
+  .chart-row {
+    grid-template-columns: 1fr;
+  }
+
+  .chart-container {
+    aspect-ratio: 5 / 4;
+  }
+
+  .data-table {
+    font-size: .8rem;
+  }
+
+  .data-table th,
+  .data-table td {
+    padding: .5rem .4rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .kpi-row {
+    grid-template-columns: 1fr;
+  }
+}

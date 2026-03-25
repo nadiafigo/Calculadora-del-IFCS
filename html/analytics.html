@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" sizes="32x32" href="../img/logo_FPNC_32x32.png">
+    <link rel="stylesheet" href="../css/gral.css">
+    <link rel="stylesheet" href="../css/analytics.css">
+    <title>Estadísticas — IFCS</title>
+</head>
+
+<body>
+    <header class="header">
+        <nav class="navbar">
+            <a href="../index.html">
+                <img src="../img/LP.png" alt="logo_LP" class="navbar__logo">
+            </a>
+
+            <input type="checkbox" id="nav__checkbox" class="nav__checkbox">
+            <label for="nav__checkbox" class="nav__toggle">
+                <svg class="menu" width="32" height="18" xmlns="http://www.w3.org/2000/svg">
+                    <g fill="#FFF" fill-rule="evenodd">
+                      <path d="M0 0h32v2H0zM0 8h32v2H0zM0 16h32v2H0z"></path>
+                    </g>
+                </svg>
+                <svg class="close" width="26" height="26" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M23.607.98l1.414 1.413L14.414 13l10.607 10.607-1.414 1.414L13 14.414 2.393 25.021.98 23.607 11.586 13 .98 2.393 2.393.98 13 11.586 23.607.98z"
+                    fill="#FFF" fill-rule="evenodd"/>
+                  </svg>
+            </label>
+            <div class="navbar-content">
+                <div class="menu">
+                    <div class="menu-option">
+                        <div class="selected-option">
+                            <li class="menu__item">Antecedentes</li>
+                            <div class="item-icon"></div>
+                        </div>
+                        <div class="submenu">
+                            <ul class="submenu_container">
+                                <li class="submenu__item">Metodología del IFCS</li>
+                                <li class="submenu__item">Diagnóstico de Puentes Peatonales Elevados de Morelia</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="menu-option">
+                        <div class="selected-option">
+                            <a href="./mapa.html"><li class="menu__item">Mapa de resultados</li></a>
+                        </div>
+                    </div>
+
+                    <div class="menu-option">
+                        <div class="selected-option">
+                            <a href="./analytics.html"><li class="menu__item">Estadísticas</li></a>
+                        </div>
+                    </div>
+
+                    <div class="menu-option">
+                        <div class="selected-option">
+                            <li class="menu__item">Descargables</li>
+                            <div class="item-icon"></div>
+                        </div>
+                        <div class="submenu">
+                            <ul class="submenu_container">
+                                <li>
+                                   <a class="submenu__item" href="../pdf/Tabla 5. Formato de llenado.pdf">Formato de llenado</a>
+                                </li>
+                                <li>
+                                    <a class="submenu__item" href="../pdf/MANUAL_IFCS.pdf">Manual del IFCS</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="menu-option">
+                        <div class="selected-option">
+                            <li class="menu__item">Contacto</li>
+                            <div class="item-icon"></div>
+                        </div>
+                        <div class="submenu">
+                            <ul class="submenu_container">
+                                <li class="submenu__item">Facebook</li>
+                                <li class="submenu__item">Instagram</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="dashboard" id="dashboard">
+        <h1 class="dashboard-title">Dashboard de Evaluaciones</h1>
+
+        <!-- KPIs -->
+        <div class="kpi-row">
+            <div class="kpi-card">
+                <div class="kpi-value" id="kpi-total">—</div>
+                <div class="kpi-label">Evaluaciones</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-value" id="kpi-promedio">—</div>
+                <div class="kpi-label">Promedio IFCS</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-value" id="kpi-corto">—</div>
+                <div class="kpi-label">% Corto plazo</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-value" id="kpi-ciudades">—</div>
+                <div class="kpi-label">Ciudades evaluadas</div>
+            </div>
+        </div>
+
+        <!-- Charts row 1 -->
+        <div class="chart-row">
+            <div class="chart-card">
+                <h3>Distribución por factibilidad</h3>
+                <div class="chart-container">
+                    <canvas id="chart-donut"></canvas>
+                </div>
+            </div>
+            <div class="chart-card">
+                <h3>Top 10 ciudades</h3>
+                <div class="chart-container">
+                    <canvas id="chart-ciudades"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts row 2 -->
+        <div class="chart-row">
+            <div class="chart-card">
+                <h3>Distribución de puntaje IFCS</h3>
+                <div class="chart-container">
+                    <canvas id="chart-rangos"></canvas>
+                </div>
+            </div>
+            <div class="chart-card">
+                <h3>Evaluaciones por mes</h3>
+                <div class="chart-container">
+                    <canvas id="chart-timeline"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Data table -->
+        <div class="table-section">
+            <h3>Últimas evaluaciones</h3>
+            <div class="table-wrapper">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Ciudad</th>
+                            <th>Vialidad</th>
+                            <th>Referencia</th>
+                            <th>IFCS</th>
+                            <th>Factibilidad</th>
+                            <th>Organización</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla-body">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+    <script src="../js/navbar.js"></script>
+    <script src="../js/config.js"></script>
+    <script src="../js/analytics.js"></script>
+</body>
+</html>
