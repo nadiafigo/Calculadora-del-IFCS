@@ -1,0 +1,248 @@
+/* =============================================================
+   admin.css — Panel de aprobación (admin-only)
+   ============================================================= */
+
+.admin-badge {
+    color: var(--white);
+    font-weight: 600;
+    font-size: .95rem;
+    letter-spacing: .02em;
+}
+
+.admin-main {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 2rem 1rem 4rem;
+}
+
+.admin-card {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+    padding: 2rem 1.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.admin-card h1 {
+    margin: 0 0 .75rem;
+    color: var(--darkBlue);
+    font-size: 1.5rem;
+}
+
+/* --- Login view ---------------------------------------------- */
+
+#login-view p {
+    color: var(--darkBlue);
+    margin-bottom: 1.25rem;
+}
+
+#login-form label {
+    display: flex;
+    flex-direction: column;
+    gap: .4rem;
+    margin-bottom: 1rem;
+}
+
+#login-form label span {
+    font-weight: 600;
+    color: var(--darkBlue);
+}
+
+#login-form input[type="email"] {
+    padding: .75rem .9rem;
+    font-size: 1rem;
+    font-family: inherit;
+    border: 1px solid var(--grayText);
+    border-radius: var(--radius);
+    min-height: 2.75rem;
+    color: var(--darkBlue);
+}
+
+#login-form input[type="email"]:focus {
+    outline: none;
+    border-color: var(--blue);
+    box-shadow: 0 0 0 2px rgba(0, 152, 166, .2);
+}
+
+/* --- Buttons ------------------------------------------------- */
+
+.btn-primary, .btn-secondary, .btn-danger {
+    padding: .65rem 1.1rem;
+    border-radius: var(--radius);
+    border: none;
+    font-family: inherit;
+    font-weight: 600;
+    font-size: .95rem;
+    cursor: pointer;
+    transition: background var(--transition), opacity var(--transition);
+    min-height: 2.75rem;
+}
+
+.btn-primary {
+    background: var(--darkBlue);
+    color: var(--white);
+}
+.btn-primary:hover  { background: hsl(209, 74%, 22%); }
+.btn-primary:disabled { opacity: .6; cursor: not-allowed; }
+
+.btn-secondary {
+    background: var(--gray);
+    color: var(--darkBlue);
+}
+.btn-secondary:hover { background: hsl(0, 0%, 88%); }
+
+.btn-danger {
+    background: #c62828;
+    color: var(--white);
+}
+.btn-danger:hover { background: #9c1f1f; }
+
+/* --- Admin view ---------------------------------------------- */
+
+.admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+}
+
+.admin-user {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    font-size: .9rem;
+    color: var(--darkBlue);
+}
+
+.admin-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+}
+
+.admin-counter {
+    font-size: .9rem;
+    color: var(--grayText);
+    font-weight: 600;
+}
+
+/* --- Pending cards ------------------------------------------- */
+
+#pending-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.pending-card {
+    border: 1px solid var(--gray);
+    border-radius: var(--radius);
+    padding: 1.25rem;
+    background: var(--white);
+}
+
+.pending-card-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: .75rem;
+    flex-wrap: wrap;
+}
+
+.pending-card-head h3 {
+    margin: 0 0 .15rem;
+    color: var(--darkBlue);
+    font-size: 1.1rem;
+}
+
+.pending-sub {
+    margin: 0;
+    color: var(--grayText);
+    font-size: .9rem;
+}
+
+.pending-score {
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.score-num {
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: var(--darkBlue);
+    line-height: 1;
+}
+
+.score-tag {
+    font-size: .8rem;
+    color: var(--grayText);
+    margin-top: .15rem;
+}
+
+.pending-fields {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: .35rem .75rem;
+    margin: .5rem 0 1rem;
+    padding: .5rem 0;
+    border-top: 1px solid var(--gray);
+    border-bottom: 1px solid var(--gray);
+}
+
+@media (min-width: 600px) {
+    .pending-fields {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.pending-fields div {
+    display: flex;
+    gap: .4rem;
+    font-size: .9rem;
+    padding: .2rem 0;
+}
+
+.pending-fields dt {
+    color: var(--grayText);
+    font-weight: 600;
+    min-width: 7rem;
+}
+
+.pending-fields dd {
+    margin: 0;
+    color: var(--darkBlue);
+    word-break: break-word;
+}
+
+.pending-actions {
+    display: flex;
+    gap: .75rem;
+    flex-wrap: wrap;
+}
+
+/* --- Messages ------------------------------------------------ */
+
+.admin-msg {
+    margin-top: 1rem;
+    padding: .75rem 1rem;
+    border-radius: var(--radius);
+    font-size: .95rem;
+    font-weight: 500;
+}
+
+.admin-msg--info    { background: hsl(210, 80%, 94%); color: var(--darkBlue); }
+.admin-msg--success { background: hsl(120, 50%, 90%); color: #1e5e1e; }
+.admin-msg--error   { background: hsl(0, 70%, 93%);   color: #8a1f1f; }
+
+.admin-loading, .admin-empty {
+    text-align: center;
+    padding: 2rem 1rem;
+    color: var(--grayText);
+    font-style: italic;
+}

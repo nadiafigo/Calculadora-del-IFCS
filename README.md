@@ -102,6 +102,50 @@ Para usar un subdominio como `calculadora.ligapeatonal.org`:
 - Los campos condicionales (rampa, escaleras, publicidad) se muestran/ocultan según las respuestas
 - Factibilidad: ≤20% = largo plazo, 21-65% = mediano plazo, >65% = corto plazo
 
+## Panel de aprobación (admin)
+
+Las evaluaciones que envía el público **no aparecen automáticamente** en el mapa ni en las estadísticas. Quedan en la base de datos con `aprobado_mapa = false` hasta que un admin las apruebe desde el panel.
+
+**URL del panel:** `/html/admin.html` (no enlazada desde la navbar pública por diseño).
+
+### Flujo
+
+1. Alguien llena el formulario público → insert en Supabase con `aprobado_mapa = false`.
+2. Admin abre `/html/admin.html`, pide enlace mágico con su correo autorizado.
+3. Recibe el email con un link → regresa autenticado al panel.
+4. Ve la lista de pendientes y presiona **Aprobar** (se vuelve visible) o **Rechazar** (se borra).
+
+### Provisionar un admin nuevo
+
+1. Dashboard de Supabase → **Authentication → Users → Add user**.
+2. Email del admin (el de Nadia, por ejemplo). Marcar **Auto-confirm user** para evitar el correo de confirmación inicial.
+3. Click *Create user*. A partir de aquí ese correo puede pedir magic-link desde `/html/admin.html`.
+
+### Redirect URLs
+
+El magic link redirige al mismo origen+path desde donde se solicitó. Hay que registrar esas URLs como permitidas en Supabase:
+
+1. Dashboard → **Authentication → URL Configuration → Redirect URLs**.
+2. Añadir:
+   - `http://localhost:8080/html/admin.html` (para trabajo local)
+   - `https://nadiafigo.github.io/Calculadora-del-IFCS/html/admin.html` (producción GitHub Pages)
+   - `https://<dominio-custom>/html/admin.html` (si ya hay un dominio personalizado apuntando al sitio)
+
+Sin esta configuración, el usuario recibe el correo pero al hacer click cae en un error de Supabase.
+
+### Row Level Security
+
+La tabla `evaluaciones` tiene RLS habilitado (migración `007_validacion_manual.sql`):
+
+- **anon** (frontend público): puede `INSERT` (formulario) y `SELECT` solo de filas con `aprobado_mapa = true`.
+- **authenticated** (admin con sesión): `SELECT` / `UPDATE` / `DELETE` sin restricción.
+
+La migración es idempotente, así que es seguro re-aplicarla.
+
+### Si el magic link cae en spam
+
+Es un síntoma típico del remitente genérico de Supabase. Plan futuro: configurar SMTP custom (Resend, Postmark) en Dashboard → Authentication → SMTP. Mientras tanto, pídele a Nadia que revise la carpeta de spam y marque el remitente como "no spam".
+
 ## Créditos
 
 Metodología, Diseño y Desarrollo Web: Nadia Figueroa para Bicivilízate, Michoacán A.C.

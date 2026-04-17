@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="description" content="Panel de aprobación de evaluaciones IFCS.">
+    <meta name="theme-color" content="#1e5080">
+    <link rel="icon" type="image/png" sizes="32x32" href="../img/logo_FPNC_32x32.png">
+    <link rel="stylesheet" href="../css/gral.css">
+    <link rel="stylesheet" href="../css/admin.css">
+    <title>Admin — IFCS</title>
+</head>
+
+<body>
+    <header class="header">
+        <nav class="navbar">
+            <a href="../index.html">
+                <img src="../img/LP.png" alt="logo_LP" class="navbar__logo">
+            </a>
+            <span class="admin-badge">Panel de aprobación</span>
+        </nav>
+    </header>
+
+    <main class="admin-main">
+        <!-- LOGIN VIEW -->
+        <section id="login-view" class="admin-card">
+            <h1>Iniciar sesión</h1>
+            <p>Introduce el correo autorizado. Te enviaremos un enlace mágico para entrar.</p>
+            <form id="login-form" autocomplete="on">
+                <label>
+                    <span>Correo electrónico</span>
+                    <input type="email" id="login-email" required placeholder="correo@ejemplo.org" autocomplete="email">
+                </label>
+                <button type="submit" id="login-submit" class="btn-primary">Enviar enlace mágico</button>
+            </form>
+            <p id="login-msg" class="admin-msg" hidden></p>
+        </section>
+
+        <!-- ADMIN VIEW -->
+        <section id="admin-view" class="admin-card" hidden>
+            <div class="admin-header">
+                <h1>Evaluaciones pendientes</h1>
+                <div class="admin-user">
+                    <span id="admin-email"></span>
+                    <button id="logout-btn" class="btn-secondary">Cerrar sesión</button>
+                </div>
+            </div>
+
+            <div class="admin-toolbar">
+                <button id="refresh-btn" class="btn-secondary">↻ Refrescar</button>
+                <span id="pending-count" class="admin-counter"></span>
+            </div>
+
+            <div id="pending-list"></div>
+            <p id="admin-msg" class="admin-msg" hidden></p>
+        </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../js/config.js"></script>
+    <script src="../js/admin.js"></script>
+</body>
+</html>
