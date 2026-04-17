@@ -74,7 +74,7 @@ button {
     background: var(--darkBlue);
     position: sticky;
     top: 0;
-    z-index: 100;
+    z-index: 1100;
     box-shadow: var(--shadow-sm);
 }
 
@@ -401,6 +401,34 @@ button {
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+/* ==========================================================================
+   PLACEHOLDER PAGES
+   ========================================================================== */
+
+.pagina-placeholder {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 4rem 1.5rem;
+    min-height: calc(100vh - 14rem);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.pagina-placeholder h1 {
+    color: var(--darkBlue);
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.pagina-placeholder p {
+    color: var(--darkBlue);
+    font-size: 1.05rem;
+    line-height: 1.6;
 }
 
 /* ==========================================================================
