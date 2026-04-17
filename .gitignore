@@ -1,3 +1,7 @@
 0_web-design/*
 
 supabase/.temp/
+
+node_modules/
+test-results/
+playwright-report/
