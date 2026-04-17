@@ -5,6 +5,55 @@
  * Credenciales cargadas desde config.js.
  */
 
+// Midpoints for the b/a derived index. Keys match the label text stored in DB.
+function parseA(text) {
+  switch (text) {
+    case "0 a 99 metros":   return 50;
+    case "100 a 149 metros": return 125;
+    case "150 a 199 metros": return 175;
+    case "200 o más":        return 225;
+    default: return null;
+  }
+}
+
+function parseB(text) {
+  switch (text) {
+    case "10 metros o menos": return 5;
+    case "11 a 19 metros":    return 15;
+    case "20 a 39 metros":    return 30;
+    case "40 a 69 metros":    return 55;
+    case "70 metros o más":   return 85;
+    default: return null;
+  }
+}
+
+function computeRatio(e) {
+  const a = parseA(e.pte_long_cami);
+  const b = parseB(e.via_dist_cruce);
+  return (a && b) ? b / a : null;
+}
+
+function baBucketMatch(ratio, bucket) {
+  if (!bucket) return true;
+  if (ratio === null || ratio === undefined) return false;
+  switch (bucket) {
+    case "lt0_5":   return ratio < 0.5;
+    case "0_5to1":  return ratio >= 0.5 && ratio < 1;
+    case "1to1_5":  return ratio >= 1 && ratio < 1.5;
+    case "gte1_5":  return ratio >= 1.5;
+    default: return true;
+  }
+}
+
+function populateSelect(selectEl, values) {
+  values.forEach(v => {
+    const opt = document.createElement("option");
+    opt.value = v;
+    opt.textContent = v;
+    selectEl.appendChild(opt);
+  });
+}
+
 document.addEventListener("DOMContentLoaded", async () => {
 
   // ========================================
@@ -77,6 +126,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     const fecha = e.created_at ? new Date(e.created_at).toLocaleDateString("es-MX") : "—";
     const badgeClass = e.factibilidad === "Corto plazo" ? "corto"
       : e.factibilidad === "Mediano plazo" ? "medio" : "largo";
+    const ratio = computeRatio(e);
+    const ratioRow = ratio !== null
+      ? `<div class="popup-row">Índice b/a: <strong>${ratio.toFixed(2)}</strong></div>`
+      : "";
 
     return `
       <div>
@@ -85,6 +138,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         <div class="popup-row">Ref: ${e.loc_referencia || "—"}</div>
         <div class="popup-row">Total IFCS: <strong>${e.total_ifcs ?? "—"}%</strong></div>
         <div class="popup-badge popup-badge--${badgeClass}">${e.factibilidad || "—"}</div>
+        ${ratioRow}
         <div class="popup-row" style="margin-top:.35rem;">Fecha: ${fecha}</div>
         <div class="popup-row">Org: ${e.fuente_org || "—"}</div>
       </div>
@@ -105,17 +159,23 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
 
   // ========================================
-  // POPULATE CITY FILTER
+  // POPULATE FILTERS (dinámicos)
   // ========================================
 
-  const ciudadSelect = document.getElementById("filtro-ciudad");
-  const ciudades = [...new Set(evaluaciones.map(e => e.loc_ciudad).filter(Boolean))].sort();
-  ciudades.forEach(c => {
-    const opt = document.createElement("option");
-    opt.value = c;
-    opt.textContent = c;
-    ciudadSelect.appendChild(opt);
-  });
+  const ciudadSelect   = document.getElementById("filtro-ciudad");
+  const tipoAccSelect  = document.getElementById("filtro-tipoacc-select");
+  const obstBanqSelect = document.getElementById("filtro-obstbanq-select");
+  const equipTipoSelect = document.getElementById("filtro-equiptipo-select");
+  const distSemafSelect = document.getElementById("filtro-distsemaf-select");
+  const baSelect       = document.getElementById("filtro-ba-select");
+
+  const uniqSorted = (key) => [...new Set(evaluaciones.map(e => e[key]).filter(Boolean))].sort();
+
+  populateSelect(ciudadSelect, uniqSorted("loc_ciudad"));
+  populateSelect(tipoAccSelect, uniqSorted("pte_tipo_acc"));
+  populateSelect(obstBanqSelect, uniqSorted("pte_obst_banq"));
+  populateSelect(equipTipoSelect, uniqSorted("equip_tipo"));
+  populateSelect(distSemafSelect, uniqSorted("via_dist_semaf"));
 
   // ========================================
   // FILTER LOGIC
@@ -127,16 +187,28 @@ document.addEventListener("DOMContentLoaded", async () => {
   function applyFilters() {
     const activeFact = new Set();
     factCheckboxes.forEach(cb => { if (cb.checked) activeFact.add(cb.value); });
-    const ciudadFilter = ciudadSelect.value;
+    const ciudadFilter    = ciudadSelect.value;
+    const tipoAccFilter   = tipoAccSelect.value;
+    const obstBanqFilter  = obstBanqSelect.value;
+    const equipTipoFilter = equipTipoSelect.value;
+    const distSemafFilter = distSemafSelect.value;
+    const baFilter        = baSelect.value;
 
     clusterGroup.clearLayers();
     let shown = 0;
 
     allMarkers.forEach(m => {
       const e = m._evalData;
-      const matchFact = activeFact.has(e.factibilidad);
-      const matchCiudad = !ciudadFilter || e.loc_ciudad === ciudadFilter;
-      if (matchFact && matchCiudad) {
+      const matchFact      = activeFact.has(e.factibilidad);
+      const matchCiudad    = !ciudadFilter    || e.loc_ciudad     === ciudadFilter;
+      const matchTipoAcc   = !tipoAccFilter   || e.pte_tipo_acc   === tipoAccFilter;
+      const matchObstBanq  = !obstBanqFilter  || e.pte_obst_banq  === obstBanqFilter;
+      const matchEquipTipo = !equipTipoFilter || e.equip_tipo     === equipTipoFilter;
+      const matchDistSemaf = !distSemafFilter || e.via_dist_semaf === distSemafFilter;
+      const matchBA        = baBucketMatch(computeRatio(e), baFilter);
+
+      if (matchFact && matchCiudad && matchTipoAcc && matchObstBanq
+          && matchEquipTipo && matchDistSemaf && matchBA) {
         clusterGroup.addLayer(m);
         shown++;
       }
@@ -146,7 +218,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   factCheckboxes.forEach(cb => cb.addEventListener("change", applyFilters));
-  ciudadSelect.addEventListener("change", applyFilters);
+  [ciudadSelect, tipoAccSelect, obstBanqSelect, equipTipoSelect, distSemafSelect, baSelect]
+    .forEach(sel => sel.addEventListener("change", applyFilters));
 
   // Initial render
   applyFilters();
