@@ -8,6 +8,11 @@
  * Supabase para poder recibir el magic link.
  */
 
+if (typeof SUPABASE_URL === "undefined" || typeof SUPABASE_ANON_KEY === "undefined") {
+  document.body.innerHTML = '<p style="padding:2rem;text-align:center;color:#c62828">Error: configuración no cargada. Contacta al administrador.</p>';
+  throw new Error("config.js no cargado");
+}
+
 const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 const els = {
@@ -29,6 +34,7 @@ function showMsg(el, text, type) {
   el.textContent = text;
   el.className = "admin-msg admin-msg--" + (type || "info");
   el.hidden = false;
+  if (type === "success") setTimeout(() => hideMsg(el), 3000);
 }
 
 function hideMsg(el) {
@@ -95,7 +101,9 @@ async function loadPending() {
 
 function renderCard(e) {
   const fecha = e.created_at ? new Date(e.created_at).toLocaleString("es-MX") : "—";
-  const coords = (e.loc_x && e.loc_y) ? (e.loc_y + ", " + e.loc_x) : "—";
+  const coordsHtml = (e.loc_x && e.loc_y)
+    ? `<a href="https://www.openstreetmap.org/?mlat=${encodeURIComponent(e.loc_y)}&mlon=${encodeURIComponent(e.loc_x)}&zoom=18" target="_blank" rel="noopener">${escapeHtml(e.loc_y + ", " + e.loc_x)} ↗</a>`
+    : "—";
   return `
     <article class="pending-card" data-id="${e.id}">
       <header class="pending-card-head">
@@ -111,7 +119,7 @@ function renderCard(e) {
       <dl class="pending-fields">
         <div><dt>Colonia</dt><dd>${escapeHtml(e.loc_colonia || "—")}</dd></div>
         <div><dt>Referencia</dt><dd>${escapeHtml(e.loc_referencia || "—")}</dd></div>
-        <div><dt>Coords (lat, lng)</dt><dd>${escapeHtml(coords)}</dd></div>
+        <div><dt>Coords (lat, lng)</dt><dd>${coordsHtml}</dd></div>
         <div><dt>Fuente</dt><dd>${escapeHtml(e.fuente_nombre || "—")} (${escapeHtml(e.fuente_org || "—")})</dd></div>
         <div><dt>Correo</dt><dd>${escapeHtml(e.fuente_correo || "—")}</dd></div>
         <div><dt>Enviado</dt><dd>${escapeHtml(fecha)}</dd></div>
@@ -207,6 +215,7 @@ els.loginForm.addEventListener("submit", async (e) => {
 
 // --- logout ---
 els.logoutBtn.addEventListener("click", async () => {
+  els.pendingList.innerHTML = "";
   await client.auth.signOut();
 });
 
