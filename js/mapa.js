@@ -230,6 +230,49 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   // ========================================
+  // DEEP-LINK: ?id=<id> | ?lat=<n>&lng=<n>
+  // ========================================
+
+  function showMapaToast(message) {
+    let toast = document.getElementById("mapa-toast");
+    if (!toast) {
+      toast = document.createElement("div");
+      toast.id = "mapa-toast";
+      toast.className = "mapa-toast";
+      document.body.appendChild(toast);
+    }
+    toast.textContent = message;
+    toast.classList.add("show");
+    setTimeout(() => toast.classList.remove("show"), 7000);
+  }
+
+  const params = new URLSearchParams(window.location.search);
+  const wantedId = params.get("id");
+  const wantedLat = parseFloat(params.get("lat"));
+  const wantedLng = parseFloat(params.get("lng"));
+
+  if (wantedId) {
+    const targetMarker = allMarkers.find(m => String(m._evalData.id) === String(wantedId));
+    if (targetMarker) {
+      const latlng = targetMarker.getLatLng();
+      // Forzar visibilidad del marker aunque los filtros no coincidan.
+      if (!clusterGroup.hasLayer(targetMarker)) {
+        clusterGroup.addLayer(targetMarker);
+      }
+      map.flyTo(latlng, 17, { duration: 1.0 });
+      setTimeout(() => {
+        targetMarker.openPopup();
+      }, 1100);
+    } else {
+      showMapaToast(
+        "Tu evaluación aparecerá en el mapa una vez confirmes tu correo y sea revisada por el equipo. Mientras, exploras los registros públicos."
+      );
+    }
+  } else if (!isNaN(wantedLat) && !isNaN(wantedLng)) {
+    map.flyTo([wantedLat, wantedLng], 17, { duration: 1.0 });
+  }
+
+  // ========================================
   // MOBILE TOGGLE
   // ========================================
 

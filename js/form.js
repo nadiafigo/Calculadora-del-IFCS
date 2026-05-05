@@ -305,18 +305,24 @@ document.addEventListener("DOMContentLoaded", () => {
       factibilidad: factibilidad
     };
 
+    // ---- ID provisional (sobrescrito si Supabase responde con el id real) ----
+    const fallbackId = (window.crypto && typeof crypto.randomUUID === "function")
+      ? crypto.randomUUID()
+      : `local-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+    sessionStorage.setItem("last_evaluation_id", fallbackId);
+
     // ---- Enviar a Supabase ----
     let supabaseOk = false;
 
     if (SUPABASE_URL && SUPABASE_ANON_KEY) {
       try {
-        const res = await fetch(`${SUPABASE_URL}/rest/v1/evaluaciones`, {
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/evaluaciones?select=id`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
             "apikey": SUPABASE_ANON_KEY,
             "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
-            "Prefer": "return=minimal"
+            "Prefer": "return=representation"
           },
           body: JSON.stringify(payload)
         });
@@ -329,6 +335,15 @@ document.addEventListener("DOMContentLoaded", () => {
           console.log("Datos guardados en Supabase");
           supabaseOk = true;
           showToast("Datos guardados correctamente", "success");
+          try {
+            const body = await res.json();
+            const insertedId = Array.isArray(body) && body[0]?.id;
+            if (insertedId !== undefined && insertedId !== null) {
+              sessionStorage.setItem("last_evaluation_id", String(insertedId));
+            }
+          } catch (e) {
+            // Si RLS oculta la fila o no hay JSON, dejamos el fallbackId.
+          }
         }
       } catch (err) {
         console.warn("No se pudieron enviar datos a Supabase:", err);

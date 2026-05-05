@@ -166,6 +166,31 @@
 .popup-badge--medio  { background: #f9a825; color: #333; }
 .popup-badge--largo  { background: #c62828; }
 
+/* --- Deep-link toast ---- */
+.mapa-toast {
+  position: fixed;
+  left: 50%;
+  bottom: 1.5rem;
+  transform: translateX(-50%) translateY(2rem);
+  max-width: min(90vw, 32rem);
+  background: var(--darkBlue);
+  color: var(--white);
+  padding: .85rem 1.1rem;
+  border-radius: var(--radius);
+  font-size: .95rem;
+  line-height: 1.4;
+  box-shadow: var(--shadow-lg, 0 4px 16px rgba(0,0,0,.25));
+  opacity: 0;
+  pointer-events: none;
+  transition: transform .25s ease, opacity .25s ease;
+  z-index: 1000;
+}
+
+.mapa-toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
 /* --- Responsive ---- */
 @media (max-width: 768px) {
   .filtros-toggle {

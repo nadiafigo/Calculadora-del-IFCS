@@ -293,6 +293,27 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ========================================
+  // CTAs FINALES
+  // ========================================
+
+  const ctaVerMapa = document.getElementById("cta-ver-mapa");
+  if (ctaVerMapa) {
+    ctaVerMapa.addEventListener("click", () => {
+      const id = sessionStorage.getItem("last_evaluation_id");
+      const url = id ? `./mapa.html?id=${encodeURIComponent(id)}` : "./mapa.html";
+      window.location.href = url;
+    });
+  }
+
+  const ctaDescargarPdf = document.getElementById("cta-descargar-pdf");
+  if (ctaDescargarPdf) {
+    ctaDescargarPdf.addEventListener("click", () => {
+      const btn = document.getElementById("btn-descargar-pdf");
+      if (btn) btn.click();
+    });
+  }
+
+  // ========================================
   // EXPORTAR PDF
   // ========================================
 

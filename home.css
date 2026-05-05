@@ -139,6 +139,60 @@
 }
 
 /* ==========================================================================
+   CTA SECUNDARIO — Solo mapa
+   ========================================================================== */
+
+.cta-mapa {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: .75rem;
+    padding: 1.25rem 1.5rem;
+    background-color: var(--white);
+    border-bottom: 1px solid var(--gray);
+    text-align: center;
+}
+
+.cta-mapa__text {
+    color: var(--darkBlue);
+    font-size: .95rem;
+    font-weight: 600;
+    margin: 0;
+    opacity: .8;
+}
+
+.cta-mapa__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.5rem;
+    padding: .55rem 1.5rem;
+    border: 2px solid var(--darkBlue);
+    border-radius: 50px;
+    color: var(--darkBlue);
+    font-weight: 700;
+    font-size: .95rem;
+    text-decoration: none;
+    transition: background-color var(--transition), color var(--transition),
+                transform var(--transition);
+}
+
+.cta-mapa__btn:hover {
+    background-color: var(--darkBlue);
+    color: var(--white);
+    transform: translateY(-1px);
+}
+
+@media (min-width: 768px) {
+    .cta-mapa {
+        flex-direction: row;
+        gap: 1.25rem;
+        padding: 1rem 1.5rem;
+    }
+}
+
+/* ==========================================================================
    INTRO / QUOTE
    ========================================================================== */
 
