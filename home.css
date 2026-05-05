@@ -738,3 +738,105 @@
         max-width: 20rem;
     }
 }
+
+/* === Selector de ubicación en mapa === */
+.btn-mapa-selector {
+  background: #2e7d32;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+.btn-mapa-selector:hover { background: #1b5e20; }
+.btn-mapa-selector:focus { outline: 3px solid #1b5e20; outline-offset: 2px; }
+
+.mapa-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+.mapa-modal.hidden { display: none; }
+
+.mapa-modal-contenido {
+  background: white;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 800px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.mapa-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid #e5e7eb;
+}
+.mapa-modal-header h3 { margin: 0; font-size: 1.15rem; color: #1f2937; }
+.mapa-modal-cerrar {
+  background: none;
+  border: none;
+  font-size: 1.8rem;
+  cursor: pointer;
+  color: #6b7280;
+  line-height: 1;
+  padding: 0 8px;
+}
+.mapa-modal-cerrar:hover { color: #111827; }
+.mapa-modal-instrucciones {
+  padding: 12px 20px;
+  background: #f9fafb;
+  font-size: 0.9rem;
+  color: #4b5563;
+  border-bottom: 1px solid #e5e7eb;
+}
+#mapa-selector {
+  flex: 1;
+  min-height: 400px;
+  width: 100%;
+}
+.mapa-modal-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  border-top: 1px solid #e5e7eb;
+  gap: 12px;
+}
+.mapa-status {
+  font-size: 0.9rem;
+  color: #4b5563;
+  flex: 1;
+}
+.btn-confirmar-mapa {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  font-weight: 600;
+}
+.btn-confirmar-mapa:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+}
+.btn-confirmar-mapa:not(:disabled):hover { background: #1d4ed8; }
+
+@media (max-width: 600px) {
+  .mapa-modal { padding: 0; }
+  .mapa-modal-contenido { border-radius: 0; max-height: 100vh; height: 100vh; max-width: 100%; }
+  #mapa-selector { min-height: 300px; }
+}

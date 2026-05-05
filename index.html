@@ -22,6 +22,7 @@
     <link rel="stylesheet" href="./css/gral.css">
     <link rel="stylesheet" href="home.css">
     <link rel="stylesheet" href="./css/validation.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
     <title>Factibilidad de Cruce Seguro</title>
 
 </head>
@@ -169,8 +170,14 @@
                             <p class="input-desc">Coordenada Y:</p>
                             <input type="text" placeholder="Ej. 19.676883" id="LocY" name="LocY" required>
                         </div>
+                        <div class="form-input">
+                            <button type="button" id="btn-abrir-mapa" class="btn-mapa-selector">
+                                📍 Seleccionar en mapa
+                            </button>
+                            <small class="form-hint">Toca el mapa para llenar coordenadas y dirección automáticamente.</small>
+                        </div>
                     </div>
-                </div>    
+                </div>
             </div>
             
             <!-- --------------------------------------------- Sección 2 -->
@@ -631,9 +638,30 @@
     </main>
 
     
+    <div id="mapa-modal" class="mapa-modal hidden" role="dialog" aria-modal="true" aria-labelledby="mapa-modal-titulo">
+      <div class="mapa-modal-contenido">
+        <div class="mapa-modal-header">
+          <h3 id="mapa-modal-titulo">Selecciona la ubicación del puente</h3>
+          <button type="button" id="btn-cerrar-mapa" class="mapa-modal-cerrar" aria-label="Cerrar mapa">×</button>
+        </div>
+        <div class="mapa-modal-instrucciones">
+          Toca el mapa donde está el puente. Las coordenadas y datos de ubicación se llenarán automáticamente.
+        </div>
+        <div id="mapa-selector"></div>
+        <div class="mapa-modal-footer">
+          <span id="mapa-status" class="mapa-status" aria-live="polite"></span>
+          <button type="button" id="btn-confirmar-mapa" class="btn-confirmar-mapa" disabled>
+            Confirmar ubicación
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <script src="./js/navbar.js"></script>
     <script src="./js/config.js"></script>
     <script src="./js/form.js"></script>
+    <script src="./js/mapa-selector.js"></script>
 
 </body>
 </html>
