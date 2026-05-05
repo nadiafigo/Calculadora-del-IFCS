@@ -21,6 +21,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="../img/logo_FPNC_32x32.png">
     <link rel="stylesheet" href="../css/gral.css">
     <link rel="stylesheet" href="../css/mapa.css">
+    <link rel="stylesheet" href="../css/retirado.css">
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <!-- MarkerCluster CSS -->
@@ -110,7 +111,30 @@
 
     <div class="mapa-wrapper">
         <aside class="filtros-panel" id="filtros-panel">
+            <div class="kpi-retirados" role="status" aria-live="polite">
+                <span class="kpi-numero" id="kpi-retirados-count">0</span>
+                <span class="kpi-label">Puentes sustituidos en México</span>
+            </div>
+
             <h2>Filtros</h2>
+
+            <fieldset class="filtro-grupo filtro-status-retiro">
+                <legend>Status de retiro</legend>
+                <div class="filtro-radio-group" role="radiogroup">
+                    <label>
+                        <input type="radio" name="filter-status" value="todos" checked>
+                        Todos
+                    </label>
+                    <label>
+                        <input type="radio" name="filter-status" value="pendiente">
+                        Pendientes
+                    </label>
+                    <label>
+                        <input type="radio" name="filter-status" value="retirado">
+                        Sustituidos
+                    </label>
+                </div>
+            </fieldset>
 
             <div class="filtro-grupo">
                 <span>Factibilidad:</span>

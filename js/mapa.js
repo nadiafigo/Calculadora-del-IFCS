@@ -97,7 +97,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   map.addLayer(clusterGroup);
 
   // ========================================
-  // MARKER COLORS
+  // MARKER ICONS
   // ========================================
 
   function markerIcon(factibilidad) {
@@ -118,6 +118,31 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
 
+  function markerIconRetirado(e) {
+    const fechaTxt = e.fecha_retiro ? `Puente sustituido en ${e.fecha_retiro}` : "Puente sustituido";
+    return L.divIcon({
+      className: "marker-retirado",
+      html: `<div class="marker-retirado-inner" tabindex="0" role="img" aria-label="${escapeHtml(fechaTxt)}">
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+          <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"
+                fill="white" stroke="white" stroke-width="0.5"/>
+        </svg>
+      </div>`,
+      iconSize: [32, 32],
+      iconAnchor: [16, 16]
+    });
+  }
+
+  function escapeHtml(s) {
+    if (s === null || s === undefined) return "";
+    return String(s)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+  }
+
   // ========================================
   // POPUP
   // ========================================
@@ -131,16 +156,34 @@ document.addEventListener("DOMContentLoaded", async () => {
       ? `<div class="popup-row">Índice b/a: <strong>${ratio.toFixed(2)}</strong></div>`
       : "";
 
+    const isRetirado = e.status_retiro === "Retirado";
+    const banner = isRetirado
+      ? `<div class="popup-retirado-banner" role="status">
+           <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+             <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" fill="currentColor"/>
+           </svg>
+           <strong>Puente sustituido</strong>
+         </div>`
+      : "";
+    const fechaRetiroBlock = (isRetirado && e.fecha_retiro)
+      ? `<div class="popup-retirado-fecha">
+           <span class="popup-retirado-label">Fecha de sustitución:</span>
+           <span class="popup-retirado-valor">${escapeHtml(e.fecha_retiro)}</span>
+         </div>`
+      : "";
+
     return `
       <div>
-        <div class="popup-title">${e.loc_vialidad || "Sin vialidad"}</div>
-        <div class="popup-row">${e.loc_ciudad || ""}</div>
-        <div class="popup-row">Ref: ${e.loc_referencia || "—"}</div>
+        ${banner}
+        <div class="popup-title">${escapeHtml(e.loc_vialidad || "Sin vialidad")}</div>
+        <div class="popup-row">${escapeHtml(e.loc_ciudad || "")}</div>
+        <div class="popup-row">Ref: ${escapeHtml(e.loc_referencia || "—")}</div>
         <div class="popup-row">Total IFCS: <strong>${e.total_ifcs ?? "—"}%</strong></div>
-        <div class="popup-badge popup-badge--${badgeClass}">${e.factibilidad || "—"}</div>
+        <div class="popup-badge popup-badge--${badgeClass}">${escapeHtml(e.factibilidad || "—")}</div>
         ${ratioRow}
-        <div class="popup-row" style="margin-top:.35rem;">Fecha: ${fecha}</div>
-        <div class="popup-row">Org: ${e.fuente_org || "—"}</div>
+        <div class="popup-row" style="margin-top:.35rem;">Fecha: ${escapeHtml(fecha)}</div>
+        <div class="popup-row">Org: ${escapeHtml(e.fuente_org || "—")}</div>
+        ${fechaRetiroBlock}
       </div>
     `;
   }
@@ -152,7 +195,15 @@ document.addEventListener("DOMContentLoaded", async () => {
   const allMarkers = conCoords.map(e => {
     const lat = parseFloat(e.loc_y);
     const lng = parseFloat(e.loc_x);
-    const marker = L.marker([lat, lng], { icon: markerIcon(e.factibilidad) });
+    const isRetirado = e.status_retiro === "Retirado";
+    const icon = isRetirado ? markerIconRetirado(e) : markerIcon(e.factibilidad);
+    const marker = L.marker([lat, lng], {
+      icon,
+      keyboard: true,
+      title: isRetirado
+        ? `Puente sustituido${e.fecha_retiro ? " en " + e.fecha_retiro : ""}`
+        : (e.loc_vialidad || "Puente antipeatonal")
+    });
     marker.bindPopup(buildPopup(e));
     marker._evalData = e;
     return marker;
@@ -183,6 +234,18 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   const counterEl = document.getElementById("filtros-counter");
   const factCheckboxes = document.querySelectorAll(".filtro-check input[type='checkbox']");
+  const statusRetiroRadios = document.querySelectorAll('input[name="filter-status"]');
+  const kpiCountEl = document.getElementById("kpi-retirados-count");
+
+  // Total absoluto de retirados visibles (no depende de filtros — es la
+  // narrativa "X puentes ya sustituidos en México").
+  const totalRetirados = conCoords.filter(e => e.status_retiro === "Retirado").length;
+  if (kpiCountEl) kpiCountEl.textContent = String(totalRetirados);
+
+  function getStatusFilter() {
+    const checked = document.querySelector('input[name="filter-status"]:checked');
+    return checked ? checked.value : "todos";
+  }
 
   function applyFilters() {
     const activeFact = new Set();
@@ -193,6 +256,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const equipTipoFilter = equipTipoSelect.value;
     const distSemafFilter = distSemafSelect.value;
     const baFilter        = baSelect.value;
+    const statusFilter    = getStatusFilter();
 
     clusterGroup.clearLayers();
     let shown = 0;
@@ -207,8 +271,12 @@ document.addEventListener("DOMContentLoaded", async () => {
       const matchDistSemaf = !distSemafFilter || e.via_dist_semaf === distSemafFilter;
       const matchBA        = baBucketMatch(computeRatio(e), baFilter);
 
+      let matchStatus = true;
+      if (statusFilter === "retirado") matchStatus = e.status_retiro === "Retirado";
+      else if (statusFilter === "pendiente") matchStatus = e.status_retiro !== "Retirado";
+
       if (matchFact && matchCiudad && matchTipoAcc && matchObstBanq
-          && matchEquipTipo && matchDistSemaf && matchBA) {
+          && matchEquipTipo && matchDistSemaf && matchBA && matchStatus) {
         clusterGroup.addLayer(m);
         shown++;
       }
@@ -220,6 +288,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   factCheckboxes.forEach(cb => cb.addEventListener("change", applyFilters));
   [ciudadSelect, tipoAccSelect, obstBanqSelect, equipTipoSelect, distSemafSelect, baSelect]
     .forEach(sel => sel.addEventListener("change", applyFilters));
+  statusRetiroRadios.forEach(r => r.addEventListener("change", applyFilters));
 
   // Initial render
   applyFilters();

@@ -22,13 +22,18 @@ const els = {
   loginSubmit:   document.getElementById("login-submit"),
   loginMsg:      document.getElementById("login-msg"),
   adminView:     document.getElementById("admin-view"),
+  adminTitle:    document.getElementById("admin-title"),
   adminEmail:    document.getElementById("admin-email"),
   logoutBtn:     document.getElementById("logout-btn"),
   refreshBtn:    document.getElementById("refresh-btn"),
   pendingList:   document.getElementById("pending-list"),
   pendingCount:  document.getElementById("pending-count"),
   adminMsg:      document.getElementById("admin-msg"),
+  tabPendientes: document.getElementById("tab-pendientes"),
+  tabAprobadas:  document.getElementById("tab-aprobadas"),
 };
+
+let activeTab = "pendientes";  // "pendientes" | "aprobadas"
 
 function showMsg(el, text, type) {
   el.textContent = text;
@@ -70,26 +75,29 @@ async function loadPending() {
   hideMsg(els.adminMsg);
   els.pendingList.innerHTML = '<p class="admin-loading">Cargando…</p>';
 
+  const isApproved = activeTab === "aprobadas";
   const { data, error } = await client
     .from("evaluaciones")
-    .select("id, created_at, loc_pais, loc_ciudad, loc_vialidad, loc_colonia, loc_referencia, loc_x, loc_y, total_ifcs, factibilidad, fuente_nombre, fuente_org, fuente_correo")
-    .eq("aprobado_mapa", false)
+    .select("id, created_at, loc_pais, loc_ciudad, loc_vialidad, loc_colonia, loc_referencia, loc_x, loc_y, total_ifcs, factibilidad, fuente_nombre, fuente_org, fuente_correo, status_retiro, fecha_retiro")
+    .eq("aprobado_mapa", isApproved)
     .order("created_at", { ascending: false });
 
   if (error) {
-    showMsg(els.adminMsg, "Error cargando pendientes: " + error.message, "error");
+    showMsg(els.adminMsg, "Error cargando " + activeTab + ": " + error.message, "error");
     els.pendingList.innerHTML = "";
     return;
   }
 
-  els.pendingCount.textContent = data.length + (data.length === 1 ? " pendiente" : " pendientes");
+  const labelSing = isApproved ? "aprobada" : "pendiente";
+  const labelPlur = isApproved ? "aprobadas" : "pendientes";
+  els.pendingCount.textContent = data.length + " " + (data.length === 1 ? labelSing : labelPlur);
 
   if (data.length === 0) {
-    els.pendingList.innerHTML = '<p class="admin-empty">No hay evaluaciones pendientes.</p>';
+    els.pendingList.innerHTML = `<p class="admin-empty">No hay evaluaciones ${labelPlur}.</p>`;
     return;
   }
 
-  els.pendingList.innerHTML = data.map(renderCard).join("");
+  els.pendingList.innerHTML = data.map(e => renderCard(e, isApproved)).join("");
 
   els.pendingList.querySelectorAll("[data-action=approve]").forEach(btn => {
     btn.addEventListener("click", () => approve(parseInt(btn.dataset.id, 10), btn));
@@ -97,13 +105,60 @@ async function loadPending() {
   els.pendingList.querySelectorAll("[data-action=reject]").forEach(btn => {
     btn.addEventListener("click", () => reject(parseInt(btn.dataset.id, 10), btn));
   });
+
+  // Status de retiro: toggle del input de fecha y guardado
+  els.pendingList.querySelectorAll(".admin-status-retiro select").forEach(sel => {
+    sel.addEventListener("change", () => {
+      const card = sel.closest(".admin-status-retiro");
+      const fechaWrap = card.querySelector(".admin-fecha-retiro");
+      if (sel.value === "Retirado") {
+        fechaWrap.hidden = false;
+      } else {
+        fechaWrap.hidden = true;
+      }
+    });
+  });
+  els.pendingList.querySelectorAll(".btn-guardar-retiro").forEach(btn => {
+    btn.addEventListener("click", () => guardarStatusRetiro(parseInt(btn.dataset.id, 10), btn));
+  });
 }
 
-function renderCard(e) {
+function renderCard(e, isApproved) {
   const fecha = e.created_at ? new Date(e.created_at).toLocaleString("es-MX") : "—";
   const coordsHtml = (e.loc_x && e.loc_y)
     ? `<a href="https://www.openstreetmap.org/?mlat=${encodeURIComponent(e.loc_y)}&mlon=${encodeURIComponent(e.loc_x)}&zoom=18" target="_blank" rel="noopener">${escapeHtml(e.loc_y + ", " + e.loc_x)} ↗</a>`
     : "—";
+
+  const actionsHtml = isApproved
+    ? `<footer class="pending-actions">
+         <button class="btn-danger" data-action="reject" data-id="${e.id}">Eliminar</button>
+       </footer>`
+    : `<footer class="pending-actions">
+         <button class="btn-primary" data-action="approve" data-id="${e.id}">Aprobar</button>
+         <button class="btn-danger"  data-action="reject"  data-id="${e.id}">Rechazar (eliminar)</button>
+       </footer>`;
+
+  const statusVal = e.status_retiro || "";
+  const fechaVal  = e.fecha_retiro || "";
+  const fechaHidden = statusVal === "Retirado" ? "" : " hidden";
+  const statusRetiroHtml = `
+    <div class="admin-status-retiro" data-eval-id="${e.id}">
+      <label for="status-${e.id}">
+        Status de retiro:
+        <select id="status-${e.id}" data-eval-id="${e.id}">
+          <option value=""${statusVal === "" ? " selected" : ""}>— No definido —</option>
+          <option value="Pendiente"${statusVal === "Pendiente" ? " selected" : ""}>Pendiente</option>
+          <option value="Retirado"${statusVal === "Retirado" ? " selected" : ""}>Retirado (sustituido por cruce a nivel)</option>
+        </select>
+      </label>
+      <label for="fecha-${e.id}" class="admin-fecha-retiro"${fechaHidden}>
+        Fecha aproximada:
+        <input type="text" id="fecha-${e.id}" placeholder="ej: Mayo, 2019" value="${escapeHtml(fechaVal)}" data-eval-id="${e.id}">
+      </label>
+      <button class="btn-guardar-retiro" data-eval-id="${e.id}" data-id="${e.id}">Guardar status</button>
+    </div>
+  `;
+
   return `
     <article class="pending-card" data-id="${e.id}">
       <header class="pending-card-head">
@@ -124,12 +179,36 @@ function renderCard(e) {
         <div><dt>Correo</dt><dd>${escapeHtml(e.fuente_correo || "—")}</dd></div>
         <div><dt>Enviado</dt><dd>${escapeHtml(fecha)}</dd></div>
       </dl>
-      <footer class="pending-actions">
-        <button class="btn-primary" data-action="approve" data-id="${e.id}">Aprobar</button>
-        <button class="btn-danger"  data-action="reject"  data-id="${e.id}">Rechazar (eliminar)</button>
-      </footer>
+      ${statusRetiroHtml}
+      ${actionsHtml}
     </article>
   `;
+}
+
+async function guardarStatusRetiro(id, btn) {
+  const card = btn.closest(".admin-status-retiro");
+  const sel = card.querySelector("select");
+  const fechaInput = card.querySelector("input[type='text']");
+  const status = sel.value || null;
+  const fecha = status === "Retirado" ? (fechaInput.value || "").trim() || null : null;
+
+  btn.disabled = true;
+  const prevTxt = btn.textContent;
+  btn.textContent = "Guardando…";
+
+  const { error } = await client
+    .from("evaluaciones")
+    .update({ status_retiro: status, fecha_retiro: fecha })
+    .eq("id", id);
+
+  btn.disabled = false;
+  btn.textContent = prevTxt;
+
+  if (error) {
+    showMsg(els.adminMsg, "Error guardando status #" + id + ": " + error.message, "error");
+    return;
+  }
+  showMsg(els.adminMsg, "Status guardado para #" + id + ".", "success");
 }
 
 async function approve(id, btn) {
@@ -221,6 +300,29 @@ els.logoutBtn.addEventListener("click", async () => {
 
 // --- refresh ---
 els.refreshBtn.addEventListener("click", loadPending);
+
+// --- tabs ---
+function setActiveTab(tab) {
+  activeTab = tab;
+  if (tab === "pendientes") {
+    els.tabPendientes.classList.add("active");
+    els.tabPendientes.setAttribute("aria-selected", "true");
+    els.tabAprobadas.classList.remove("active");
+    els.tabAprobadas.setAttribute("aria-selected", "false");
+    els.adminTitle.textContent = "Evaluaciones pendientes";
+    els.pendingList.setAttribute("aria-labelledby", "tab-pendientes");
+  } else {
+    els.tabAprobadas.classList.add("active");
+    els.tabAprobadas.setAttribute("aria-selected", "true");
+    els.tabPendientes.classList.remove("active");
+    els.tabPendientes.setAttribute("aria-selected", "false");
+    els.adminTitle.textContent = "Evaluaciones aprobadas";
+    els.pendingList.setAttribute("aria-labelledby", "tab-aprobadas");
+  }
+  loadPending();
+}
+els.tabPendientes.addEventListener("click", () => setActiveTab("pendientes"));
+els.tabAprobadas.addEventListener("click", () => setActiveTab("aprobadas"));
 
 // --- initial + auth state sync ---
 client.auth.getSession().then(({ data }) => renderView(data.session));

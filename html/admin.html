@@ -11,6 +11,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="../img/logo_FPNC_32x32.png">
     <link rel="stylesheet" href="../css/gral.css">
     <link rel="stylesheet" href="../css/admin.css">
+    <link rel="stylesheet" href="../css/retirado.css">
     <title>Admin — IFCS</title>
 </head>
 
@@ -42,11 +43,16 @@
         <!-- ADMIN VIEW -->
         <section id="admin-view" class="admin-card" hidden>
             <div class="admin-header">
-                <h1>Evaluaciones pendientes</h1>
+                <h1 id="admin-title">Evaluaciones</h1>
                 <div class="admin-user">
                     <span id="admin-email"></span>
                     <button id="logout-btn" class="btn-secondary">Cerrar sesión</button>
                 </div>
+            </div>
+
+            <div class="admin-tabs" role="tablist">
+                <button class="admin-tab active" id="tab-pendientes" role="tab" aria-selected="true" data-tab="pendientes">Pendientes</button>
+                <button class="admin-tab" id="tab-aprobadas" role="tab" aria-selected="false" data-tab="aprobadas">Aprobadas</button>
             </div>
 
             <div class="admin-toolbar">
@@ -54,7 +60,7 @@
                 <span id="pending-count" class="admin-counter"></span>
             </div>
 
-            <div id="pending-list"></div>
+            <div id="pending-list" role="tabpanel" aria-labelledby="tab-pendientes"></div>
             <p id="admin-msg" class="admin-msg" hidden></p>
         </section>
     </main>

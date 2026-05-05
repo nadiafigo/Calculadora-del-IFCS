@@ -1,0 +1,261 @@
+/* ==========================================================================
+   CALCULADORA IFCS — Status de retiro de puentes
+   Marker, popup y filtros para registros con status_retiro = "Retirado".
+   ========================================================================== */
+
+/* --- Marker custom verde con check ---------------------------------------- */
+
+.marker-retirado {
+    background: transparent;
+    border: none;
+}
+
+.marker-retirado-inner {
+    background: #2e7d32;        /* WCAG AA contra blanco: 5.4 */
+    border: 3px solid #ffffff;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s ease;
+    outline: none;
+}
+
+.marker-retirado-inner:hover,
+.marker-retirado-inner:focus,
+.marker-retirado-inner:focus-within {
+    transform: scale(1.15);
+    outline: 2px solid #1b5e20;
+    outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .marker-retirado-inner {
+        transition: none;
+    }
+    .marker-retirado-inner:hover,
+    .marker-retirado-inner:focus,
+    .marker-retirado-inner:focus-within {
+        transform: none;
+    }
+}
+
+/* --- Popup destacado ------------------------------------------------------- */
+
+.popup-retirado-banner {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: #2e7d32;
+    color: #ffffff;
+    padding: 0.4rem 0.6rem;
+    border-radius: 4px;
+    margin-bottom: 0.6rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.popup-retirado-banner svg {
+    flex-shrink: 0;
+}
+
+.popup-retirado-fecha {
+    margin-top: 0.8rem;
+    padding-top: 0.6rem;
+    border-top: 2px solid #2e7d32;
+    font-size: 0.85rem;
+}
+
+.popup-retirado-label {
+    color: var(--grayText, #555);
+    margin-right: 0.3rem;
+}
+
+.popup-retirado-valor {
+    font-weight: 600;
+    color: #2e7d32;
+}
+
+/* ==========================================================================
+   FILTRO: Status de retiro
+   ========================================================================== */
+
+.filtro-status-retiro {
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+
+.filtro-status-retiro legend {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--darkBlue);
+    padding: 0;
+    margin-bottom: 0.5rem;
+}
+
+.filtro-radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.filtro-radio-group label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    min-height: 2.25rem;
+    font-size: 0.9rem;
+    color: var(--darkBlue);
+}
+
+.filtro-radio-group input[type="radio"] {
+    width: 1.1rem;
+    height: 1.1rem;
+    accent-color: #2e7d32;
+    cursor: pointer;
+}
+
+/* ==========================================================================
+   KPI: Puentes sustituidos
+   ========================================================================== */
+
+.kpi-retirados {
+    background: #2e7d32;
+    color: #ffffff;
+    padding: 0.85rem 1rem;
+    border-radius: var(--radius);
+    text-align: center;
+    margin-bottom: 1.25rem;
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.15rem;
+}
+
+.kpi-retirados .kpi-numero {
+    font-size: 2.25rem;
+    font-weight: 700;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+}
+
+.kpi-retirados .kpi-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: 0.02em;
+}
+
+/* ==========================================================================
+   ADMIN — bloque status_retiro en cada card
+   ========================================================================== */
+
+.admin-status-retiro {
+    margin-top: 0.85rem;
+    padding-top: 0.85rem;
+    border-top: 1px dashed var(--gray);
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+}
+
+.admin-status-retiro label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--darkBlue);
+}
+
+.admin-status-retiro select,
+.admin-status-retiro input[type="text"] {
+    width: 100%;
+    height: 2.25rem;
+    padding: 0.35rem 0.5rem;
+    border: 1px solid var(--grayText);
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 0.9rem;
+    color: var(--darkBlue);
+    background: #ffffff;
+}
+
+.admin-status-retiro select:focus,
+.admin-status-retiro input[type="text"]:focus {
+    outline: none;
+    border-color: #2e7d32;
+    box-shadow: 0 0 0 2px rgba(46, 125, 50, 0.2);
+}
+
+.admin-status-retiro .btn-guardar-retiro {
+    align-self: flex-start;
+    padding: 0.5rem 1rem;
+    background: #2e7d32;
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color var(--transition);
+}
+
+.admin-status-retiro .btn-guardar-retiro:hover {
+    background: #1b5e20;
+}
+
+.admin-status-retiro .btn-guardar-retiro:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Tabs admin */
+
+.admin-tabs {
+    display: flex;
+    gap: 0.25rem;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid var(--gray);
+}
+
+.admin-tab {
+    padding: 0.6rem 1rem;
+    background: transparent;
+    border: none;
+    border-bottom: 3px solid transparent;
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--grayText);
+    cursor: pointer;
+    margin-bottom: -2px;
+    transition: color var(--transition), border-color var(--transition);
+}
+
+.admin-tab:hover {
+    color: var(--darkBlue);
+}
+
+.admin-tab.active {
+    color: var(--darkBlue);
+    border-bottom-color: #2e7d32;
+}
+
+@media (min-width: 600px) {
+    .admin-status-retiro {
+        grid-template-columns: 1fr 1fr auto;
+        align-items: end;
+    }
+
+    .admin-status-retiro .btn-guardar-retiro {
+        align-self: end;
+    }
+}
