@@ -420,6 +420,15 @@
     font-size: 0.95rem;
 }
 
+/* Hint text under inputs */
+.form-hint {
+    display: block;
+    font-size: 0.8rem;
+    color: #6b6b6b;
+    margin-top: 4px;
+    font-style: italic;
+}
+
 /* Focus states */
 .form-section input:focus,
 .form-section select:focus {

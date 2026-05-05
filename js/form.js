@@ -15,6 +15,46 @@
 
 document.addEventListener("DOMContentLoaded", () => {
 
+  // ---- Recordar datos del evaluador entre sesiones (localStorage) ----
+  const EVALUADOR_KEY = "ifcs_evaluador_v1";
+
+  function restaurarEvaluador() {
+    try {
+      const raw = localStorage.getItem(EVALUADOR_KEY);
+      if (!raw) return;
+      const data = JSON.parse(raw);
+      const campos = ["FuenteNombre", "FuenteOrg", "FuenteCorreo"];
+      campos.forEach(id => {
+        const el = document.getElementById(id);
+        if (el && data[id] && !el.value) {
+          el.value = data[id];
+        }
+      });
+    } catch (e) {
+      // localStorage corrupted o no disponible: silently ignore
+      console.warn("No se pudo restaurar datos del evaluador:", e);
+    }
+  }
+
+  function guardarEvaluador() {
+    try {
+      const data = {};
+      ["FuenteNombre", "FuenteOrg", "FuenteCorreo"].forEach(id => {
+        const el = document.getElementById(id);
+        if (el && el.value) data[id] = el.value;
+      });
+      if (Object.keys(data).length > 0) {
+        localStorage.setItem(EVALUADOR_KEY, JSON.stringify(data));
+      }
+    } catch (e) {
+      // localStorage no disponible (incógnito strict, quota): silently ignore
+      console.warn("No se pudo guardar datos del evaluador:", e);
+    }
+  }
+
+  // Restaurar al cargar
+  restaurarEvaluador();
+
   // ========================================
   // CAMPOS CONDICIONALES
   // ========================================
@@ -334,6 +374,7 @@ document.addEventListener("DOMContentLoaded", () => {
         } else {
           console.log("Datos guardados en Supabase");
           supabaseOk = true;
+          guardarEvaluador();
           showToast("Datos guardados correctamente", "success");
           try {
             const body = await res.json();
