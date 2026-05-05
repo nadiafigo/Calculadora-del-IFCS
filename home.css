@@ -639,7 +639,7 @@
 .footer-menu li a {
     color: var(--white);
     text-decoration: none;
-    font-size: 1.05rem;
+    font-size: 0.95rem;
     font-weight: 600;
     letter-spacing: 0.04rem;
     transition: color var(--transition);
