@@ -1,0 +1,329 @@
+/* ==========================================================================
+   CALCULADORA IFCS — Propuestas de rediseño
+   Sección de propuestas en resultado.html
+   ========================================================================== */
+
+.propuestas-section {
+    color: var(--darkBlue);
+    padding: 2rem 1.5rem;
+    background-color: var(--white);
+}
+
+.propuestas-section > h2 {
+    font-size: clamp(1.25rem, 3vw, 1.5rem);
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 3px solid var(--yellow);
+}
+
+.propuestas-section .subtitle {
+    font-size: 0.95rem;
+    line-height: 1.55;
+    margin-bottom: 1.25rem;
+    color: var(--darkBlue);
+    opacity: 0.85;
+}
+
+#propuestas-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+}
+
+/* ==========================================================================
+   ACORDEÓN (<details>/<summary>)
+   ========================================================================== */
+
+.propuesta-card {
+    background: var(--gray);
+    border-left: 5px solid var(--blue);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    transition: box-shadow var(--transition);
+}
+
+.propuesta-card:hover {
+    box-shadow: var(--shadow);
+}
+
+.propuesta-card summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 0.95rem 1.1rem;
+    min-height: 2.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--darkBlue);
+    user-select: none;
+}
+
+.propuesta-card summary::-webkit-details-marker {
+    display: none;
+}
+
+.propuesta-card summary::after {
+    content: "+";
+    font-size: 1.4rem;
+    line-height: 1;
+    font-weight: 400;
+    color: var(--blue);
+    flex-shrink: 0;
+    transition: transform var(--transition);
+}
+
+.propuesta-card[open] > summary::after {
+    content: "−";
+}
+
+.propuesta-card .propuesta-categoria {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--blue);
+    margin-bottom: 0.1rem;
+}
+
+.propuesta-card .propuesta-titulo-wrap {
+    flex: 1;
+    min-width: 0;
+}
+
+.propuesta-card .propuesta-body {
+    padding: 0 1.1rem 1.1rem;
+    border-top: 1px solid hsl(0, 0%, 88%);
+    padding-top: 0.85rem;
+}
+
+.propuesta-card .propuesta-sugerencia {
+    font-size: 0.95rem;
+    line-height: 1.55;
+    text-align: justify;
+    margin: 0 0 0.85rem;
+    color: var(--darkBlue);
+}
+
+/* --- Chips de normas ----------------------------------------------------- */
+
+.propuesta-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+}
+
+.propuesta-chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.3rem 0.75rem;
+    background: var(--white);
+    border: 1px solid var(--blue);
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--blue);
+    text-decoration: none;
+    transition: background-color var(--transition), color var(--transition);
+}
+
+.propuesta-chip:hover,
+.propuesta-chip:focus {
+    background: var(--blue);
+    color: var(--white);
+    outline: none;
+}
+
+/* ==========================================================================
+   COLORES POR CATEGORÍA (border-left)
+   Tonos suaves WCAG AA contra fondo gris.
+   ========================================================================== */
+
+.propuesta-card[data-categoria="velocidad-semaforos"] { border-left-color: #c62828; }
+.propuesta-card[data-categoria="velocidad-semaforos"] .propuesta-categoria { color: #c62828; }
+.propuesta-card[data-categoria="velocidad-semaforos"] .propuesta-chip { border-color: #c62828; color: #c62828; }
+.propuesta-card[data-categoria="velocidad-semaforos"] .propuesta-chip:hover { background: #c62828; color: #fff; }
+
+.propuesta-card[data-categoria="reductores"] { border-left-color: #ef6c00; }
+.propuesta-card[data-categoria="reductores"] .propuesta-categoria { color: #ef6c00; }
+.propuesta-card[data-categoria="reductores"] .propuesta-chip { border-color: #ef6c00; color: #ef6c00; }
+.propuesta-card[data-categoria="reductores"] .propuesta-chip:hover { background: #ef6c00; color: #fff; }
+
+.propuesta-card[data-categoria="barreras"] { border-left-color: #6a1b9a; }
+.propuesta-card[data-categoria="barreras"] .propuesta-categoria { color: #6a1b9a; }
+.propuesta-card[data-categoria="barreras"] .propuesta-chip { border-color: #6a1b9a; color: #6a1b9a; }
+.propuesta-card[data-categoria="barreras"] .propuesta-chip:hover { background: #6a1b9a; color: #fff; }
+
+.propuesta-card[data-categoria="camellones"] { border-left-color: #2e7d32; }
+.propuesta-card[data-categoria="camellones"] .propuesta-categoria { color: #2e7d32; }
+.propuesta-card[data-categoria="camellones"] .propuesta-chip { border-color: #2e7d32; color: #2e7d32; }
+.propuesta-card[data-categoria="camellones"] .propuesta-chip:hover { background: #2e7d32; color: #fff; }
+
+.propuesta-card[data-categoria="equipamientos"] { border-left-color: #00695c; }
+.propuesta-card[data-categoria="equipamientos"] .propuesta-categoria { color: #00695c; }
+.propuesta-card[data-categoria="equipamientos"] .propuesta-chip { border-color: #00695c; color: #00695c; }
+.propuesta-card[data-categoria="equipamientos"] .propuesta-chip:hover { background: #00695c; color: #fff; }
+
+.propuesta-card[data-categoria="accesibilidad"] { border-left-color: #1565c0; }
+.propuesta-card[data-categoria="accesibilidad"] .propuesta-categoria { color: #1565c0; }
+.propuesta-card[data-categoria="accesibilidad"] .propuesta-chip { border-color: #1565c0; color: #1565c0; }
+.propuesta-card[data-categoria="accesibilidad"] .propuesta-chip:hover { background: #1565c0; color: #fff; }
+
+.propuesta-card[data-categoria="seguridad"] { border-left-color: #4527a0; }
+.propuesta-card[data-categoria="seguridad"] .propuesta-categoria { color: #4527a0; }
+.propuesta-card[data-categoria="seguridad"] .propuesta-chip { border-color: #4527a0; color: #4527a0; }
+.propuesta-card[data-categoria="seguridad"] .propuesta-chip:hover { background: #4527a0; color: #fff; }
+
+.propuesta-card[data-categoria="distancia"] { border-left-color: #ad1457; }
+.propuesta-card[data-categoria="distancia"] .propuesta-categoria { color: #ad1457; }
+.propuesta-card[data-categoria="distancia"] .propuesta-chip { border-color: #ad1457; color: #ad1457; }
+.propuesta-card[data-categoria="distancia"] .propuesta-chip:hover { background: #ad1457; color: #fff; }
+
+/* ==========================================================================
+   MENSAJE "SIN PROPUESTAS"
+   ========================================================================== */
+
+.propuestas-empty {
+    background: var(--gray);
+    border-radius: var(--radius);
+    padding: 1.25rem;
+    text-align: center;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: var(--darkBlue);
+}
+
+/* ==========================================================================
+   NORMAS REFERENCIADAS
+   ========================================================================== */
+
+.normas-referencia {
+    margin-top: 2rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--gray);
+}
+
+.normas-referencia h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 0.6rem;
+    color: var(--darkBlue);
+}
+
+#normas-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+#normas-list li {
+    font-size: 0.85rem;
+    line-height: 1.4;
+    color: var(--darkBlue);
+}
+
+#normas-list a {
+    color: var(--blue);
+    font-weight: 700;
+    text-decoration: none;
+}
+
+#normas-list a:hover {
+    text-decoration: underline;
+}
+
+#normas-list .norma-meta {
+    color: var(--grayText);
+    font-weight: 400;
+    margin-left: 0.35rem;
+}
+
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+
+@media (min-width: 768px) {
+    .propuestas-section {
+        padding: 2.5rem 3rem;
+    }
+
+    .propuesta-card summary {
+        padding: 1rem 1.25rem;
+    }
+
+    .propuesta-card .propuesta-body {
+        padding: 0.85rem 1.25rem 1.25rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .propuestas-section {
+        padding: 3rem max(2.5rem, calc(50% - 25rem));
+    }
+}
+
+/* ==========================================================================
+   PRINT — todas expandidas, sin sombra
+   ========================================================================== */
+
+@media print {
+    .propuesta-card {
+        box-shadow: none;
+        page-break-inside: avoid;
+        break-inside: avoid;
+    }
+
+    .propuesta-card summary::after {
+        display: none;
+    }
+
+    .propuesta-card .propuesta-body {
+        display: block !important;
+    }
+}
+
+/* ==========================================================================
+   PDF EXPORT — clones inside #reporte-pdf no tienen acordeón
+   ========================================================================== */
+
+#reporte-pdf .pdf-propuestas-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+    margin: 0.75rem 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+#reporte-pdf .pdf-propuestas-list li {
+    padding: 0.65rem 0.85rem;
+    background: #f5f5f5;
+    border-left: 4px solid #1a237e;
+    border-radius: 4px;
+}
+
+#reporte-pdf .pdf-propuesta-titulo {
+    font-weight: 700;
+    color: #1a237e;
+    margin-bottom: 0.25rem;
+}
+
+#reporte-pdf .pdf-propuesta-sugerencia {
+    font-size: 0.85rem;
+    line-height: 1.45;
+    color: #333;
+    margin: 0 0 0.35rem;
+}
+
+#reporte-pdf .pdf-propuesta-normas {
+    font-size: 0.75rem;
+    color: #666;
+}

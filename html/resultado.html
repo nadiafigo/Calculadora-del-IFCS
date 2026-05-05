@@ -22,6 +22,7 @@
     <link rel="stylesheet" href="../css/gral.css">
     <link rel="stylesheet" href="../css/gral_result.css">
     <link rel="stylesheet" href="../css/resultado.css">
+    <link rel="stylesheet" href="../css/propuestas.css">
     <title>Factibilidad de Cruce Seguro</title>
 
 </head>
@@ -166,6 +167,16 @@
             </div>
         </section>
 
+        <section id="propuestas-rediseno" class="propuestas-section">
+            <h2>Propuestas de rediseño para la sustitución del puente antipeatonal</h2>
+            <p class="subtitle">Recomendaciones específicas basadas en normatividad mexicana vigente, generadas a partir de tu evaluación.</p>
+            <div id="propuestas-container"></div>
+            <div class="normas-referencia" id="normas-referencia">
+                <h3>Normatividad referenciada</h3>
+                <ul id="normas-list"></ul>
+            </div>
+        </section>
+
         <section class="intro">
             <img class="img1" src="../img/mobile/img2.jpg" alt="Imagen de personas mayores bajando un puente peatonal">
             <!------
@@ -216,6 +227,11 @@
 
         <hr style="border:none; border-top:1px solid #ccc; margin:1.5rem 0;">
 
+        <h2 style="color:#1a237e;">Propuestas de redise&ntilde;o</h2>
+        <div id="pdf-propuestas" style="line-height:1.6;"></div>
+
+        <hr style="border:none; border-top:1px solid #ccc; margin:1.5rem 0;">
+
         <h2 style="color:#1a237e;">Fuente de los datos</h2>
         <table style="width:100%; border-collapse:collapse;">
           <tr><td style="padding:.4rem .5rem; font-weight:bold; width:40%;">Nombre:</td><td id="pdf-fuente-nombre" style="padding:.4rem .5rem;"></td></tr>
@@ -230,6 +246,7 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.2/html2pdf.bundle.min.js"></script>
     <script src="../js/navbar.js"></script>
+    <script src="../js/propuestas-rediseno.js"></script>
     <script src="../js/resultado.js"></script>
 </body>
 </html>

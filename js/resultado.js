@@ -293,6 +293,91 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ========================================
+  // PROPUESTAS DE REDISEÑO
+  // ========================================
+
+  const PROPUESTAS_FIELDS = [
+    "ViaCarriles", "ViaDistCruce", "ViaDistSemaf", "ViaBarreras",
+    "ViaCamellones", "ViaRevo", "ViaRevoTipo", "ViaVelPermi", "ViaVelOper",
+    "EquipNum", "EquipDist", "EquipTipo",
+    "PteObstBanq", "PteAnchoAcc", "PteTipoAcc", "PteNumEsc", "PteLongCami",
+    "PtePendiente", "PteDistDesc", "PteAnchoPas", "PteCubierta",
+    "PteIluminacion", "PtePubli", "PtePubliVisib"
+  ];
+
+  function buildPropuestasFormData() {
+    const out = {};
+    PROPUESTAS_FIELDS.forEach(f => {
+      out[f] = localStorage.getItem(`${f}_id`) || null;
+    });
+    return out;
+  }
+
+  function escapeHtml(str) {
+    return String(str || "").replace(/[&<>"']/g, c => ({
+      "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+    }[c]));
+  }
+
+  let propuestasAplicables = [];
+
+  if (typeof window.evaluarReglas === "function") {
+    const formData = buildPropuestasFormData();
+    propuestasAplicables = window.evaluarReglas(formData);
+  }
+
+  const propuestasContainer = document.getElementById("propuestas-container");
+  const normasList = document.getElementById("normas-list");
+  const normasReferencia = document.getElementById("normas-referencia");
+
+  if (propuestasContainer) {
+    if (propuestasAplicables.length === 0) {
+      propuestasContainer.innerHTML =
+        '<div class="propuestas-empty">Tu evaluación cumple con la mayoría de los criterios. No se generaron propuestas adicionales.</div>';
+      if (normasReferencia) normasReferencia.style.display = "none";
+    } else {
+      const html = propuestasAplicables.map((p, idx) => {
+        const chips = p.normas.map(n =>
+          `<a class="propuesta-chip" href="${escapeHtml(n.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(n.nombre)}</a>`
+        ).join("");
+        return (
+          `<details class="propuesta-card" data-categoria="${escapeHtml(p.categoria)}" data-id="${escapeHtml(p.id)}"${idx === 0 ? " open" : ""}>` +
+            `<summary>` +
+              `<div class="propuesta-titulo-wrap">` +
+                `<span class="propuesta-categoria">${escapeHtml(p.categoriaLabel)}</span>` +
+                `<span class="propuesta-titulo">${escapeHtml(p.titulo)}</span>` +
+              `</div>` +
+            `</summary>` +
+            `<div class="propuesta-body">` +
+              `<p class="propuesta-sugerencia">${escapeHtml(p.sugerencia)}</p>` +
+              (chips ? `<div class="propuesta-chips">${chips}</div>` : "") +
+            `</div>` +
+          `</details>`
+        );
+      }).join("");
+      propuestasContainer.innerHTML = html;
+
+      // Lista de normas únicas referenciadas
+      if (normasList) {
+        const normasUnicas = {};
+        propuestasAplicables.forEach(p => {
+          p.normas.forEach(n => { normasUnicas[n.key] = n; });
+        });
+        const keys = Object.keys(normasUnicas);
+        normasList.innerHTML = keys.map(k => {
+          const n = normasUnicas[k];
+          return (
+            `<li>` +
+              `<a href="${escapeHtml(n.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(n.nombre)}</a>` +
+              `<span class="norma-meta">— ${escapeHtml(n.titulo)} (${escapeHtml(String(n["año"] || ""))})</span>` +
+            `</li>`
+          );
+        }).join("");
+      }
+    }
+  }
+
+  // ========================================
   // CTAs FINALES
   // ========================================
 
@@ -364,6 +449,45 @@ document.addEventListener("DOMContentLoaded", () => {
         dxDiv.innerHTML = html;
       }
 
+      // Propuestas de rediseño en PDF (versión plana, sin acordeón)
+      const pdfPropuestasDiv = document.getElementById("pdf-propuestas");
+      if (pdfPropuestasDiv) {
+        if (propuestasAplicables.length === 0) {
+          pdfPropuestasDiv.innerHTML = '<p style="font-style:italic; color:#666;">Tu evaluación cumple con la mayoría de los criterios. No se generaron propuestas adicionales.</p>';
+        } else {
+          let pdfHtml = '<ul class="pdf-propuestas-list">';
+          propuestasAplicables.forEach(p => {
+            const normasTxt = p.normas.map(n => n.nombre).join(" · ");
+            pdfHtml += '<li>' +
+              `<div class="pdf-propuesta-titulo">${escapeHtml(p.categoriaLabel)} — ${escapeHtml(p.titulo)}</div>` +
+              `<p class="pdf-propuesta-sugerencia">${escapeHtml(p.sugerencia)}</p>` +
+              (normasTxt ? `<div class="pdf-propuesta-normas">Normas: ${escapeHtml(normasTxt)}</div>` : "") +
+            '</li>';
+          });
+          pdfHtml += '</ul>';
+          pdfPropuestasDiv.innerHTML = pdfHtml;
+        }
+      }
+
+      // Forzar todos los <details> abiertos antes del export (en caso de que html2pdf
+      // capture la sección live). Restauramos al estado inicial al terminar.
+      const detailsEls = Array.from(document.querySelectorAll("#propuestas-container details"));
+      const prevOpenState = detailsEls.map(d => d.open);
+      detailsEls.forEach(d => { d.open = true; });
+
+      const restoreDetails = () => {
+        detailsEls.forEach((d, i) => {
+          // Estado inicial canónico: la primera abierta, el resto cerradas.
+          d.open = i === 0 ? true : false;
+        });
+        // Si el estado previo difería (ej. usuario expandió varias), respeta lo que
+        // ya estaba abierto antes del export.
+        const userHadDifferentState = prevOpenState.some((v, i) => v !== (i === 0));
+        if (userHadDifferentState) {
+          detailsEls.forEach((d, i) => { d.open = prevOpenState[i]; });
+        }
+      };
+
       // Show element for rendering
       reporteEl.style.display = "block";
 
@@ -380,6 +504,10 @@ document.addEventListener("DOMContentLoaded", () => {
         jsPDF: { unit: "mm", format: "letter", orientation: "portrait" }
       }).from(reporteEl.firstElementChild).save().then(() => {
         reporteEl.style.display = "none";
+        restoreDetails();
+      }).catch(() => {
+        reporteEl.style.display = "none";
+        restoreDetails();
       });
     });
   }
