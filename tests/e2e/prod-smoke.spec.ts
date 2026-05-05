@@ -10,10 +10,7 @@ test.describe('Prod smoke (live)', () => {
     expect(r.status()).toBe(200);
   });
 
-  // TODO(2026-05-05): GitHub Pages "Enforce HTTPS" pendiente de activar por Nadia (owner del repo).
-  // Hoy http://adiospuentesantipeatonales.org/ devuelve 200 plano (sin redirect).
-  // Una vez activado el toggle y propagado (~5-30 min), quitar test.fixme y verificar 301/308 con Location: https://.
-  test.fixme('http redirige a https', async ({ request }) => {
+  test('http redirige a https', async ({ request }) => {
     const r = await request.get('http://adiospuentesantipeatonales.org', {
       maxRedirects: 0,
       failOnStatusCode: false,
