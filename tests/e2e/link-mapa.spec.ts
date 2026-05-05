@@ -141,4 +141,38 @@ test.describe("Form ↔ Mapa deep-link", () => {
     await page.waitForURL(/mapa\.html\?id=12345/, { timeout: 10000 });
     expect(page.url()).toMatch(/mapa\.html\?id=12345$/);
   });
+
+  test("link 'mapa' del checkbox de consentimiento abre mapa.html en nueva pestaña", async ({ page, context }) => {
+    await page.goto("/index.html");
+
+    const link = page.locator("#link-mapa-consent");
+    await expect(link).toBeVisible();
+    await expect(link).toHaveAttribute("href", "html/mapa.html");
+    await expect(link).toHaveAttribute("target", "_blank");
+    await expect(link).toHaveAttribute("rel", /noopener/);
+
+    // Stub map list so the new tab does not hang on real Supabase.
+    await context.route(/\/rest\/v1\/evaluaciones\?select=\*/, async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: "application/json",
+        headers: { "Access-Control-Allow-Origin": "*" },
+        body: "[]",
+      });
+    });
+
+    const checkbox = page.locator("#CalcForm input[type='checkbox']");
+    const wasChecked = await checkbox.isChecked();
+
+    const newPagePromise = context.waitForEvent("page", { timeout: 10000 });
+    await link.click();
+    const newPage = await newPagePromise;
+    await newPage.waitForLoadState("domcontentloaded");
+    expect(newPage.url()).toMatch(/\/html\/mapa\.html$/);
+
+    // Click on the link must not toggle the checkbox in the original tab.
+    expect(await checkbox.isChecked()).toBe(wasChecked);
+
+    await newPage.close();
+  });
 });
