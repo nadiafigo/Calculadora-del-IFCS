@@ -1,0 +1,348 @@
+/* ==========================================================================
+   CALCULADORA IFCS — Antecedentes / Metodología
+   ========================================================================== */
+
+.antecedentes-main {
+    color: var(--darkBlue);
+}
+
+.container {
+    max-width: 50rem;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+/* ==========================================================================
+   HERO
+   ========================================================================== */
+
+.antecedentes-hero {
+    background: var(--darkBlue);
+    color: var(--white);
+    padding: 2.5rem 0;
+    text-align: center;
+}
+
+.antecedentes-hero h1 {
+    font-size: clamp(1.75rem, 4.5vw, 2.5rem);
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.antecedentes-hero .hero-subtitle {
+    margin-top: 0.75rem;
+    font-size: clamp(1rem, 2.2vw, 1.15rem);
+    font-weight: 400;
+    opacity: 0.9;
+    max-width: 38rem;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* ==========================================================================
+   SECTIONS
+   ========================================================================== */
+
+.antecedentes-section {
+    padding: 2.25rem 0;
+}
+
+.antecedentes-section + .antecedentes-section {
+    border-top: 1px solid var(--gray);
+}
+
+.antecedentes-section h2 {
+    font-size: clamp(1.25rem, 3vw, 1.6rem);
+    font-weight: 700;
+    color: var(--darkBlue);
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 3px solid var(--yellow);
+}
+
+.antecedentes-section h3 {
+    font-size: clamp(1.1rem, 2.5vw, 1.25rem);
+    font-weight: 700;
+    margin: 1.75rem 0 0.75rem;
+    color: var(--darkBlue);
+}
+
+.antecedentes-section p {
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 0.85rem;
+    text-align: justify;
+}
+
+.antecedentes-section ol {
+    margin: 0.5rem 0 1rem 1.5rem;
+    list-style: decimal;
+}
+
+.antecedentes-section ol li {
+    list-style: decimal;
+    padding-left: 0.25rem;
+    margin-bottom: 0.4rem;
+    line-height: 1.55;
+}
+
+.antecedentes-section strong {
+    font-weight: 700;
+    color: var(--darkBlue);
+}
+
+/* ==========================================================================
+   FACTIBILIDAD CARDS
+   ========================================================================== */
+
+.factibilidad-cards {
+    margin-top: 1rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+
+.factibilidad-card {
+    background: var(--gray);
+    border-left: 5px solid var(--blue);
+    border-radius: var(--radius);
+    padding: 1.1rem 1.25rem 1.25rem;
+    box-shadow: var(--shadow-sm);
+    transition: transform var(--transition), box-shadow var(--transition);
+}
+
+.factibilidad-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+}
+
+.factibilidad-card .factibilidad-rango {
+    display: inline-block;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    padding: 0.2rem 0.6rem;
+    border-radius: var(--radius);
+    background: var(--white);
+    color: var(--darkBlue);
+}
+
+.factibilidad-card h4 {
+    margin: 0.6rem 0 0.35rem;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--darkBlue);
+}
+
+.factibilidad-card p {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.45;
+    text-align: left;
+}
+
+.factibilidad-corto  { border-left-color: #2e7d32; }
+.factibilidad-mediano { border-left-color: #f9a825; }
+.factibilidad-largo  { border-left-color: #c62828; }
+
+@media (min-width: 600px) {
+    .factibilidad-cards {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.25rem;
+    }
+}
+
+/* ==========================================================================
+   PONDERACION TABLE
+   ========================================================================== */
+
+.ponderacion-table-wrapper {
+    margin-top: 1rem;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+}
+
+.ponderacion-table {
+    width: 100%;
+    min-width: 32rem;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+    background: var(--white);
+}
+
+.ponderacion-table thead th {
+    background: var(--darkBlue);
+    color: var(--white);
+    text-align: left;
+    padding: 0.75rem 0.85rem;
+    font-weight: 700;
+    font-size: 0.9rem;
+    letter-spacing: 0.02em;
+}
+
+.ponderacion-table tbody tr {
+    transition: background-color var(--transition);
+}
+
+.ponderacion-table tbody tr:nth-child(even) {
+    background: hsl(0, 0%, 97%);
+}
+
+.ponderacion-table tbody tr:hover {
+    background: hsl(188, 60%, 95%);
+}
+
+.ponderacion-table td,
+.ponderacion-table th {
+    padding: 0.55rem 0.85rem;
+    border-bottom: 1px solid var(--gray);
+    vertical-align: top;
+}
+
+.ponderacion-table td:first-child {
+    font-family: 'Source Code Pro', ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.85rem;
+    color: var(--blue);
+    white-space: nowrap;
+}
+
+/* Categoria header rows */
+.ponderacion-table .categoria-row {
+    background: var(--green) !important;
+}
+
+.ponderacion-table .categoria-row th {
+    color: var(--darkBlue);
+    font-weight: 700;
+    font-size: 1rem;
+    padding: 0.7rem 0.85rem;
+    text-align: left;
+}
+
+.ponderacion-table .categoria-total {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--darkBlue);
+}
+
+/* Footer total */
+.ponderacion-table tfoot th,
+.ponderacion-table tfoot td {
+    border-top: 3px solid var(--darkBlue);
+    border-bottom: none;
+    background: var(--gray);
+    padding: 0.85rem;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--darkBlue);
+}
+
+.ponderacion-table tfoot .total-final {
+    font-size: 1.5rem;
+    color: var(--blue);
+}
+
+.text-right {
+    text-align: right;
+}
+
+/* ==========================================================================
+   DESCARGAS
+   ========================================================================== */
+
+.descargas-grid {
+    margin-top: 1rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.85rem;
+}
+
+.descarga-card {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 1rem 1.25rem;
+    background: var(--white);
+    border: 1px solid var(--gray);
+    border-left: 4px solid var(--yellow);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    color: var(--darkBlue);
+    text-decoration: none;
+    transition: transform var(--transition), box-shadow var(--transition),
+                background-color var(--transition);
+}
+
+.descarga-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+    background: hsl(40, 76%, 97%);
+}
+
+.descarga-card .descarga-icon {
+    font-size: 1.75rem;
+    line-height: 1;
+    flex-shrink: 0;
+}
+
+.descarga-card div {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    min-width: 0;
+}
+
+.descarga-card strong {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--darkBlue);
+}
+
+.descarga-card .descarga-meta {
+    font-size: 0.85rem;
+    color: var(--grayText);
+}
+
+@media (min-width: 600px) {
+    .descargas-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+}
+
+/* ==========================================================================
+   PRINT
+   ========================================================================== */
+
+@media print {
+    .antecedentes-hero {
+        background: none !important;
+        color: #000 !important;
+        padding: 0.5rem 0 !important;
+    }
+
+    .antecedentes-section {
+        padding: 0.85rem 0;
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+
+    .ponderacion-table {
+        font-size: 0.8rem;
+    }
+
+    .ponderacion-table thead {
+        display: table-header-group;
+    }
+
+    .ponderacion-table tr {
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+
+    .descargas-section {
+        display: none;
+    }
+}
