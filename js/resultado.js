@@ -38,10 +38,11 @@ document.addEventListener("DOMContentLoaded", () => {
   // Texto de factibilidad
   let mensajeFact = "";
   let mensajeFact2 = "";
-  if (total <= 20) {
+  // Rangos: Largo 0-30, Mediano 31-60, Corto >60
+  if (total <= 30) {
     mensajeFact = "FACTIBILIDAD A LARGO PLAZO";
     mensajeFact2 = "A LARGO PLAZO";
-  } else if (total <= 65) {
+  } else if (total <= 60) {
     mensajeFact = "FACTIBILIDAD A MEDIANO PLAZO";
     mensajeFact2 = "A MEDIANO PLAZO";
   } else {

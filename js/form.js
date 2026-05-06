@@ -252,10 +252,11 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // ---- Determinar factibilidad ----
+    // Rangos: Largo 0-30, Mediano 31-60, Corto >60
     let factibilidad;
-    if (total <= 20) {
+    if (total <= 30) {
       factibilidad = "Largo plazo";
-    } else if (total <= 65) {
+    } else if (total <= 60) {
       factibilidad = "Mediano plazo";
     } else {
       factibilidad = "Corto plazo";
