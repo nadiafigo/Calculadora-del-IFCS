@@ -302,17 +302,41 @@ document.addEventListener("DOMContentLoaded", async () => {
   // DEEP-LINK: ?id=<id> | ?lat=<n>&lng=<n>
   // ========================================
 
+  let mapaToastTimer = null;
   function showMapaToast(message) {
     let toast = document.getElementById("mapa-toast");
     if (!toast) {
       toast = document.createElement("div");
       toast.id = "mapa-toast";
       toast.className = "mapa-toast";
+
+      const msgSpan = document.createElement("span");
+      msgSpan.className = "mapa-toast__msg";
+      toast.appendChild(msgSpan);
+
+      const closeBtn = document.createElement("button");
+      closeBtn.type = "button";
+      closeBtn.className = "mapa-toast__close";
+      closeBtn.setAttribute("aria-label", "Cerrar mensaje");
+      closeBtn.textContent = "×";
+      closeBtn.addEventListener("click", () => {
+        toast.classList.remove("show");
+        if (mapaToastTimer) {
+          clearTimeout(mapaToastTimer);
+          mapaToastTimer = null;
+        }
+      });
+      toast.appendChild(closeBtn);
+
       document.body.appendChild(toast);
     }
-    toast.textContent = message;
+    toast.querySelector(".mapa-toast__msg").textContent = message;
     toast.classList.add("show");
-    setTimeout(() => toast.classList.remove("show"), 7000);
+    if (mapaToastTimer) clearTimeout(mapaToastTimer);
+    mapaToastTimer = setTimeout(() => {
+      toast.classList.remove("show");
+      mapaToastTimer = null;
+    }, 12000);
   }
 
   const params = new URLSearchParams(window.location.search);
@@ -334,7 +358,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       }, 1100);
     } else {
       showMapaToast(
-        "Tu evaluación aparecerá en el mapa una vez confirmes tu correo y sea revisada por el equipo. Mientras, exploras los registros públicos."
+        "Tu evaluación se guardó correctamente. Aparecerá en el mapa una vez que el equipo de Liga Peatonal la revise. Mientras, puedes explorar los registros ya aprobados."
       );
     }
   } else if (!isNaN(wantedLat) && !isNaN(wantedLng)) {

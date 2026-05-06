@@ -184,11 +184,39 @@
   pointer-events: none;
   transition: transform .25s ease, opacity .25s ease;
   z-index: 1000;
+  display: flex;
+  align-items: flex-start;
+  gap: .75rem;
 }
 
 .mapa-toast.show {
   opacity: 1;
   transform: translateX(-50%) translateY(0);
+  pointer-events: auto;
+}
+
+.mapa-toast__msg {
+  flex: 1;
+}
+
+.mapa-toast__close {
+  flex-shrink: 0;
+  background: transparent;
+  border: none;
+  color: var(--white);
+  font-size: 1.4rem;
+  line-height: 1;
+  padding: 0 .25rem;
+  margin-top: -.1rem;
+  cursor: pointer;
+  opacity: .75;
+  transition: opacity .15s ease;
+}
+
+.mapa-toast__close:hover,
+.mapa-toast__close:focus {
+  opacity: 1;
+  outline: none;
 }
 
 /* --- Responsive ---- */

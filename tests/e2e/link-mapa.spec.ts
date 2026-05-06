@@ -127,7 +127,22 @@ test.describe("Form ↔ Mapa deep-link", () => {
     const toast = page.locator("#mapa-toast");
     await expect(toast).toBeVisible({ timeout: 5000 });
     await expect(toast).toHaveClass(/show/);
-    await expect(toast).toContainText("Tu evaluación aparecerá en el mapa");
+    await expect(toast).toContainText("Tu evaluación se guardó correctamente");
+    await expect(toast).toContainText("Aparecerá en el mapa");
+    await expect(toast).toContainText("Liga Peatonal");
+  });
+
+  test("toast del mapa: botón cerrar oculta el mensaje", async ({ page }) => {
+    await stubMapaList(page, [SEED]);
+
+    await page.goto("/html/mapa.html?id=ghost-id-no-existe");
+    await expect(page.locator(".leaflet-container")).toBeVisible({ timeout: 10000 });
+
+    const toast = page.locator("#mapa-toast");
+    await expect(toast).toHaveClass(/show/, { timeout: 5000 });
+
+    await page.locator(".mapa-toast__close").click();
+    await expect(toast).not.toHaveClass(/show/, { timeout: 1000 });
   });
 
   test("CTA 'Ver mi evaluación en el mapa' en resultado.html navega con el id", async ({ page }) => {
