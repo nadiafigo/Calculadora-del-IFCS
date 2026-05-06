@@ -319,6 +319,24 @@ document.addEventListener("DOMContentLoaded", () => {
     }[c]));
   }
 
+  /**
+   * Toma un texto plano y un array de normas, regresa HTML safe donde cada
+   * mención exacta del nombre canónico de una norma queda envuelto en <strong>.
+   * El texto se escapa primero; el nombre se escapa para HTML y luego para
+   * regex antes de hacer el replace global.
+   */
+  function boldifyNormasInText(text, normas) {
+    let html = escapeHtml(text);
+    if (!Array.isArray(normas) || normas.length === 0) return html;
+    normas.forEach(n => {
+      if (!n || !n.nombre) return;
+      const escapedName = escapeHtml(n.nombre);
+      const regexEscaped = escapedName.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      html = html.replace(new RegExp(regexEscaped, "g"), `<strong>${escapedName}</strong>`);
+    });
+    return html;
+  }
+
   let propuestasAplicables = [];
 
   if (typeof window.evaluarReglas === "function") {
@@ -449,22 +467,46 @@ document.addEventListener("DOMContentLoaded", () => {
         dxDiv.innerHTML = html;
       }
 
-      // Propuestas de rediseño en PDF (versión plana, sin acordeón)
+      // Propuestas de rediseño en PDF (agrupadas por categoría, normas en <strong>)
       const pdfPropuestasDiv = document.getElementById("pdf-propuestas");
       if (pdfPropuestasDiv) {
         if (propuestasAplicables.length === 0) {
           pdfPropuestasDiv.innerHTML = '<p style="font-style:italic; color:#666;">Tu evaluación cumple con la mayoría de los criterios. No se generaron propuestas adicionales.</p>';
         } else {
-          let pdfHtml = '<ul class="pdf-propuestas-list">';
+          // Agrupar preservando orden de primera aparición
+          const orden = [];
+          const grupos = {};
           propuestasAplicables.forEach(p => {
-            const normasTxt = p.normas.map(n => n.nombre).join(" · ");
-            pdfHtml += '<li>' +
-              `<div class="pdf-propuesta-titulo">${escapeHtml(p.categoriaLabel)} — ${escapeHtml(p.titulo)}</div>` +
-              `<p class="pdf-propuesta-sugerencia">${escapeHtml(p.sugerencia)}</p>` +
-              (normasTxt ? `<div class="pdf-propuesta-normas">Normas: ${escapeHtml(normasTxt)}</div>` : "") +
-            '</li>';
+            if (!grupos[p.categoria]) {
+              grupos[p.categoria] = { label: p.categoriaLabel, items: [] };
+              orden.push(p.categoria);
+            }
+            grupos[p.categoria].items.push(p);
           });
-          pdfHtml += '</ul>';
+
+          let pdfHtml = "";
+          orden.forEach(cat => {
+            const grupo = grupos[cat];
+            pdfHtml += '<div class="pdf-propuestas-grupo">';
+            pdfHtml += `<h3 class="pdf-categoria-titulo">${escapeHtml(grupo.label)}</h3>`;
+            pdfHtml += '<ol class="pdf-propuesta-list">';
+            grupo.items.forEach(p => {
+              pdfHtml += '<li class="pdf-propuesta-item">';
+              pdfHtml += `<p class="pdf-propuesta-titulo">${escapeHtml(p.titulo)}</p>`;
+              pdfHtml += `<p class="pdf-propuesta-sugerencia">${boldifyNormasInText(p.sugerencia, p.normas)}</p>`;
+              if (p.normas && p.normas.length > 0) {
+                pdfHtml += '<p class="pdf-propuesta-normas-titulo">Normas referenciadas:</p>';
+                pdfHtml += '<ul class="pdf-propuesta-normas-list">';
+                p.normas.forEach(n => {
+                  pdfHtml += `<li>${escapeHtml(n.nombre)}</li>`;
+                });
+                pdfHtml += '</ul>';
+              }
+              pdfHtml += '</li>';
+            });
+            pdfHtml += '</ol>';
+            pdfHtml += '</div>';
+          });
           pdfPropuestasDiv.innerHTML = pdfHtml;
         }
       }

@@ -184,4 +184,67 @@ test.describe("Propuestas de rediseño", () => {
 
     expect(errors).toEqual([]);
   });
+
+  test("PDF de propuestas: agrupación por categoría + normas en <strong>", async ({ page }) => {
+    // Stub html2pdf para que el click no descargue, solo renderice.
+    await page.addInitScript(() => {
+      window.html2pdf = function () {
+        return {
+          set: function () { return this; },
+          from: function () { return this; },
+          save: function () { return Promise.resolve(); }
+        };
+      };
+    });
+
+    await page.goto("/html/resultado.html?total=50");
+    // Datos que disparan al menos 2 reglas de categorías DIFERENTES y cuyas
+    // sugerencias contienen el nombre canónico de la norma para validar <strong>:
+    // - sin-semaforo-cercano (categoría velocidad-semaforos): cita "NOM-004-SEDATU-2023"
+    // - sin-reductores (categoría reductores): cita "Manual de Calles SEDATU-BID 2019"
+    await seedFormData(page, {
+      ...ALL_GOOD,
+      ViaDistSemaf: "ViaDistSemaf_250a999",   // dispara sin-semaforo-cercano
+      ViaRevo: "ViaRevo_no"                   // dispara sin-reductores
+    });
+    await page.reload();
+
+    const btn = page.locator("#btn-descargar-pdf");
+    await expect(btn).toBeVisible();
+    await btn.click();
+
+    // El handler hace display:block del #reporte-pdf antes de invocar html2pdf.
+    // Con el stub, save() resuelve inmediato y restoreDetails se ejecuta, pero
+    // el contenido de #pdf-propuestas ya quedó populated.
+    const pdfPropuestas = page.locator("#pdf-propuestas");
+
+    // Al menos 2 grupos de categorías
+    const grupos = pdfPropuestas.locator(".pdf-propuestas-grupo");
+    await expect(grupos).toHaveCount(2, { timeout: 5000 });
+
+    // Cada grupo tiene su <h3> con clase pdf-categoria-titulo
+    const titulos = pdfPropuestas.locator("h3.pdf-categoria-titulo");
+    await expect(titulos).toHaveCount(2);
+
+    // Las propuestas son <ol> ordenadas
+    const listas = pdfPropuestas.locator("ol.pdf-propuesta-list");
+    await expect(listas).toHaveCount(2);
+
+    // Al menos un <strong> dentro de las sugerencias (norma resaltada)
+    const strongsEnSugerencias = pdfPropuestas.locator(".pdf-propuesta-sugerencia strong");
+    expect(await strongsEnSugerencias.count()).toBeGreaterThan(0);
+
+    // El texto del strong debe ser un nombre de norma reconocible
+    const primerStrong = await strongsEnSugerencias.first().textContent();
+    expect(primerStrong).toMatch(/LGMSV|NOM-|Manual de Calles|Manual de Señalización/);
+
+    // Las normas referenciadas aparecen como <ul> con bullets
+    const normasLists = pdfPropuestas.locator("ul.pdf-propuesta-normas-list");
+    expect(await normasLists.count()).toBeGreaterThan(0);
+
+    // Confirmación textual: el encabezado "Normas referenciadas:" aparece.
+    // (#reporte-pdf es display:none en estado normal — se hace block sólo durante
+    // la generación del PDF, así que validamos presencia en DOM, no visibility.)
+    await expect(pdfPropuestas.getByText("Normas referenciadas:").first()).toBeAttached();
+  });
 });
