@@ -356,35 +356,33 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (SUPABASE_URL && SUPABASE_ANON_KEY) {
       try {
-        const res = await fetch(`${SUPABASE_URL}/rest/v1/evaluaciones?select=id`, {
+        // return=minimal: PostgREST no hace RETURNING, así RLS del SELECT
+        // (anon_select_approved_only) no bloquea el INSERT. La fila se
+        // persiste; usamos el fallbackId UUID generado arriba como
+        // last_evaluation_id (la fila no es visible al anon hasta que admin
+        // la apruebe, así que el id real no nos sirve para deep-link).
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/evaluaciones`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
             "apikey": SUPABASE_ANON_KEY,
             "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
-            "Prefer": "return=representation"
+            "Prefer": "return=minimal"
           },
           body: JSON.stringify(payload)
         });
 
         if (!res.ok) {
           const errorBody = await res.text();
-          console.error("Supabase error:", res.status, errorBody);
+          console.error("Supabase INSERT failed:", res.status, errorBody);
           showToast("Error al guardar datos. Redirigiendo...", "error");
         } else {
-          console.log("Datos guardados en Supabase");
+          console.log("Datos guardados en Supabase (return=minimal)");
           supabaseOk = true;
           guardarEvaluador();
           showToast("Datos guardados correctamente", "success");
-          try {
-            const body = await res.json();
-            const insertedId = Array.isArray(body) && body[0]?.id;
-            if (insertedId !== undefined && insertedId !== null) {
-              sessionStorage.setItem("last_evaluation_id", String(insertedId));
-            }
-          } catch (e) {
-            // Si RLS oculta la fila o no hay JSON, dejamos el fallbackId.
-          }
+          // No leemos body — return=minimal no devuelve nada. El
+          // fallbackId UUID generado arriba ya está en last_evaluation_id.
         }
       } catch (err) {
         console.warn("No se pudieron enviar datos a Supabase:", err);

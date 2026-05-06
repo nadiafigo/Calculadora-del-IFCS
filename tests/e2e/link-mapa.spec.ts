@@ -39,7 +39,9 @@ function stubMapaList(page: Page, rows: unknown[]) {
 test.describe("Form ↔ Mapa deep-link", () => {
 
   test("submit del form deja last_evaluation_id en sessionStorage", async ({ page }) => {
-    // Stub Supabase POST to return a known id.
+    // Stub Supabase POST: form.js usa Prefer: return=minimal, así que la
+    // respuesta es 201 con body vacío. last_evaluation_id queda como el
+    // UUID fallback generado client-side por crypto.randomUUID().
     await page.route(/\/rest\/v1\/evaluaciones/, async (route) => {
       const req = route.request();
       if (req.method() === "POST") {
@@ -47,7 +49,7 @@ test.describe("Form ↔ Mapa deep-link", () => {
           status: 201,
           contentType: "application/json",
           headers: { "Access-Control-Allow-Origin": "*" },
-          body: JSON.stringify([{ id: 999001 }]),
+          body: "",
         });
         return;
       }
@@ -101,7 +103,8 @@ test.describe("Form ↔ Mapa deep-link", () => {
     await page.waitForURL(/resultado\.html\?total=/, { timeout: 10000 });
 
     const id = await page.evaluate(() => sessionStorage.getItem("last_evaluation_id"));
-    expect(id).toBe("999001");
+    // UUID v4 fallback (crypto.randomUUID) o local-* fallback si crypto no disponible.
+    expect(id).toMatch(/^([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}|local-\d+-[a-z0-9]+)$/);
   });
 
   test("mapa.html?id=<seed> abre popup del marker correspondiente", async ({ page }) => {
