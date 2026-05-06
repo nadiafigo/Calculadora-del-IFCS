@@ -667,6 +667,20 @@
     line-height: 1.4;
 }
 
+.creditos .link-izalith {
+    color: var(--yellow);
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 0.15rem;
+    transition: color var(--transition);
+}
+
+.creditos .link-izalith:hover,
+.creditos .link-izalith:focus {
+    color: var(--white);
+    outline: none;
+}
+
 /* ==========================================================================
    RESPONSIVE — Tablet (768px+)
    ========================================================================== */
