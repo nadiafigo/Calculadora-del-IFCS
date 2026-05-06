@@ -91,7 +91,28 @@ document.addEventListener("DOMContentLoaded", async () => {
     const corto = evaluaciones.filter(e => e.factibilidad === "Corto plazo").length;
     const pctCorto = total ? Math.round((corto / total) * 100) : 0;
     const ciudadesSet = new Set(evaluaciones.map(e => e.loc_ciudad).filter(Boolean));
-    const inmediata = corto; // Factibilidad inmediata = corto plazo count
+    // KPI: Puentes con rampas inaccesibles
+    // Inaccesible si pendiente >6% O distancia entre descansos >6m.
+    // NULL en ambos campos → no se cuenta (no asumimos inaccesibilidad sin data).
+    //
+    // Las listas incluyen strings actuales del form + strings legacy presentes
+    // en registros históricos de la BD. Los legacy son inequívocos en semántica
+    // de "malo" (Mayor al 8% siempre es >6%, 25 metros o más siempre es >6m).
+    // "Menor a 25 metros" se OMITE deliberadamente por ambigüedad (puede ser
+    // <6m OK o 6-24m malo). TODO post-Excel: migration SQL para normalizar
+    // strings legacy y poder limpiar las entradas legacy de estos arrays.
+    const PENDIENTE_MALA = [
+      "6.1% a 8%", "8.1% o más",          // strings actuales
+      "Del 6% al 8%", "Mayor al 8%"        // strings legacy
+    ];
+    const DESCANSO_MALO = [
+      "7 a 14 metros", "15 metros o más",  // strings actuales
+      "25 metros o más"                    // string legacy ("Menor a 25 metros" omitido por ambiguo)
+    ];
+    const rampasInaccesibles = evaluaciones.filter(e =>
+      PENDIENTE_MALA.indexOf(e.pte_pendiente) >= 0 ||
+      DESCANSO_MALO.indexOf(e.pte_dist_desc) >= 0
+    ).length;
     const escaleras = evaluaciones.filter(e => e.pte_tipo_acc === "Escaleras").length;
     const pctEscaleras = total ? Math.round((escaleras / total) * 100) : 0;
 
@@ -99,7 +120,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     document.getElementById("kpi-promedio").textContent = promedio + "%";
     document.getElementById("kpi-corto").textContent = pctCorto + "%";
     document.getElementById("kpi-ciudades").textContent = ciudadesSet.size;
-    document.getElementById("kpi-inmediata").textContent = inmediata;
+    document.getElementById("kpi-inaccesibles").textContent = rampasInaccesibles;
     document.getElementById("kpi-escaleras").textContent = pctEscaleras + "%";
 
     // --- DONUT: Factibilidad ---
