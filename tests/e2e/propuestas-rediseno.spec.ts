@@ -141,6 +141,20 @@ test.describe("Propuestas de rediseño", () => {
     expect(await second.evaluate((el: HTMLDetailsElement) => el.open)).toBe(false);
   });
 
+  test("subtítulo dice 'generales' y disclaimer final visible", async ({ page }) => {
+    await page.goto("/html/resultado.html?total=50");
+    await seedFormData(page, ALL_GOOD);
+    await page.reload();
+
+    const subtitle = page.locator("#propuestas-rediseno .subtitle");
+    await expect(subtitle).toContainText("generales");
+    await expect(subtitle).not.toContainText("específicas");
+
+    const disclaimer = page.locator(".propuestas-disclaimer");
+    await expect(disclaimer).toBeVisible();
+    await expect(disclaimer).toContainText("carácter general");
+  });
+
   test("descargar PDF produce archivo > 0 bytes con propuestas", async ({ page }) => {
     await page.goto("/html/resultado.html?total=35");
     await seedFormData(page, {

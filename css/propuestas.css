@@ -291,6 +291,28 @@
 }
 
 /* ==========================================================================
+   DISCLAIMER FINAL
+   ========================================================================== */
+.propuestas-disclaimer {
+    margin-top: 1.75rem;
+    padding: 1rem 1.25rem;
+    border-left: 4px solid var(--darkBlue);
+    background: #f0f3ff;
+    font-style: italic;
+    font-size: 0.9rem;
+    line-height: 1.55;
+    color: #333;
+    border-radius: 4px;
+}
+
+@media (max-width: 768px) {
+    .propuestas-disclaimer {
+        font-size: 0.85rem;
+        padding: 0.85rem 1rem;
+    }
+}
+
+/* ==========================================================================
    PDF EXPORT — clones inside #reporte-pdf no tienen acordeón
    ========================================================================== */
 
