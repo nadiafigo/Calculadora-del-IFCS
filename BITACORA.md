@@ -6,21 +6,36 @@
 
 ---
 
-## 📸 ESTADO AL 02/09/2026
+## 📸 ESTADO AL 03/09/2026
 
 *(Esta sección se reescribe completa en cada actualización.)*
 
 **Hecho y funcionando**
-- Producción responde 200 (inicio, mapa) con lo mergeado hasta el 06/05/2026: formulario con validación, resultado con propuestas de rediseño y PDF, mapa con filtros, estadísticas, admin con aprobación manual y status de retiro.
+- Producción con el link permanente del reporte (PR #1 mergeado el 03/09/2026, GitHub Pages publicó en ~1 min). Verificado en vivo con una evaluación de mayo (`?r=e0a0ce9a…`, Rey Tangaxoan, 37%): diagnóstico, propuestas y caja del enlace correctos aunque la fila no tiene `respuestas`.
+- Migración 009 aplicada en Supabase: 114 evaluaciones, 114 tokens; anon sigue sin poder listar filas no aprobadas.
+- Lo anterior (06/05/2026): formulario con validación, resultado con propuestas y PDF, mapa con filtros, estadísticas, admin con aprobación manual y status de retiro.
 
 **A medias**
-- Link permanente del reporte (`resultado.html?r=<token>`): código en la rama `feat/reporte-permalink` con su PR; la migración 009 **ya está aplicada** en Supabase (03/09/2026: 114 evaluaciones, 114 tokens). Falta solo que Memo mergee el PR para que el frontend en producción lo use.
+- Nada.
 
 **Bloqueado**
 - Nada del lado del cliente.
 
 **Siguiente paso**
-- Mergear el PR del link permanente y avisarle a Nadia que ya puede compartir reportes desde el admin ("Ver reporte ↗").
+- Avisarle a Nadia que cada evaluación nueva muestra su enlace al terminar (y en el PDF), y que desde el admin puede abrir o mandar el de cualquiera con "Ver reporte ↗".
+
+---
+
+## 03/09/2026 — Link permanente en producción
+
+**Qué cambió**
+- PR #1 mergeado a `main`; Pages lo publicó. Prueba en vivo con una evaluación histórica: OK.
+
+**Por qué**
+- Memo dio luz verde ("podemos ir haciendo lo de la calculadora") una vez que la suite local pasó 15/15 y la migración estaba aplicada.
+
+**Decisiones y descartes**
+- Se probó primero con una fila **sin** `respuestas` a propósito: es el caso más frágil (reconstrucción de ids leyendo `index.html`) y el que cubre a las 114 evaluaciones existentes.
 
 ---
 
