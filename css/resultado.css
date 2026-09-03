@@ -120,6 +120,108 @@
 }
 
 /* ==========================================================================
+   LINK PERMANENTE — volver a ver el reporte con los datos guardados
+   ========================================================================== */
+
+.permalink {
+    padding: 0 1.5rem 1.5rem;
+    color: var(--darkBlue);
+}
+
+.permalink__inner {
+    max-width: 50rem;
+    margin: 0 auto;
+    background-color: var(--gray);
+    border-radius: var(--radius-lg);
+    border-left: 4px solid var(--green);
+    padding: 1.25rem 1.25rem 1.5rem;
+}
+
+.permalink__title {
+    font-weight: 700;
+    font-size: 1.05rem;
+    margin-bottom: 0.35rem;
+}
+
+.permalink__hint {
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin-bottom: 0.9rem;
+}
+
+.permalink__row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.permalink__url {
+    width: 100%;
+    min-height: 2.5rem;
+    padding: 0.55rem 0.75rem;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: var(--radius-lg);
+    background-color: var(--white);
+    color: var(--darkBlue);
+    font-family: inherit;
+    font-size: 0.9rem;
+    text-overflow: ellipsis;
+}
+
+.permalink__copy {
+    min-height: 2.5rem;
+    padding: 0.55rem 1.25rem;
+    border-radius: 50px;
+    border: 2px solid var(--darkBlue);
+    background-color: var(--darkBlue);
+    color: var(--white);
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color var(--transition), color var(--transition);
+}
+
+.permalink__copy:hover {
+    background-color: var(--blue);
+    border-color: var(--blue);
+}
+
+.permalink__error {
+    max-width: 50rem;
+    margin: 0 auto 1.5rem;
+    padding: 0.9rem 1.25rem;
+    border-radius: var(--radius-lg);
+    background-color: #fdecea;
+    color: #7a1f1f;
+    line-height: 1.5;
+}
+
+.permalink__error a {
+    color: inherit;
+    font-weight: 700;
+}
+
+@media (min-width: 768px) {
+    .permalink {
+        padding: 0 3rem 2rem;
+    }
+
+    .permalink__row {
+        flex-direction: row;
+        align-items: stretch;
+    }
+
+    .permalink__url {
+        flex: 1;
+    }
+
+    .permalink__copy {
+        flex: 0 0 auto;
+    }
+}
+
+/* ==========================================================================
    INTRO / CLOSING IMAGE
    ========================================================================== */
 

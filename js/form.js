@@ -274,14 +274,24 @@ document.addEventListener("DOMContentLoaded", () => {
     };
     localStorage.setItem("datosUbicacion", JSON.stringify(ubicacion));
 
-    // Guardar IDs y textos de cada select para diagnósticos
+    // Guardar IDs y textos de cada select para diagnósticos.
+    // `respuestas` va también a Supabase: es lo que permite regenerar el
+    // reporte desde el link permanente sin depender de este localStorage.
+    const respuestas = {};
     [...camposObligatorios, ...camposOpcionales].forEach(id => {
       const el = document.getElementById(id);
       if (el && el.tagName === "SELECT") {
         const option = el.options[el.selectedIndex];
-        localStorage.setItem(`${id}_id`, option?.id || "");
-        localStorage.setItem(`${id}_txt`, option?.textContent.trim() || "");
+        const optId  = option?.id || "";
+        const optTxt = option?.textContent.trim() || "";
+        localStorage.setItem(`${id}_id`, optId);
+        localStorage.setItem(`${id}_txt`, optTxt);
         localStorage.setItem(`${id}_val`, el.value || "");
+        // Solo opciones visibles y elegidas (los condicionales ocultos ya
+        // vienen reseteados a índice 0 por los handlers de arriba).
+        if (optId && el.value !== "" && el.closest(".hidden") === null) {
+          respuestas[id] = { id: optId, txt: optTxt, val: el.value };
+        }
       }
     });
 
@@ -343,7 +353,8 @@ document.addEventListener("DOMContentLoaded", () => {
       fuente_correo: document.getElementById("FuenteCorreo")?.value || null,
 
       total_ifcs: total,
-      factibilidad: factibilidad
+      factibilidad: factibilidad,
+      respuestas: respuestas
     };
 
     // ---- ID provisional (sobrescrito si Supabase responde con el id real) ----
@@ -351,6 +362,15 @@ document.addEventListener("DOMContentLoaded", () => {
       ? crypto.randomUUID()
       : `local-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
     sessionStorage.setItem("last_evaluation_id", fallbackId);
+
+    // ---- Token del link permanente ----
+    // Lo generamos aquí (no en la base) porque el INSERT va con
+    // return=minimal y no podemos leer la fila de vuelta. Un UUID v4 no se
+    // puede adivinar, así que sirve como "llave" del reporte.
+    const publicToken = (window.crypto && typeof crypto.randomUUID === "function")
+      ? crypto.randomUUID()
+      : null;
+    if (publicToken) payload.public_token = publicToken;
 
     // ---- Enviar a Supabase ----
     let supabaseOk = false;
@@ -392,8 +412,15 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ---- Redirigir a resultado con delay para ver el toast ----
+    // Solo llevamos el token si la fila quedó guardada: sin fila en la base
+    // el link no resolvería nada.
+    const resultadoUrl = "html/resultado.html?total=" + total
+      + (supabaseOk && publicToken ? "&r=" + publicToken : "");
+    if (supabaseOk && publicToken) {
+      try { localStorage.setItem("last_public_token", publicToken); } catch (e) { /* noop */ }
+    }
     setTimeout(() => {
-      window.location.href = "html/resultado.html?total=" + total;
+      window.location.href = resultadoUrl;
     }, supabaseOk ? 1500 : 1000);
   });
 });

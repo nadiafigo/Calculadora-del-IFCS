@@ -115,6 +115,22 @@
             <button id="btn-descargar-pdf" class="btn-pdf">Descargar reporte PDF</button>
         </div>
 
+        <!-- Link permanente: se muestra solo cuando la evaluación quedó guardada en la base -->
+        <section class="permalink" id="permalink-box" hidden aria-labelledby="permalink-title">
+            <div class="permalink__inner">
+                <p class="permalink__title" id="permalink-title">Guarda este enlace para volver a ver el reporte</p>
+                <p class="permalink__hint">Regenera el diagnóstico, las propuestas y el PDF con los datos guardados. Puedes compartirlo con quien necesite consultarlo.</p>
+                <div class="permalink__row">
+                    <input type="text" id="permalink-url" class="permalink__url" readonly aria-label="Enlace permanente del reporte">
+                    <button type="button" id="permalink-copy" class="permalink__copy">Copiar enlace</button>
+                </div>
+            </div>
+        </section>
+        <p class="permalink__error" id="permalink-error" hidden role="alert">
+            No encontramos una evaluación guardada para este enlace. Revisa que esté completo o
+            <a href="../index.html#CalcForm">haz una nueva evaluación</a>.
+        </p>
+
         <section class="tittle-res">
             <div class="res-tittle">
                 <h1>¡Digamos #AdiósPuentesAntipeatonales!</h1>
@@ -272,11 +288,17 @@
           <tr style="background:#f5f5f5;"><td style="padding:.4rem .5rem; font-weight:bold;">Correo:</td><td id="pdf-fuente-correo" style="padding:.4rem .5rem;"></td></tr>
         </table>
 
+        <div id="pdf-permalink-wrap" style="display:none; margin-top:1.5rem; padding:.75rem 1rem; background:#f0f3ff; border-left:3px solid #1a237e; font-size:.85rem; line-height:1.5; color:#333;">
+          <strong>Consulta este reporte en l&iacute;nea:</strong><br>
+          <span id="pdf-permalink" style="word-break:break-all; color:#1a237e;"></span>
+        </div>
+
         <p style="text-align:center; color:#999; font-size:.8rem; margin-top:2rem;">Generado por la Calculadora IFCS &mdash; Bicivilizate, Michoac&aacute;n A.C.</p>
       </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.2/html2pdf.bundle.min.js"></script>
+    <script src="../js/config.js"></script>
     <script src="../js/navbar.js"></script>
     <script src="../js/propuestas-rediseno.js"></script>
     <script src="../js/resultado.js"></script>

@@ -102,6 +102,36 @@ Para usar un subdominio como `calculadora.ligapeatonal.org`:
 - Los campos condicionales (rampa, escaleras, publicidad) se muestran/ocultan según las respuestas
 - Factibilidad: ≤20% = largo plazo, 21-65% = mediano plazo, >65% = corto plazo
 
+## Link permanente del reporte
+
+Cada evaluación guardada tiene un enlace del tipo
+`/html/resultado.html?r=<token>` que **vuelve a generar** el diagnóstico, las
+propuestas de rediseño y el PDF a partir de los datos en Supabase. No se
+guardan PDFs: el reporte siempre sale con la metodología vigente y no cuesta
+storage.
+
+- El token es un UUID v4 que genera `js/form.js` antes del INSERT (el INSERT va
+  con `return=minimal`, así que no se puede leer la fila de vuelta). Se guarda
+  en la columna `public_token` junto con `respuestas` (`{campo: {id, txt, val}}`),
+  que es lo que permite regenerar el diagnóstico sin depender del texto.
+- `resultado.html` muestra la caja "Guarda este enlace" con botón de copiar solo
+  cuando el INSERT tuvo éxito, y el PDF incluye el enlace al final.
+- La fila se lee con la función `get_evaluacion_publica(token)` (SECURITY
+  DEFINER, migración `009_reporte_permalink.sql`): anon no puede listar filas
+  no aprobadas, pero sí resolver un token exacto. Sin token no hay forma de
+  enumerar reportes (el `id` secuencial no sirve de entrada).
+- Evaluaciones anteriores a la migración: reciben token al aplicarla (el
+  DEFAULT se evalúa fila por fila) pero no tienen `respuestas`; `resultado.js`
+  reconstruye los ids de las opciones a partir del texto leyendo `index.html`.
+- En el panel admin cada tarjeta tiene "Ver reporte ↗", para abrirlo o
+  mandárselo a quien lo pidió.
+
+Para aplicar la migración en el proyecto linkeado sin password de la base:
+
+```bash
+npx supabase db query --linked -f supabase/migrations/009_reporte_permalink.sql
+```
+
 ## Panel de aprobación (admin)
 
 Las evaluaciones que envía el público **no aparecen automáticamente** en el mapa ni en las estadísticas. Quedan en la base de datos con `aprobado_mapa = false` hasta que un admin las apruebe desde el panel.

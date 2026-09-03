@@ -1,24 +1,189 @@
 /**
  * resultado.js — Lógica de la página de resultados
  *
- * Lee el total de la URL y los datos de localStorage
- * para generar el diagnóstico dinámico.
+ * Dos fuentes de datos, una sola página:
+ *  - Flujo normal: total en la URL + selecciones en localStorage (form.js).
+ *  - Link permanente (?r=<token>): se piden los datos guardados a Supabase
+ *    (RPC get_evaluacion_publica) y se reconstruye el mismo reporte. Si la
+ *    base no responde, cae al localStorage.
  */
 
-document.addEventListener("DOMContentLoaded", () => {
+// Columna de Supabase que guarda el TEXTO de cada select del formulario.
+// Sirve para (a) leer la fila remota y (b) reconstruir el id de la opción
+// en evaluaciones guardadas antes de que existiera la columna `respuestas`.
+const CAMPO_COLUMNA = {
+  ViaCarriles: "via_carriles", ViaDistCruce: "via_dist_cruce", ViaDistSemaf: "via_dist_semaf",
+  ViaBarreras: "via_barreras", ViaCamellones: "via_camellones", ViaRevo: "via_revo",
+  ViaRevoTipo: "via_revo_tipo", ViaVelPermi: "via_vel_permi", ViaVelOper: "via_vel_oper",
+  EquipNum: "equip_num", EquipDist: "equip_dist", EquipTipo: "equip_tipo",
+  PteObstBanq: "pte_obst_banq", PteAnchoAcc: "pte_ancho_acc", PteTipoAcc: "pte_tipo_acc",
+  PteNumEsc: "pte_num_esc", PteLongCami: "pte_long_cami", PtePendiente: "pte_pendiente",
+  PteDistDesc: "pte_dist_desc", PteAnchoPas: "pte_ancho_pas", PteCubierta: "pte_cubierta",
+  PteIluminacion: "pte_iluminacion", PtePubli: "pte_publi", PtePubliVisib: "pte_publi_visib"
+};
 
-  // ========================================
-  // RESULTADO NUMÉRICO
-  // ========================================
+/** Selecciones que dejó form.js en localStorage. null si no hay total en la URL. */
+function cargarDesdeLocal(params) {
+  const total = parseInt(params.get("total"), 10);
+  if (isNaN(total)) return null;
+
+  const ids = {}, txts = {}, vals = {};
+  Object.keys(CAMPO_COLUMNA).forEach(campo => {
+    ids[campo]  = localStorage.getItem(`${campo}_id`)  || "";
+    txts[campo] = localStorage.getItem(`${campo}_txt`) || "";
+    vals[campo] = localStorage.getItem(`${campo}_val`) || "";
+  });
+
+  let ubicacion = null;
+  try { ubicacion = JSON.parse(localStorage.getItem("datosUbicacion")); } catch (e) { ubicacion = null; }
+
+  return {
+    origen: "local",
+    total, ids, txts, vals, ubicacion,
+    fuente: {
+      nombre: localStorage.getItem("fuente_nombre"),
+      fecha:  localStorage.getItem("fuente_fecha"),
+      org:    localStorage.getItem("fuente_org"),
+      correo: localStorage.getItem("fuente_correo")
+    },
+    // El link solo se muestra cuando viene en la URL: un token guardado en
+    // localStorage podría ser de una evaluación anterior.
+    token: null
+  };
+}
+
+/**
+ * Mapa texto → {id, val} por select, leído del formulario real (index.html).
+ * Solo se usa para filas sin `respuestas` (anteriores a la migración 009).
+ */
+async function cargarMapaOpciones() {
+  const res = await fetch("../index.html");
+  if (!res.ok) throw new Error(`index.html ${res.status}`);
+  const doc = new DOMParser().parseFromString(await res.text(), "text/html");
+  const mapa = {};
+  Object.keys(CAMPO_COLUMNA).forEach(campo => {
+    const sel = doc.getElementById(campo);
+    if (!sel) return;
+    mapa[campo] = {};
+    Array.from(sel.options).forEach(opt => {
+      const txt = opt.textContent.trim();
+      if (opt.id && txt) mapa[campo][txt] = { id: opt.id, val: opt.value };
+    });
+  });
+  return mapa;
+}
+
+/** Evaluación guardada en Supabase, por token. null si el token no existe. */
+async function cargarDesdeSupabase(token) {
+  if (typeof SUPABASE_URL === "undefined" || typeof SUPABASE_ANON_KEY === "undefined") {
+    throw new Error("config.js no cargado");
+  }
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/get_evaluacion_publica`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "apikey": SUPABASE_ANON_KEY,
+      "Authorization": `Bearer ${SUPABASE_ANON_KEY}`
+    },
+    body: JSON.stringify({ token })
+  });
+  if (!res.ok) throw new Error(`RPC get_evaluacion_publica ${res.status}`);
+  const row = await res.json();
+  if (!row || typeof row !== "object") return null;
+
+  const respuestas = (row.respuestas && typeof row.respuestas === "object") ? row.respuestas : null;
+  let mapa = null;
+  if (!respuestas) {
+    try { mapa = await cargarMapaOpciones(); }
+    catch (e) { console.warn("No se pudo leer index.html para reconstruir las opciones:", e); }
+  }
+
+  const ids = {}, txts = {}, vals = {};
+  Object.keys(CAMPO_COLUMNA).forEach(campo => {
+    const r = respuestas && respuestas[campo];
+    if (r && r.id) {
+      ids[campo] = r.id; txts[campo] = r.txt || ""; vals[campo] = r.val || "";
+      return;
+    }
+    const txt = row[CAMPO_COLUMNA[campo]];
+    txts[campo] = txt ? String(txt) : "";
+    const m = (mapa && mapa[campo] && txt) ? mapa[campo][String(txt).trim()] : null;
+    ids[campo]  = m ? m.id  : "";
+    vals[campo] = m ? m.val : "";
+  });
+
+  return {
+    origen: "supabase",
+    total: parseInt(row.total_ifcs, 10),
+    ids, txts, vals,
+    ubicacion: {
+      pais: row.loc_pais || "", ciudad: row.loc_ciudad || "", vialidad: row.loc_vialidad || "",
+      colonia: row.loc_colonia || "", referencia: row.loc_referencia || "",
+      x: row.loc_x || "", y: row.loc_y || ""
+    },
+    fuente: {
+      nombre: row.fuente_nombre, fecha: row.fuente_fecha,
+      org: row.fuente_org, correo: row.fuente_correo
+    },
+    token
+  };
+}
+
+/**
+ * Decide la fuente:
+ *  - sin token → localStorage (flujo de siempre).
+ *  - token + la evaluación recién enviada en localStorage (la URL trae &total=)
+ *    → localStorage, sin pedir nada a la red; el token solo sirve para mostrar el link.
+ *  - token sin datos locales (link abierto en otro navegador) → Supabase, con
+ *    fallback a localStorage si la base no responde.
+ */
+async function cargarDatos(params) {
+  const token = params.get("r");
+  const local = cargarDesdeLocal(params);
+  if (!token) return local;
+  if (local && local.ubicacion) return Object.assign(local, { token });
+
+  try {
+    const remoto = await cargarDesdeSupabase(token);
+    if (remoto && !isNaN(remoto.total)) return remoto;
+    // El token no corresponde a ninguna fila: no mostramos el link.
+    console.warn("Link permanente sin evaluación en la base; uso localStorage.");
+    return cargarDesdeLocal(params);
+  } catch (e) {
+    // Sin red o base caída: el flujo normal sigue funcionando y el link
+    // sigue siendo válido, así que lo conservamos.
+    console.warn("No se pudo leer la evaluación desde Supabase:", e);
+    const local = cargarDesdeLocal(params);
+    return local ? Object.assign(local, { token }) : null;
+  }
+}
+
+document.addEventListener("DOMContentLoaded", async () => {
 
   const params = new URLSearchParams(window.location.search);
-  const total = parseInt(params.get("total"), 10);
 
   const resultadoEl = document.getElementById("Resultado");
   const textoFactEl = document.getElementById("TextoFactibilidad");
   const textoFact2 = document.getElementById("TextoFact2");
 
-  if (!resultadoEl || isNaN(total)) return;
+  if (!resultadoEl) return;
+
+  let store = null;
+  try { store = await cargarDatos(params); }
+  catch (e) { console.warn("No se pudieron cargar los datos del reporte:", e); }
+
+  if (!store || isNaN(store.total)) {
+    // Link permanente roto o sin datos: avisar en vez de dejar la página vacía.
+    const aviso = document.getElementById("permalink-error");
+    if (aviso && params.get("r")) aviso.hidden = false;
+    return;
+  }
+
+  const total = store.total;
+
+  // ========================================
+  // RESULTADO NUMÉRICO
+  // ========================================
 
   // Animación del contador
   let current = 0;
@@ -56,7 +221,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // DATOS DE UBICACIÓN
   // ========================================
 
-  const datos = JSON.parse(localStorage.getItem("datosUbicacion"));
+  const datos = store.ubicacion;
   if (datos) {
     setText("DxVialidad", datos.vialidad);
     setText("DxReferencia", datos.referencia);
@@ -64,19 +229,49 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ========================================
+  // LINK PERMANENTE
+  // ========================================
+
+  const permalinkUrl = store.token
+    ? `${window.location.origin}${window.location.pathname}?r=${encodeURIComponent(store.token)}`
+    : "";
+
+  const permalinkBox = document.getElementById("permalink-box");
+  if (permalinkBox && permalinkUrl) {
+    const input = document.getElementById("permalink-url");
+    if (input) input.value = permalinkUrl;
+    permalinkBox.hidden = false;
+
+    const btnCopy = document.getElementById("permalink-copy");
+    if (btnCopy) {
+      const label = btnCopy.textContent;
+      btnCopy.addEventListener("click", async () => {
+        try {
+          await navigator.clipboard.writeText(permalinkUrl);
+          btnCopy.textContent = "¡Copiado!";
+        } catch (e) {
+          if (input) { input.focus(); input.select(); }
+          btnCopy.textContent = "Selecciona y copia";
+        }
+        setTimeout(() => { btnCopy.textContent = label; }, 2500);
+      });
+    }
+  }
+
+  // ========================================
   // HELPER: leer selección guardada
   // ========================================
 
   function getStoredId(campo) {
-    return localStorage.getItem(`${campo}_id`) || "";
+    return store.ids[campo] || "";
   }
 
   function getStoredTxt(campo) {
-    return localStorage.getItem(`${campo}_txt`) || "";
+    return store.txts[campo] || "";
   }
 
   function getStoredVal(campo) {
-    return localStorage.getItem(`${campo}_val`) || "";
+    return store.vals[campo] || "";
   }
 
   function setText(elId, text) {
@@ -297,19 +492,12 @@ document.addEventListener("DOMContentLoaded", () => {
   // PROPUESTAS DE REDISEÑO
   // ========================================
 
-  const PROPUESTAS_FIELDS = [
-    "ViaCarriles", "ViaDistCruce", "ViaDistSemaf", "ViaBarreras",
-    "ViaCamellones", "ViaRevo", "ViaRevoTipo", "ViaVelPermi", "ViaVelOper",
-    "EquipNum", "EquipDist", "EquipTipo",
-    "PteObstBanq", "PteAnchoAcc", "PteTipoAcc", "PteNumEsc", "PteLongCami",
-    "PtePendiente", "PteDistDesc", "PteAnchoPas", "PteCubierta",
-    "PteIluminacion", "PtePubli", "PtePubliVisib"
-  ];
+  const PROPUESTAS_FIELDS = Object.keys(CAMPO_COLUMNA);
 
   function buildPropuestasFormData() {
     const out = {};
     PROPUESTAS_FIELDS.forEach(f => {
-      out[f] = localStorage.getItem(`${f}_id`) || null;
+      out[f] = getStoredId(f) || null;
     });
     return out;
   }
@@ -443,10 +631,18 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       // Fuente
-      setT("pdf-fuente-nombre", localStorage.getItem("fuente_nombre"));
-      setT("pdf-fuente-fecha", localStorage.getItem("fuente_fecha"));
-      setT("pdf-fuente-org", localStorage.getItem("fuente_org"));
-      setT("pdf-fuente-correo", localStorage.getItem("fuente_correo"));
+      setT("pdf-fuente-nombre", store.fuente.nombre);
+      setT("pdf-fuente-fecha", store.fuente.fecha);
+      setT("pdf-fuente-org", store.fuente.org);
+      setT("pdf-fuente-correo", store.fuente.correo);
+
+      // Link permanente: el PDF impreso lleva la forma de volver al reporte vivo
+      const pdfPermalinkWrap = document.getElementById("pdf-permalink-wrap");
+      const pdfPermalink = document.getElementById("pdf-permalink");
+      if (pdfPermalinkWrap && pdfPermalink) {
+        pdfPermalink.textContent = permalinkUrl;
+        pdfPermalinkWrap.style.display = permalinkUrl ? "block" : "none";
+      }
 
       // Diagnostic: copy visible <li> text from the page
       const dxDiv = document.getElementById("pdf-diagnostico");
