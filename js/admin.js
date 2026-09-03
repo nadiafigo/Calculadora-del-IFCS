@@ -78,7 +78,7 @@ async function loadPending() {
   const isApproved = activeTab === "aprobadas";
   const { data, error } = await client
     .from("evaluaciones")
-    .select("id, created_at, loc_pais, loc_ciudad, loc_vialidad, loc_colonia, loc_referencia, loc_x, loc_y, total_ifcs, factibilidad, fuente_nombre, fuente_org, fuente_correo, status_retiro, fecha_retiro")
+    .select("id, created_at, loc_pais, loc_ciudad, loc_vialidad, loc_colonia, loc_referencia, loc_x, loc_y, total_ifcs, factibilidad, fuente_nombre, fuente_org, fuente_correo, status_retiro, fecha_retiro, public_token")
     .eq("aprobado_mapa", isApproved)
     .order("created_at", { ascending: false });
 
@@ -138,6 +138,12 @@ function renderCard(e, isApproved) {
          <button class="btn-danger"  data-action="reject"  data-id="${e.id}">Rechazar (eliminar)</button>
        </footer>`;
 
+  // Link permanente del reporte (migración 009). Mismo link que ve quien
+  // llenó el formulario; desde aquí Nadia puede abrirlo o mandárselo a alguien.
+  const reporteHtml = e.public_token
+    ? `<a href="./resultado.html?r=${encodeURIComponent(e.public_token)}" target="_blank" rel="noopener" class="admin-reporte-link">Ver reporte ↗</a>`
+    : "—";
+
   const statusVal = e.status_retiro || "";
   const fechaVal  = e.fecha_retiro || "";
   const fechaHidden = statusVal === "Retirado" ? "" : " hidden";
@@ -178,6 +184,7 @@ function renderCard(e, isApproved) {
         <div><dt>Fuente</dt><dd>${escapeHtml(e.fuente_nombre || "—")} (${escapeHtml(e.fuente_org || "—")})</dd></div>
         <div><dt>Correo</dt><dd>${escapeHtml(e.fuente_correo || "—")}</dd></div>
         <div><dt>Enviado</dt><dd>${escapeHtml(fecha)}</dd></div>
+        <div><dt>Reporte</dt><dd>${reporteHtml}</dd></div>
       </dl>
       ${statusRetiroHtml}
       ${actionsHtml}
