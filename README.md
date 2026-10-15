@@ -102,6 +102,34 @@ Para usar un subdominio como `calculadora.ligapeatonal.org`:
 - Los campos condicionales (rampa, escaleras, publicidad) se muestran/ocultan según las respuestas
 - Factibilidad: ≤20% = largo plazo, 21-65% = mediano plazo, >65% = corto plazo
 
+## Base de datos (Supabase)
+
+Desde el **15 de octubre de 2026** la tabla `evaluaciones`, sus políticas RLS y
+la función `get_evaluacion_publica` viven en el proyecto Supabase
+**`cuervo-cafe`** (ref `tnlxfzruypugbttafeyf`, org *Made by humans*, plan Pro).
+Es el mismo proyecto que usa el sitio de Cuervo Café, también de Nadia: está en
+una org de pago y tiene tráfico diario, así que no se pausa por inactividad.
+
+Antes vivía en el proyecto `CouncilAI` (ref `fhzowyajnckiylxzywjb`, org free),
+que se pausó por inactividad y dejó el mapa, las estadísticas y el formulario
+sin datos. Ese proyecto quedó pausado; los datos ya están copiados (mismos
+`id`, mismos `public_token`, así que los links permanentes siguen sirviendo).
+
+Las credenciales públicas (URL + anon key) están en `js/config.js`. Para correr
+SQL sin password de la base:
+
+```bash
+npx supabase db query --linked -f archivo.sql   # linkeado a tnlxfzruypugbttafeyf
+```
+
+Ojo: el proyecto se comparte con Cuervo Café. Las tablas de la calculadora
+(`evaluaciones`) y las del café (`games`, `reservations`, `site_settings`,
+`admins`) son independientes, pero los usuarios de Auth son los mismos: un
+admin del café que entre por magic link al panel de la calculadora también
+podrá aprobar evaluaciones (las políticas de `evaluaciones` solo piden
+`authenticated`). Al revés no: las tablas del café exigen estar en `admins`
+(`es_admin()`), así que un admin de la calculadora no puede tocar el menú.
+
 ## Link permanente del reporte
 
 Cada evaluación guardada tiene un enlace del tipo
