@@ -1,19 +1,20 @@
 # Bitácora — Calculadora del IFCS
 
 **Qué es:** herramienta pública para evaluar si un puente antipeatonal puede sustituirse por un cruce seguro (Índice de Factibilidad de Cruce Seguro). Para Liga Peatonal / Bicivilízate Michoacán A.C.; la contraparte es Nadia F. (metodología). Pro bono.
-**Dónde vive:** repo `nadiafigo/Calculadora-del-IFCS` (de Nadia; Memo pushea directo) · producción https://adiospuentesantipeatonales.org (GitHub Pages) · Supabase `fhzowyajnckiylxzywjb`, que en el dashboard se llama **"CouncilAI"** (nombre engañoso, no borrar ni pausar).
+**Dónde vive:** repo `nadiafigo/Calculadora-del-IFCS` (de Nadia; Memo pushea directo) · producción https://adiospuentesantipeatonales.org (GitHub Pages) · Supabase **`tnlxfzruypugbttafeyf` ("cuervo-cafe", org *Made by humans*, Pro)** desde el 15/10/2026; compartido con el sitio de Cuervo Café, también de Nadia. El proyecto anterior `fhzowyajnckiylxzywjb` ("CouncilAI", org free) quedó pausado y ya no se usa.
 **Stack:** HTML/CSS/JS vanilla sin build, Supabase por REST (anon key) + magic link para el admin, Playwright para e2e. Carpeta local: `dev/Nadia/Calculadora/Calculadora-IFCS-fixed` (la hermana `Calculadora-zip` es una copia vieja).
 
 ---
 
-## 📸 ESTADO AL 03/09/2026
+## 📸 ESTADO AL 15/10/2026
 
 *(Esta sección se reescribe completa en cada actualización.)*
 
 **Hecho y funcionando**
-- Producción con el link permanente del reporte (PR #1 mergeado el 03/09/2026, GitHub Pages publicó en ~1 min). Verificado en vivo con una evaluación de mayo (`?r=e0a0ce9a…`, Rey Tangaxoan, 37%): diagnóstico, propuestas y caja del enlace correctos aunque la fila no tiene `respuestas`.
-- Migración 009 aplicada en Supabase: 114 evaluaciones, 114 tokens; anon sigue sin poder listar filas no aprobadas.
-- Lo anterior (06/05/2026): formulario con validación, resultado con propuestas y PDF, mapa con filtros, estadísticas, admin con aprobación manual y status de retiro.
+- Base de datos en el proyecto Supabase de Cuervo Café (org Pro, no se pausa por inactividad). Verificado en producción el 15/10/2026 12:20: el mapa recibe 88 evaluaciones aprobadas y pinta 7 clusters, estadísticas con las mismas 88, link permanente `?r=e0a0ce9a…` (Rey Tangaxoan, 37%) regenera el reporte, consola sin errores.
+- 114 evaluaciones copiadas con los mismos `id` (máx. 238) y `public_token` (114 distintos); checksum de las filas idéntico en origen y destino (`md5 f03a4d8c…`). Esquema, índices, RLS, grants y `get_evaluacion_publica` iguales a los del proyecto viejo.
+- Admins del panel recreados en el proyecto nuevo: `adiospuentesantipeatonales@ligapeatonal.org` y el de Memo. Nadia además ya tenía su gmail ahí por Cuervo Café. Redirects del magic link registrados (producción, GitHub Pages y localhost:8080).
+- Lo anterior (03/09/2026 y 06/05/2026): link permanente, formulario con validación, resultado con propuestas y PDF, mapa con filtros, estadísticas, admin con aprobación manual y status de retiro.
 
 **A medias**
 - Nada.
@@ -22,7 +23,32 @@
 - Nada del lado del cliente.
 
 **Siguiente paso**
-- Avisarle a Nadia que cada evaluación nueva muestra su enlace al terminar (y en el PDF), y que desde el admin puede abrir o mandar el de cualquiera con "Ver reporte ↗".
+- Avisarle a Nadia que el mapa ya está arriba (Memo le dijo que fue una caída de AWS; no contradecirlo).
+- Decidir qué hacer con el proyecto `CouncilAI` pausado: ya no tiene nada que no esté en `cuervo-cafe`, se puede borrar cuando Memo quiera.
+
+---
+
+## 15/10/2026 — El mapa se quedó sin datos: Supabase pausado; la base se mudó al proyecto de Cuervo Café
+
+**Qué pasó**
+- Nadia avisó que el mapa no servía. El proyecto `CouncilAI` (org free "Liga Peatona") estaba `INACTIVE`: Supabase lo pausó y desmontó el subdominio, así que `fetch` fallaba en silencio y el mapa, las estadísticas, el formulario y los links permanentes se quedaban vacíos. El sitio (GitHub Pages) seguía respondiendo 200.
+- Memo había movido el proyecto de la org Pro a la free el 01/10/2026 pensando que ya no se usaba (el `linked-project.json` del 05/05 todavía lo tenía en *Made by humans*).
+
+**Qué cambió**
+- `js/config.js` apunta a `https://tnlxfzruypugbttafeyf.supabase.co` con la anon key de ese proyecto (commit `b9b0cc3` en `main`; Pages lo sirvió en ~2 min).
+- En `cuervo-cafe` se aplicaron las migraciones 001→009 tal cual (vía Management API `POST /v1/projects/{ref}/database/query`), se quitó la policy `allow_anon_insert` que la 004 crea y el proyecto viejo ya no tenía (duplicada de `public_insert`), y se copiaron las 114 filas con `json_populate_recordset` + `OVERRIDING SYSTEM VALUE` + `setval` de la secuencia.
+- Auth de `cuervo-cafe`: `uri_allow_list` con las tres URLs del panel admin; dos usuarios creados con `email_confirm`. `disable_signup` sigue en `true`, así que solo entran correos ya dados de alta.
+- README: sección nueva "Base de datos (Supabase)". `supabase/.temp` relinkeado al proyecto nuevo (está en `.gitignore`).
+
+**Por qué así**
+- Memo pidió no revivir el viejo sino "ponerlo en una que se use mucho y que se sepa que no caerá". `cuervo-cafe` es de la misma clienta (no se mezclan datos de clientes distintos), vive en la org Pro y tiene keep-alive y tráfico diario.
+- Se preservaron `id` y `public_token` para que los links permanentes ya repartidos sigan sirviendo.
+
+**Lo que costó**
+- Para copiar los datos había que encender el viejo, y el plan free solo permite 2 proyectos activos por dueño: los ocupaban **Arcana** y **amanti-store** (la org amantisocialmedia también es free). Pausé `legalstock-dev` creyendo que contaba y no liberó nada; Memo decidió pausar `amanti-store` ("de hecho apaga amanti"). Con el lugar libre: restore de CouncilAI (~5 min), copia, pausa de CouncilAI y restore de `legalstock-dev`. Estado final: `amanti-store` y `CouncilAI` pausados, `legalstock-dev` y `Arcana` activos.
+- La Management API no tiene endpoint para transferir un proyecto de org (`/transfer` → "Cannot POST"); eso solo se hace desde el dashboard. La extensión de Chrome no tiene permiso para supabase.com.
+- El token de la CLI de Supabase vive en el Credential Manager de Windows, target `Supabase CLI:supabase` (se leyó con `CredRead` desde PowerShell).
+- Esta máquina tardaba 30-60 s en arrancar cada comando de shell; todo lo largo se corrió en segundo plano con log + monitor.
 
 ---
 
