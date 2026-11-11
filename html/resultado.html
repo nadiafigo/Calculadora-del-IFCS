@@ -124,6 +124,8 @@
         <div class="envoltura reporte-avisos">
             <!-- ?pendiente=1: la evaluación quedó en la cola local de form.js -->
             <p class="aviso-pendiente" id="aviso-pendiente" hidden role="status">Este reporte aún no está publicado: la evaluación se enviará cuando haya conexión.</p>
+            <!-- Migración 012: el puente tiene una evaluación más reciente -->
+            <p class="aviso-pendiente" id="aviso-reemplazo" hidden role="status">Este puente se volvió a evaluar porque su entorno cambió. <a href="./archivo.html">Ver la evaluación más reciente</a></p>
             <!-- Link permanente: se muestra solo cuando la evaluación quedó guardada en la base -->
             <section class="permalink" id="permalink-box" hidden aria-labelledby="permalink-title">
                 <div class="permalink__inner">

@@ -51,7 +51,7 @@ const MAPA_CAMPOS = [
   "id", "created_at", "loc_ciudad", "loc_vialidad", "loc_referencia", "loc_x", "loc_y",
   "total_ifcs", "factibilidad", "fuente_org", "status_retiro", "fecha_retiro",
   "pte_long_cami", "via_dist_cruce", "pte_tipo_acc", "pte_obst_banq",
-  "equip_tipo", "via_dist_semaf", "public_token"
+  "equip_tipo", "via_dist_semaf", "public_token", "fuente_fecha"
 ].join(",");
 
 function populateSelect(selectEl, values) {
@@ -73,7 +73,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   try {
     const res = await fetch(
-      `${SUPABASE_URL}/rest/v1/evaluaciones?select=${MAPA_CAMPOS}&aprobado_mapa=eq.true&order=created_at.desc`,
+      `${SUPABASE_URL}/rest/v1/evaluaciones?select=${MAPA_CAMPOS}&${ARCHIVO_FILTRO_VIGENTES}&order=created_at.desc`,
       {
         headers: {
           apikey: SUPABASE_ANON_KEY,
@@ -164,7 +164,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   // ========================================
 
   function buildPopup(e) {
-    const fecha = e.created_at ? new Date(e.created_at).toLocaleDateString("es-MX") : "—";
+    // Fecha de levantamiento de los datos (no la de captura): el entorno de un
+    // puente cambia, y quien lee necesita saber de cuándo es la información.
+    const fecha = archivoMesAnio(e.fuente_fecha)
+      || (e.created_at ? new Date(e.created_at).toLocaleDateString("es-MX") : "—");
     const badgeClass = e.factibilidad === "Corto plazo" ? "corto"
       : e.factibilidad === "Mediano plazo" ? "medio" : "largo";
     const ratio = computeRatio(e);
@@ -202,7 +205,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         <div class="popup-row">Total IFCS: <strong>${escapeHtml(e.total_ifcs ?? "—")}%</strong></div>
         <div class="popup-badge popup-badge--${badgeClass}">${escapeHtml(e.factibilidad || "—")}</div>
         ${ratioRow}
-        <div class="popup-row" style="margin-top:.35rem;">Fecha: ${escapeHtml(fecha)}</div>
+        <div class="popup-row" style="margin-top:.35rem;">Datos de: ${escapeHtml(fecha)}</div>
         <div class="popup-row">Org: ${escapeHtml(e.fuente_org || "—")}</div>
         ${fechaRetiroBlock}
         ${reporteLink}

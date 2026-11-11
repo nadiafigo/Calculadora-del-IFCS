@@ -8,8 +8,21 @@
 const ARCHIVO_CAMPOS = [
   "id", "created_at", "loc_ciudad", "loc_vialidad", "loc_colonia", "loc_x", "loc_y",
   "total_ifcs", "factibilidad", "status_retiro", "fecha_retiro",
-  "pte_tipo_acc", "pte_num_esc", "public_token"
+  "pte_tipo_acc", "pte_num_esc", "public_token", "fuente_fecha"
 ].join(",");
+
+// Evaluaciones públicas vigentes: aprobadas y no reemplazadas por una más
+// reciente del mismo puente (migración 012). Lo usan también mapa y estadísticas.
+const ARCHIVO_FILTRO_VIGENTES = "aprobado_mapa=eq.true&reemplazada_por=is.null";
+
+const ARCHIVO_MESES = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
+
+/** "2019-04-24" → "abr 2019" (fecha de levantamiento de los datos). "" si no es una fecha. */
+function archivoMesAnio(v) {
+  const m = /^(\d{4})-(\d{2})/.exec(String(v || ""));
+  if (!m || !ARCHIVO_MESES[Number(m[2]) - 1]) return "";
+  return `${ARCHIVO_MESES[Number(m[2]) - 1]} ${m[1]}`;
+}
 
 const ARCHIVO_COLOR = {
   "Corto plazo": "var(--corto)",
@@ -73,6 +86,7 @@ function archivoNormalizar(filas) {
       fechaRetiro: limpio(e.fecha_retiro),
       acceso: limpio(e.pte_tipo_acc),
       escalones: limpio(e.pte_num_esc),
+      datosDe: archivoMesAnio(e.fuente_fecha),
       token: e.public_token || ""
     };
   });
@@ -80,7 +94,7 @@ function archivoNormalizar(filas) {
 
 async function archivoCargar() {
   const res = await fetch(
-    `${SUPABASE_URL}/rest/v1/evaluaciones?select=${ARCHIVO_CAMPOS}&aprobado_mapa=eq.true&order=created_at.desc`,
+    `${SUPABASE_URL}/rest/v1/evaluaciones?select=${ARCHIVO_CAMPOS}&${ARCHIVO_FILTRO_VIGENTES}&order=created_at.desc`,
     { headers: { apikey: SUPABASE_ANON_KEY, Authorization: `Bearer ${SUPABASE_ANON_KEY}` } }
   );
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -123,6 +137,7 @@ function archivoFicha(f, raiz) {
       <div class="barra" aria-hidden="true"><i style="width:${f.ifcs ?? 0}%;background:${color}"></i></div>
       ${acceso ? `<p class="ficha-acceso">${archivoEsc(acceso)}</p>` : ""}
     </div>
+    ${f.datosDe ? `<p class="ficha-fecha">Datos de ${archivoEsc(f.datosDe)}</p>` : ""}
   </${etiqueta}></li>`;
 }
 

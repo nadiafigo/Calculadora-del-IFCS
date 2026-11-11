@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   try {
     const res = await fetch(
-      `${SUPABASE_URL}/rest/v1/evaluaciones?select=${ANALYTICS_CAMPOS}&aprobado_mapa=eq.true&order=created_at.desc`,
+      `${SUPABASE_URL}/rest/v1/evaluaciones?select=${ANALYTICS_CAMPOS}&${ARCHIVO_FILTRO_VIGENTES}&order=created_at.desc`,
       {
         headers: {
           apikey: SUPABASE_ANON_KEY,
