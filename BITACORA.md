@@ -39,7 +39,9 @@
 **Base de datos**
 - `010_permisos_admin_y_aprobacion.sql` **aplicada el 11/11/2026 03:15 UTC**: el INSERT anónimo sólo crea filas pendientes (`insert_pendiente`); anon sin UPDATE/DELETE/TRUNCATE (antes podía TRUNCATE); el panel sólo para `public.ifcs_admins` vía `es_admin_ifcs()` (el usuario de Cuervo Café ya no ve ni edita evaluaciones); el RPC `get_evaluacion_publica` ya no devuelve `fuente_correo`. Rollback en el reporte del lote (estado previo en el scratchpad de la sesión).
 - `ifcs_admins` tiene 3 correos: el institucional (en la migración) y los gmails de Memo y Nadia, **dados de alta a mano** porque el repo es público. Un admin nuevo necesita el usuario en Auth **y** su fila en `ifcs_admins`.
-- `011_ocultar_correo_a_anon.sql`: anon ya no puede leer `fuente_correo`. Se aplica **después** de publicar el frontend con columnas explícitas (si no, `select=*` rompería mapa y estadísticas).
+- `011_ocultar_correo_a_anon.sql` **aplicada el 11/11/2026 ~06:30 UTC**, ~10 min después del deploy (caché de Pages): anon recibe 401 al pedir `fuente_correo` o `select=*`; las columnas públicas siguen dando 88. Se aplicó con `npx supabase db query --remote --yes -f …` (la CLI 3.x pide `--yes` para escribir en producción). Deshacer: `GRANT SELECT ON TABLE public.evaluaciones TO anon;`.
+- Publicado con PR #3 (`7cb25f5`). Verificado en vivo: 7 páginas 200 en 1440/390, datos reales, 404 propio, `npm run test:prod-smoke` 9/9.
+- CI: `ubuntu-latest` ya es 26.04 y Playwright 1.58 no lo soporta, y `playwright install` se colgaba descargando Chromium: el workflow usa el contenedor `mcr.microsoft.com/playwright:v1.58.2-noble` (al subir `@playwright/test`, subir la etiqueta) y `npx http-server` en vez de python. Pasa en ~2.5 min.
 
 **Frontend**
 - Inyección cerrada: todo dato de base/URL/localStorage va escapado o por `textContent` (spec `reporte-seguridad`, probado por mutación).
