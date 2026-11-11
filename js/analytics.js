@@ -5,6 +5,52 @@
  * Credenciales cargadas desde config.js.
  */
 
+// Columnas que el tablero y el CSV usan. Nunca `select=*`: la tabla guarda el
+// nombre y el correo de quien evaluó, y anon no debe pedirlos (ni podrá).
+const ANALYTICS_CAMPOS = [
+  "id", "created_at", "loc_ciudad", "loc_vialidad", "loc_colonia", "loc_referencia",
+  "loc_x", "loc_y", "total_ifcs", "factibilidad", "status_retiro", "fecha_retiro",
+  "fuente_org", "pte_tipo_acc", "pte_pendiente", "pte_dist_desc", "pte_iluminacion",
+  "pte_publi", "pte_publi_visib", "pte_obst_banq", "pte_ancho_acc", "pte_ancho_pas",
+  "pte_cubierta", "via_barreras"
+].join(",");
+
+// Columnas públicas del CSV descargable: sin nombre ni correo de quien evaluó.
+const CSV_COLUMNAS = [
+  ["id", e => e.id],
+  ["folio", e => (e.id != null ? "P-" + String(e.id).padStart(3, "0") : "")],
+  ["ciudad", e => e.loc_ciudad],
+  ["vialidad", e => e.loc_vialidad],
+  ["colonia", e => e.loc_colonia],
+  ["referencia", e => e.loc_referencia],
+  ["latitud", e => e.loc_y],
+  ["longitud", e => e.loc_x],
+  ["ifcs", e => e.total_ifcs],
+  ["plazo", e => e.factibilidad],
+  ["status_retiro", e => e.status_retiro || "Pendiente"],
+  ["fecha_retiro", e => e.fecha_retiro],
+  ["tipo_acceso", e => e.pte_tipo_acc],
+  ["fecha_evaluacion", e => (e.created_at ? String(e.created_at).slice(0, 10) : "")]
+];
+const CSV_NUMERICAS = new Set(["id", "latitud", "longitud", "ifcs"]);
+
+/** Celda CSV (RFC 4180). En texto, neutraliza fórmulas (=, +, -, @) para Excel. */
+function csvCelda(valor, numerica) {
+  if (valor === null || valor === undefined || valor === "None") return "";
+  let s = String(valor).trim();
+  if (!numerica && /^[=+\-@\t\r]/.test(s)) s = "'" + s;
+  return /[",\r\n;]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
+}
+
+function construirCsv(filas) {
+  const lineas = [CSV_COLUMNAS.map(([k]) => k).join(",")];
+  filas.forEach(e => {
+    lineas.push(CSV_COLUMNAS.map(([k, f]) => csvCelda(f(e), CSV_NUMERICAS.has(k))).join(","));
+  });
+  // BOM para que Excel abra los acentos en UTF-8
+  return "\uFEFF" + lineas.join("\r\n") + "\r\n";
+}
+
 document.addEventListener("DOMContentLoaded", async () => {
 
   const dashboard = document.getElementById("dashboard");
@@ -17,7 +63,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   try {
     const res = await fetch(
-      `${SUPABASE_URL}/rest/v1/evaluaciones?select=*&aprobado_mapa=eq.true&order=created_at.desc`,
+      `${SUPABASE_URL}/rest/v1/evaluaciones?select=${ANALYTICS_CAMPOS}&aprobado_mapa=eq.true&order=created_at.desc`,
       {
         headers: {
           apikey: SUPABASE_ANON_KEY,
@@ -359,18 +405,31 @@ document.addEventListener("DOMContentLoaded", async () => {
       const barreras = e.via_barreras && e.via_barreras !== "No hay"
         ? e.via_barreras : "No hay";
 
+      // Celdas con textContent: los textos vienen de la base (vialidad,
+      // referencia, organización) y nunca se interpretan como HTML.
       const tr = document.createElement("tr");
-      tr.innerHTML = `
-        <td>${fecha}</td>
-        <td>${e.loc_ciudad || "—"}</td>
-        <td>${e.loc_vialidad || "—"}</td>
-        <td>${e.loc_referencia || "—"}</td>
-        <td><strong>${e.total_ifcs ?? "—"}%</strong></td>
-        <td><span class="badge badge--${badgeClass}">${e.factibilidad || "—"}</span></td>
-        <td>${e.pte_tipo_acc || "—"}</td>
-        <td>${barreras}</td>
-        <td>${e.fuente_org || "—"}</td>
-      `;
+      const celda = (txt) => {
+        const td = document.createElement("td");
+        td.textContent = txt;
+        tr.appendChild(td);
+        return td;
+      };
+      celda(fecha);
+      celda(e.loc_ciudad || "—");
+      celda(e.loc_vialidad || "—");
+      celda(e.loc_referencia || "—");
+      const tdIfcs = celda("");
+      const strong = document.createElement("strong");
+      strong.textContent = `${e.total_ifcs ?? "—"}%`;
+      tdIfcs.appendChild(strong);
+      const tdPlazo = celda("");
+      const badge = document.createElement("span");
+      badge.className = `badge badge--${badgeClass}`;
+      badge.textContent = e.factibilidad || "—";
+      tdPlazo.appendChild(badge);
+      celda(e.pte_tipo_acc || "—");
+      celda(barreras);
+      celda(e.fuente_org || "—");
       tbody.appendChild(tr);
     });
   }
@@ -389,6 +448,30 @@ document.addEventListener("DOMContentLoaded", async () => {
       renderTable(getFiltered());
     });
   });
+
+  // ========================================
+  // DESCARGAR CSV (filas del filtro activo)
+  // ========================================
+
+  const btnCsv = document.getElementById("descargar-csv");
+  if (btnCsv) {
+    btnCsv.hidden = false;
+    btnCsv.addEventListener("click", () => {
+      const filas = getFiltered();
+      const blob = new Blob([construirCsv(filas)], { type: "text/csv;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const ciudad = selectCiudad.value
+        ? selectCiudad.value.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^A-Za-z0-9]+/g, "-").replace(/^-|-$/g, "").toLowerCase()
+        : "todas";
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `ifcs-evaluaciones-${ciudad}-${new Date().toISOString().slice(0, 10)}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+    });
+  }
 
   // ========================================
   // INITIAL RENDER

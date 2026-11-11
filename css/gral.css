@@ -15,7 +15,7 @@
     --blanco: #FFFFFF;
     --tinta: #17201B;        /* grafito verdoso */
     --tinta-2: #4F5B55;      /* texto secundario */
-    --tinta-3: #7A867F;      /* placeholders, notas */
+    --tinta-3: #606C65;      /* placeholders, notas, folios mono: 5.0:1 sobre papel, 4.6:1 sobre papel-2 (AA) */
     --filete: #CDD5D0;       /* retícula y bordes */
     --filete-2: #DDE3DF;
     --verde: #139146;        /* verde del logo de la Liga: rellenos y puntos */
@@ -157,13 +157,29 @@ h1, h2, h3, h4 { text-wrap: balance; letter-spacing: -.02em; }
 .marca__nombre { font-weight: 700; font-size: 1.05rem; line-height: 1.05; letter-spacing: -.01em; }
 .marca__nombre small { display: block; font: 500 .6875rem/1.3 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--tinta-2); }
 
-.nav__checkbox { position: absolute; opacity: 0; pointer-events: none; }
+/* «Saltar al contenido»: primer elemento enfocable de cada página; sólo se ve con foco */
+.saltar {
+    position: absolute; left: var(--gutter); top: 8px; z-index: 1200;
+    padding: 10px 16px; border-radius: var(--r);
+    background: var(--tinta); color: var(--papel);
+    font: 600 var(--t-sm)/1.2 var(--sans); text-decoration: none;
+    transform: translateY(-160%);
+}
+.saltar:focus, .saltar:focus-visible { transform: none; outline: 2px solid var(--senal); outline-offset: 2px; }
+main:focus { outline: none; }
+
+/* Botón del menú móvil (aria-expanded lo actualiza js/navbar.js) */
 .nav__toggle {
     margin-left: auto; display: inline-flex; align-items: center; justify-content: center;
     min-height: 44px; padding: 10px 16px; border: 1px solid var(--tinta); border-radius: var(--r);
-    font: 600 var(--t-sm)/1 var(--sans); color: var(--tinta); cursor: pointer; user-select: none;
+    background: transparent; font: 600 var(--t-sm)/1 var(--sans); color: var(--tinta); cursor: pointer; user-select: none;
 }
 .nav__toggle .cerrar { display: none; }
+.nav__toggle[aria-expanded="true"] .abrir { display: none; }
+.nav__toggle[aria-expanded="true"] .cerrar { display: inline; }
+
+/* Versión anterior con checkbox (páginas aún sin regenerar con docs/unificar_cabecera_pie.py) */
+.nav__checkbox { position: absolute; opacity: 0; pointer-events: none; }
 .nav__checkbox:checked ~ .nav__toggle .abrir { display: none; }
 .nav__checkbox:checked ~ .nav__toggle .cerrar { display: inline; }
 .nav__checkbox:focus-visible ~ .nav__toggle { outline: 2px solid var(--verde-tinta); outline-offset: 3px; }
@@ -173,7 +189,8 @@ h1, h2, h3, h4 { text-wrap: balance; letter-spacing: -.02em; }
     background: var(--papel); border-bottom: 1px solid var(--tinta);
     padding: 8px var(--gutter) 20px; box-shadow: var(--shadow-lg);
 }
-.nav__checkbox:checked ~ .navbar-content { display: block; animation: fadeSlideIn .18s ease-out; }
+.nav__checkbox:checked ~ .navbar-content,
+.nav__toggle[aria-expanded="true"] ~ .navbar-content { display: block; animation: fadeSlideIn .18s ease-out; }
 .menu { display: flex; flex-direction: column; }
 .menu-option { border-bottom: 1px solid var(--filete); }
 .selected-option { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 48px; cursor: pointer; }
@@ -222,7 +239,8 @@ h1, h2, h3, h4 { text-wrap: balance; letter-spacing: -.02em; }
         box-shadow: var(--shadow); z-index: 1110;
     }
     .submenu::before { content: ""; position: absolute; bottom: 100%; left: 0; right: 0; height: 8px; }
-    .menu-option:hover > .submenu, .menu-option:focus-within > .submenu { display: block; }
+    /* Con ratón se abre al pasar; con teclado, con el botón (navbar.js pone .menu-open y aria-expanded) */
+    .menu-option:hover > .submenu { display: block; }
     .menu-cta { padding: 0 0 0 8px; }
     .menu-cta .btn { width: auto; }
 }
@@ -263,6 +281,23 @@ h1, h2, h3, h4 { text-wrap: balance; letter-spacing: -.02em; }
 }
 .pagina-placeholder h1 { font-size: 2rem; font-weight: 700; }
 .pagina-placeholder p { font-size: 1.05rem; line-height: 1.6; color: var(--tinta-2); }
+
+/* 404 (la sirve GitHub Pages en cualquier ruta inexistente) */
+.pagina-404 .lamina { min-height: calc(100vh - 68px - 12rem); display: flex; align-items: center; }
+.pagina-404 .lamina > .envoltura { padding-block: clamp(56px, 9vw, 120px); }
+.pagina-404 .contenido { display: grid; gap: 18px; max-width: 46rem; }
+.pagina-404 .mono { color: var(--verde-tinta); }
+.pagina-404 h1 { font-size: var(--t-h1-int); line-height: 1.05; font-weight: 700; letter-spacing: -.03em; }
+.pagina-404 .bajada { font-size: var(--t-lg); line-height: 1.5; color: var(--tinta-2); max-width: 40rem; }
+.acciones-404 { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 8px; }
+.cajetin-404 { margin-top: clamp(24px, 4vw, 48px); }
+@media (max-width: 620px) {
+    .cajetin-404 { grid-template-columns: 1fr 1fr; }
+    .cajetin-404 > div:nth-child(2) { display: none; }
+    .cajetin-404 > div:nth-child(4) { border-left: 0; }
+    .cajetin-404 > div:nth-child(n+4) { border-top: 1px solid var(--tinta); }
+    .acciones-404 .btn { flex: 1 1 100%; }
+}
 
 /* ==========================================================================
    PIE (compartido entre todas las páginas)
@@ -306,7 +341,7 @@ h1, h2, h3, h4 { text-wrap: balance; letter-spacing: -.02em; }
    ========================================================================== */
 
 @media print {
-    .header, .button-container, .calc-btn-cont, .footer, .reticula { display: none !important; }
+    .saltar, .header, .button-container, .calc-btn-cont, .footer, .reticula { display: none !important; }
     body { font-size: 11pt; color: #000; background: #fff; }
     .form-section { break-inside: avoid; page-break-inside: avoid; border: 1px solid #ccc; margin-bottom: .5rem; }
     .res-gral { background: none !important; color: #000 !important; }

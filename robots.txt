@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /html/admin.html
+
+Sitemap: https://adiospuentesantipeatonales.org/sitemap.xml

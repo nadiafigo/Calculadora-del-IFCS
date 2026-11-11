@@ -99,8 +99,9 @@ function archivoCifras(fichas) {
   };
 }
 
+/** Folio de la ficha, ya escapado (el id viene de la base, pero no se confía en él). */
 function archivoFolio(f) {
-  return "P-" + String(f.id).padStart(3, "0");
+  return archivoEsc("P-" + String(f.id ?? "").padStart(3, "0"));
 }
 
 /** HTML de una ficha. `raiz` es el prefijo hacia la raíz del sitio ("./" o "../"). */

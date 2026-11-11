@@ -5,48 +5,80 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Calculadora del Índice de Factibilidad de Cruce Seguro. Evalúa puentes antipeatonales y determina la factibilidad de sustituirlos por cruces peatonales seguros.">
+    <title>Adiós puentes antipeatonales · Índice de Factibilidad de Cruce Seguro</title>
+    <meta name="description" content="Evalúa un puente antipeatonal de tu ciudad, consulta el archivo y el mapa de los puentes ya evaluados y obtén un reporte con propuestas para cambiarlo por un cruce seguro a nivel de calle.">
+    <link rel="canonical" href="https://adiospuentesantipeatonales.org/">
     <meta name="theme-color" content="#F3F5F2">
     <!-- Open Graph -->
     <meta property="og:type" content="website">
-    <meta property="og:title" content="Calculadora IFCS — Factibilidad de Cruce Peatonal Seguro">
-    <meta property="og:description" content="Calcula qué tan factible es la sustitución de un puente antipeatonal por un cruce seguro en tu ciudad. Herramienta de Liga Peatonal y Bicivilízate Michoacán.">
-    <meta property="og:image" content="https://adiospuentesantipeatonales.org/img/LP.png">
+    <meta property="og:locale" content="es_MX">
+    <meta property="og:site_name" content="Adiós puentes antipeatonales">
+    <meta property="og:title" content="¿Ese puente se puede cambiar por un cruce seguro?">
+    <meta property="og:description" content="Evalúa un puente antipeatonal, mira el archivo y el mapa de los puentes evaluados y obtén un reporte con propuestas de rediseño. De Liga Peatonal y Bicivilízate Michoacán.">
     <meta property="og:url" content="https://adiospuentesantipeatonales.org/">
+    <meta property="og:image" content="https://adiospuentesantipeatonales.org/img/og-ifcs.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Plano de Morelia con los puentes antipeatonales evaluados con el IFCS.">
     <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="Calculadora IFCS — Factibilidad de Cruce Peatonal Seguro">
-    <meta name="twitter:description" content="Calcula qué tan factible es la sustitución de un puente antipeatonal por un cruce seguro en tu ciudad.">
-    <meta name="twitter:image" content="https://adiospuentesantipeatonales.org/img/LP.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="¿Ese puente se puede cambiar por un cruce seguro?">
+    <meta name="twitter:description" content="Evalúa un puente antipeatonal y obtén un reporte con propuestas para cambiarlo por un cruce seguro a nivel de calle.">
+    <meta name="twitter:image" content="https://adiospuentesantipeatonales.org/img/og-ifcs.jpg">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://adiospuentesantipeatonales.org/#liga-peatonal",
+          "name": "Liga Peatonal",
+          "url": "https://adiospuentesantipeatonales.org/",
+          "logo": "https://adiospuentesantipeatonales.org/img/LP.png",
+          "email": "adiospuentesantipeatonales@ligapeatonal.org",
+          "sameAs": ["https://facebook.com/LigaPeatonal", "https://instagram.com/ligapeatonal"]
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://adiospuentesantipeatonales.org/#sitio",
+          "name": "Adiós puentes antipeatonales",
+          "alternateName": "Calculadora del Índice de Factibilidad de Cruce Seguro (IFCS)",
+          "url": "https://adiospuentesantipeatonales.org/",
+          "inLanguage": "es-MX",
+          "publisher": { "@id": "https://adiospuentesantipeatonales.org/#liga-peatonal" }
+        }
+      ]
+    }
+    </script>
     <link rel="icon" type="image/png" sizes="32x32" href="./img/logo_FPNC_32x32.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="./css/gral.css">
     <link rel="stylesheet" href="./css/archivo.css">
     <link rel="stylesheet" href="home.css">
     <link rel="stylesheet" href="./css/validation.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
-    <title>Factibilidad de Cruce Seguro</title>
-
 </head>
 
 
 <body>
     <header class="header">
+        <a class="saltar" href="#contenido">Saltar al contenido</a>
         <nav class="navbar" aria-label="Principal">
             <a class="marca" href="./index.html">
                 <img src="./img/LP.png" alt="Liga Peatonal" class="navbar__logo" width="40" height="40">
                 <span class="marca__nombre">Adiós puentes antipeatonales<small>Calculadora IFCS</small></span>
             </a>
-            <input type="checkbox" id="nav__checkbox" class="nav__checkbox" aria-label="Abrir o cerrar el menú">
-            <label for="nav__checkbox" class="nav__toggle"><span class="abrir">Menú</span><span class="cerrar">Cerrar</span></label>
-            <div class="navbar-content">
+            <button type="button" class="nav__toggle" aria-expanded="false" aria-controls="menu-principal"><span class="abrir">Menú</span><span class="cerrar">Cerrar</span></button>
+            <div class="navbar-content" id="menu-principal">
               <ul class="menu">
                 <li class="menu-option"><div class="selected-option"><a class="menu__item" href="./html/archivo.html">Archivo</a></div></li>
                 <li class="menu-option"><div class="selected-option"><a class="menu__item" href="./html/mapa.html">Mapa</a></div></li>
                 <li class="menu-option"><div class="selected-option"><a class="menu__item" href="./html/analytics.html">Estadísticas</a></div></li>
                 <li class="menu-option"><div class="selected-option"><a class="menu__item" href="./antecedentes.html">Metodología</a></div></li>
                 <li class="menu-option">
-                    <div class="selected-option"><button class="menu__item" type="button" aria-haspopup="true">Descargables</button><span class="item-icon" aria-hidden="true"></span></div>
-                    <div class="submenu">
+                    <div class="selected-option"><button class="menu__item" type="button" aria-expanded="false" aria-controls="submenu-descargables">Descargables</button><span class="item-icon" aria-hidden="true"></span></div>
+                    <div class="submenu" id="submenu-descargables">
                         <ul class="submenu_container">
                             <li><a class="submenu__item" href="./pdf/Tabla 5. Formato de llenado.pdf">Formato de llenado</a></li>
                             <li><a class="submenu__item" href="./pdf/MANUAL_IFCS.pdf">Manual del IFCS</a></li>
@@ -60,7 +92,7 @@
         </nav>
     </header>
 
-    <main>
+    <main id="contenido">
         <!-- Lámina 01: portada con el plano -->
         <section class="lamina portada" aria-labelledby="t-portada">
             <div class="envoltura">
@@ -175,7 +207,10 @@
             <div class="envoltura">
                 <div class="porque">
                     <figure>
-                        <img class="img1" src="./img/mobile/img2.jpg" alt="Personas de todas las edades suben y bajan apretadas por la escalera angosta de un puente peatonal." width="2000" height="1337" decoding="async">
+                        <picture>
+                            <source type="image/webp" srcset="./img/mobile/img2-800.webp 800w, ./img/mobile/img2-1200.webp 1200w" sizes="(max-width: 900px) 100vw, 720px">
+                            <img class="img1" src="./img/mobile/img2-1200.jpg" srcset="./img/mobile/img2-800.jpg 800w, ./img/mobile/img2-1200.jpg 1200w" sizes="(max-width: 900px) 100vw, 720px" alt="Personas de todas las edades suben y bajan apretadas por la escalera angosta de un puente peatonal." width="1200" height="802" loading="lazy" decoding="async">
+                        </picture>
                         <figcaption class="mono">Cruzar por arriba</figcaption>
                     </figure>
                     <div class="porque-texto">
@@ -200,9 +235,25 @@
                         <p>Primero levanta los datos en campo con el <a href="./pdf/Tabla 5. Formato de llenado.pdf">formato de llenado</a>. Después captúralos aquí; tu evaluación se revisa antes de aparecer en el mapa.</p>
                     </div>
 
+        <div class="calc-cuerpo">
+            <nav class="progreso" id="progreso" aria-label="Avance de la evaluación">
+                <p class="mono progreso-titulo">Avance <span class="progreso-total" id="progreso-total">0 de 0</span></p>
+                <ol class="progreso-pasos">
+                    <li><a href="#paso-1" data-paso="1"><span class="progreso-num" aria-hidden="true">01</span><span class="progreso-nombre">Ubicación</span><span class="progreso-cuenta" aria-hidden="true">0/7</span><span class="visually-hidden progreso-sr"></span><i class="progreso-barra" aria-hidden="true"></i></a></li>
+                    <li><a href="#paso-2" data-paso="2"><span class="progreso-num" aria-hidden="true">02</span><span class="progreso-nombre">Vialidad</span><span class="progreso-cuenta" aria-hidden="true">0/7</span><span class="visually-hidden progreso-sr"></span><i class="progreso-barra" aria-hidden="true"></i></a></li>
+                    <li><a href="#paso-3" data-paso="3"><span class="progreso-num" aria-hidden="true">03</span><span class="progreso-nombre">Equipamientos</span><span class="progreso-cuenta" aria-hidden="true">0/3</span><span class="visually-hidden progreso-sr"></span><i class="progreso-barra" aria-hidden="true"></i></a></li>
+                    <li><a href="#paso-4" data-paso="4"><span class="progreso-num" aria-hidden="true">04</span><span class="progreso-nombre">El puente</span><span class="progreso-cuenta" aria-hidden="true">0/7</span><span class="visually-hidden progreso-sr"></span><i class="progreso-barra" aria-hidden="true"></i></a></li>
+                    <li><a href="#paso-5" data-paso="5"><span class="progreso-num" aria-hidden="true">05</span><span class="progreso-nombre">Fuente</span><span class="progreso-cuenta" aria-hidden="true">0/5</span><span class="visually-hidden progreso-sr"></span><i class="progreso-barra" aria-hidden="true"></i></a></li>
+                </ol>
+            </nav>
+            <div class="calc-principal">
+        <div class="borrador-aviso" id="borrador-aviso" role="status" hidden>
+            <p><span class="mono">Borrador</span> Recuperamos tu evaluación en curso.</p>
+            <button type="button" class="borrador-limpiar" id="btn-empezar-de-cero">Empezar de cero</button>
+        </div>
         <form class="calc-form" id="CalcForm" novalidate>
             <!-- --------------------------------------------- Sección 1 -->
-            <div class="form-section-cont">
+            <div class="form-section-cont" id="paso-1" data-paso="1">
                 <div class="form-section sect1">
                     <div class="form-subtitle">
                         <p class="subt-num subt-1">1</p>
@@ -210,47 +261,46 @@
                     </div>
                     <div class="input-container inp-cont-1">
                         <div class="form-input">
-                            <p class="input-desc">País:</p>
-                            <input type="text" placeholder="Ej. México" id="LocPais" name="LocPais" required>
+                            <label class="input-desc" for="LocPais">País:</label>
+                            <input type="text" placeholder="Ej. México" id="LocPais" name="LocPais" autocomplete="country-name" required>
                         </div>
                         <div class="form-input">
-                            <p class="input-desc">Ciudad o localidad:</p>
-                            <input type="text" placeholder="Ej. Morelia" id="LocCiudad" name="LocCiudad" required>
+                            <label class="input-desc" for="LocCiudad">Ciudad o localidad:</label>
+                            <input type="text" placeholder="Ej. Morelia" id="LocCiudad" name="LocCiudad" list="ciudades-lista" autocomplete="off" required>
+                            <datalist id="ciudades-lista"></datalist>
                         </div>
                         <div class="form-input">
-                            <p class="input-desc">Nombre de la vialidad:</p>
+                            <label class="input-desc" for="LocVia">Nombre de la vialidad:</label>
                             <input type="text" placeholder="Ej. Periférico Independencia" id="LocVia" name="LocVia" required>
                         </div>
                         <div class="form-input">
-                            <p class="input-desc">Colonia:</p>
+                            <label class="input-desc" for="LocColonia">Colonia:</label>
                             <input type="text" placeholder="Ej. Camelinas" id="LocColonia" name="LocColonia" required>
                         </div>
                         <div class="form-input">
-                            <p class="input-desc">Referencia:</p>
-                            <input type="text" placeholder="Ej. Mercado de Abastos" id="LocRef"
-                            name="LocRef" required>
+                            <label class="input-desc" for="LocRef">Referencia:</label>
+                            <input type="text" placeholder="Ej. Mercado de Abastos" id="LocRef" name="LocRef" required>
                         </div>
                         <div class="form-input">
-                            <p class="input-desc">Coordenada X:</p>
-                            <input type="text" placeholder="Ej. -101.221780" id="LocX"
-                            name="LocX" required>
+                            <label class="input-desc" for="LocX">Coordenada X (longitud):</label>
+                            <input type="text" placeholder="Ej. -101.221780" id="LocX" name="LocX" inputmode="decimal" autocomplete="off" required>
                         </div>
                         <div class="form-input">
-                            <p class="input-desc">Coordenada Y:</p>
-                            <input type="text" placeholder="Ej. 19.676883" id="LocY" name="LocY" required>
+                            <label class="input-desc" for="LocY">Coordenada Y (latitud):</label>
+                            <input type="text" placeholder="Ej. 19.676883" id="LocY" name="LocY" inputmode="decimal" autocomplete="off" required>
                         </div>
                         <div class="form-input">
                             <button type="button" id="btn-abrir-mapa" class="btn-mapa-selector">
                                 Marcar en el mapa
                             </button>
-                            <small class="form-hint">Toca el mapa para llenar coordenadas y dirección automáticamente.</small>
+                            <small class="form-hint" id="hint-mapa">Toca el mapa para llenar coordenadas y dirección automáticamente.</small>
                         </div>
                     </div>
                 </div>
             </div>
             
             <!-- --------------------------------------------- Sección 2 -->
-            <div class="form-section-cont">
+            <div class="form-section-cont" id="paso-2" data-paso="2">
                 <div class="form-section sect2">
                     <div class="form-subtitle">
                         <p class="subt-num subt-2">2</p>
@@ -371,7 +421,7 @@
                         <div id="Box_ViaRevoTipo" class="hidden form-input">
                             <label for="ViaRevoTipo">
                                 <span>Tipo de reductores de velocidad</span>
-                                <select id="ViaRevoTipo" name="ViaRevoTipo">
+                                <select id="ViaRevoTipo" name="ViaRevoTipo" required>
                                     <option value="" id=""></option>
                                     <option value="2" id="ViaRevoTipo_tope">Tope</option>
                                     <option value="1" id="ViaRevoTipo_lineas">Líneas logarítmicas con botones</option>
@@ -413,7 +463,7 @@
             </div>
 
             <!-- --------------------------------------------- Sección 3 -->
-            <div class="form-section-cont">
+            <div class="form-section-cont" id="paso-3" data-paso="3">
                 <div class="form-section sect3">
                     <div class="form-subtitle">
                         <p class="subt-num subt-3">3</p>
@@ -478,7 +528,7 @@
             </div>
 
             <!-- --------------------------------------------- Sección 4 -->
-            <div class="form-section-cont">
+            <div class="form-section-cont" id="paso-4" data-paso="4">
                 <div class="form-section sect4">
                     <div class="form-subtitle">
                         <p class="subt-num subt-4">4</p>
@@ -518,9 +568,7 @@
                                 <option value="1" id="PteAnchoAcc_menor">Menor a 1.5 metros</option>
                                 <option value="0" id="PteAnchoAcc_mayor">1.5 metros o más</option>
                             </select>
-                        <!---</label>
-                            <p class="input-desc">Ancho de acceso:</p>
-                            <input type="number" placeholder="Número en metros" id="pte-ancho-acceso" name="pte-ancho-acceso" required> --->
+                            </label>
                         </div>
                         
                         <label for="PteTipoAcc">
@@ -536,7 +584,7 @@
                         <div class="hidden" id="Box_PteNumEsc">
                             <label for="PteNumEsc">
                             <span>Número de escalones:</span>
-                            <select name="PteNumEsc" id="PteNumEsc">
+                            <select name="PteNumEsc" id="PteNumEsc" required>
                                 <option value="" id=""></option>
                                 <option value="2" id="PteNumEsc_24menos">24  escalones o menos</option>
                                 <option value="4" id="PteNumEsc_25a49">25 a 49 escalones</option>
@@ -547,8 +595,8 @@
 
                         <div class="hidden" id="Box_PteLongCami">
                             <label for="PteLongCami">
-                            <span>Logitud total caminada (incluyendo rampas):</span>
-                            <select name="PteLongCami" id="PteLongCami">
+                            <span>Longitud total caminada (incluyendo rampas):</span>
+                            <select name="PteLongCami" id="PteLongCami" required>
                                 <option value="" id=""></option>
                                 <option value="1" id="PteLongCami_0a99">0 a 99 metros</option>
                                 <option value="1" id="PteLongCami_100a149">100 a 149 metros</option>
@@ -565,7 +613,7 @@
                         <div class="hidden" id="Box_PtePendiente">
                             <label for="PtePendiente">
                             <span>Pendiente de la rampa:</span>
-                            <select name="PtePendiente" id="PtePendiente">
+                            <select name="PtePendiente" id="PtePendiente" required>
                                 <option value="" id=""></option>
                                 <option value="0" id="PtePendiente_6menos">6% o menos</option>
                                 <option value="1" id="PtePendiente_6,1a8">6.1% a 8%</option>
@@ -581,15 +629,14 @@
                         <div class="hidden" id="Box_PteDistDesc">
                             <label for="PteDistDesc">
                             <span>Distancia entre descansos:</span>
-                            <select name="PteDistDesc" id="PteDistDesc">
+                            <select name="PteDistDesc" id="PteDistDesc" required>
                                 <option value="" id=""></option>
                                 <option value="0" id="PteDistDesc_6menos">6 metros o menos</option>
                                 <option value="1" id="PteDistDesc_7a14">7 a 14 metros</option>
                                 <option value="2" id="PteDistDesc_15mas">15 metros o más</option>
                             </select>
+                            </label>
                         </div>
-                        
-                        </label>
                         <!-- <div class="form-input">
                             <p class="input-desc">Ancho de la pasarela del puente:</p>
                             <input type="number" placeholder="Número" id="puent-ancho_pasarela">
@@ -639,7 +686,7 @@
                         <div id="Box_Visibilidad" class="hidden" >
                             <label for="PtePubliVisib">
                             <span>¿La publicidad obstaculiza la visibilidad al interior?</span>
-                            <select name="PtePubliVisib" id="PtePubliVisib">
+                            <select name="PtePubliVisib" id="PtePubliVisib" required>
                                 <option value="" id=""></option>
                                 <option value="1" id="PtePubliVisib_si">Sí</option>
                                 <option value="0" id="PtePubliVisib_no">No</option>
@@ -651,7 +698,7 @@
             </div>
 
             <!-- --------------------------------------------- Sección 5 -->
-            <div class="form-section-cont">
+            <div class="form-section-cont" id="paso-5" data-paso="5">
                 <div class="form-section sect5">
                     <div class="form-subtitle">
                         <p class="subt-num subt-5">5</p>
@@ -659,25 +706,25 @@
                     </div>
                     <div class="input-container inp-cont-5">
                         <div class="form-input">
-                            <p class="input-desc">¿Cuál es tu nombre?</p>
-                            <input type="text" placeholder="Nombre completo" id="FuenteNombre" name="FuenteNombre" required>
+                            <label class="input-desc" for="FuenteNombre">¿Cuál es tu nombre?</label>
+                            <input type="text" placeholder="Nombre completo" id="FuenteNombre" name="FuenteNombre" autocomplete="name" required>
                         </div>
                         <div class="form-input">
-                            <p class="input-desc">Fecha de levantamiento de los datos</p>
+                            <label class="input-desc" for="FuenteFecha">Fecha de levantamiento de los datos</label>
                             <input type="date" id="FuenteFecha" name="FuenteFecha" required>
                         </div>
                         <div class="form-input">
-                            <p class="input-desc">Colectivo o institución que representas:</p>
-                            <input type="text" id="FuenteOrg" name="FuenteOrg" required>
+                            <label class="input-desc" for="FuenteOrg">Colectivo o institución que representas:</label>
+                            <input type="text" id="FuenteOrg" name="FuenteOrg" autocomplete="organization" required>
                         </div>
                         <div class="form-input">
-                            <p class="input-desc">Correo electrónico:</p>
-                            <input type="email" id="FuenteCorreo" name="FuenteCorreo" required>
-                            <small class="form-hint">Tus datos quedan guardados en este dispositivo para que no los tengas que escribir cada vez. Solo tú los ves.</small>
+                            <label class="input-desc" for="FuenteCorreo">Correo electrónico:</label>
+                            <input type="email" id="FuenteCorreo" name="FuenteCorreo" autocomplete="email" aria-describedby="hint-correo" required>
+                            <small class="form-hint" id="hint-correo">Guardamos nombre, colectivo y correo en este dispositivo para que no los escribas cada vez. Tu correo no se publica: sólo lo ve el equipo de la Liga.</small>
                         </div>
                         <div class="desc-5">
-                            <input type="checkbox" required>
-                            <p>Al realizar el cálculo, acepto que los datos aquí depositados se plasmen en el <a id="link-mapa-consent" href="html/mapa.html" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">Mapa de Índices de Factibilidad de Cruces Seguros para la Sustitución de Puentes Antipeatonales</a>, en donde se hará mención de mi nombre, colectivo o institución como fuente de estos.</p>
+                            <input type="checkbox" id="Consentimiento" name="Consentimiento" required>
+                            <label for="Consentimiento">Al realizar el cálculo, acepto que los datos aquí depositados se plasmen en el <a id="link-mapa-consent" href="html/mapa.html" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()">Mapa de Índices de Factibilidad de Cruces Seguros para la Sustitución de Puentes Antipeatonales</a>, en donde se hará mención de mi nombre, colectivo o institución como fuente de estos.</label>
                         </div>
                     </div>
                 </div>
@@ -685,8 +732,11 @@
             <div class="calc-btn-cont">
                 <p>Al calcular verás el diagnóstico del puente y las propuestas de rediseño. Tu reporte queda guardado con un enlace permanente.</p>
                 <button id="VerResultado" type="submit" class="btn-yellow">Calcular el IFCS <span aria-hidden="true">→</span></button>
+                <p class="form-resumen" id="form-resumen" aria-live="assertive" aria-atomic="true"></p>
             </div>
         </form>
+            </div>
+        </div>
                 </div>
             </div>
         </section>
@@ -736,9 +786,20 @@
             </div>
         </div>
     </footer>
-    </main>
 
-    
+    <!-- Evaluaciones guardadas en este dispositivo que no se pudieron enviar (form.js) -->
+    <div class="envio-dock" id="envio-dock" role="region" aria-labelledby="envio-dock-etiqueta" hidden>
+        <p class="mono envio-dock__etiqueta" id="envio-dock-etiqueta">Sin enviar</p>
+        <p class="envio-dock__texto" id="envio-dock-texto"></p>
+        <ul class="envio-dock__enlaces" id="envio-dock-enlaces" hidden></ul>
+        <div class="envio-dock__acciones">
+            <button type="button" class="btn btn--verde" id="btn-reintentar">Reintentar ahora</button>
+            <a class="btn btn--linea" id="link-reporte-local" href="./html/resultado.html" hidden>Ver el reporte (aún sin publicar)</a>
+        </div>
+        <button type="button" class="envio-dock__cerrar" id="btn-cerrar-dock" aria-label="Ocultar este aviso">×</button>
+    </div>
+    <p class="visually-hidden" id="envio-anuncio" aria-live="polite" aria-atomic="true"></p>
+
     <div id="mapa-modal" class="mapa-modal hidden" role="dialog" aria-modal="true" aria-labelledby="mapa-modal-titulo">
       <div class="mapa-modal-contenido">
         <div class="mapa-modal-header">

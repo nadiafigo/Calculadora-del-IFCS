@@ -22,6 +22,36 @@ const CAMPO_COLUMNA = {
   PteIluminacion: "pte_iluminacion", PtePubli: "pte_publi", PtePubliVisib: "pte_publi_visib"
 };
 
+/**
+ * Todo texto que venga de la base, de la URL o de localStorage se pinta con
+ * textContent o pasa por aquí antes de tocar innerHTML. Nunca se interpola
+ * crudo: una vialidad como `<img src=x onerror=…>` se ve literal.
+ */
+function escapeHtml(str) {
+  if (str === null || str === undefined) return "";
+  return String(str).replace(/[&<>"']/g, c => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+  }[c]));
+}
+
+/** Texto limpio o "" (la base guarda a veces "None" o espacios). */
+function limpio(v) {
+  if (v === null || v === undefined) return "";
+  const s = String(v).trim();
+  return s === "None" || s === "null" ? "" : s;
+}
+
+/** "2026-09-01" → "1 sep 2026". Si no se puede leer, se devuelve tal cual. */
+function fechaLegible(v) {
+  const s = limpio(v);
+  if (!s) return "";
+  const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(s);
+  if (!m) return s;
+  const d = new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]));
+  if (isNaN(d)) return s;
+  return d.toLocaleDateString("es-MX", { day: "numeric", month: "short", year: "numeric" }).replace(".", "");
+}
+
 /** Selecciones que dejó form.js en localStorage. null si no hay total en la URL. */
 function cargarDesdeLocal(params) {
   const total = parseInt(params.get("total"), 10);
@@ -114,6 +144,7 @@ async function cargarDesdeSupabase(token) {
 
   return {
     origen: "supabase",
+    id: row.id,
     total: parseInt(row.total_ifcs, 10),
     ids, txts, vals,
     ubicacion: {
@@ -173,9 +204,19 @@ document.addEventListener("DOMContentLoaded", async () => {
   catch (e) { console.warn("No se pudieron cargar los datos del reporte:", e); }
 
   if (!store || isNaN(store.total)) {
-    // Link permanente roto o sin datos: avisar en vez de dejar la página vacía.
-    const aviso = document.getElementById("permalink-error");
-    if (aviso && params.get("r")) aviso.hidden = false;
+    // Sin evaluación: en vez de un reporte hueco («tiene  de ser retirado…»)
+    // se ocultan las secciones y se ofrece la calculadora y el archivo.
+    document.body.classList.add("sin-reporte");
+    if (params.get("r")) {
+      // Link permanente roto o base caída sin respaldo local
+      const aviso = document.getElementById("permalink-error");
+      if (aviso) aviso.hidden = false;
+      document.title = "Reporte no encontrado — Calculadora IFCS";
+    } else {
+      const vacio = document.getElementById("reporte-vacio");
+      if (vacio) vacio.hidden = false;
+      document.title = "Reporte IFCS — Calculadora IFCS";
+    }
     return;
   }
 
@@ -222,25 +263,108 @@ document.addEventListener("DOMContentLoaded", async () => {
   // ========================================
 
   const datos = store.ubicacion;
-  if (datos) {
-    setText("DxVialidad", datos.vialidad);
-    setText("DxReferencia", datos.referencia);
-    setText("DxCiudad", datos.ciudad);
+  const via = limpio(datos && datos.vialidad);
+  const referencia = limpio(datos && datos.referencia);
+  const ciudad = limpio(datos && datos.ciudad);
+
+  // Frase del diagnóstico armada con nodos: cada cláusula sólo aparece si hay
+  // dato (nada de «próximo a  de la Ciudad de»). Los spans conservan sus ids.
+  const dxDictamen = document.querySelector(".dx-dictamen");
+  if (dxDictamen) {
+    const span = (id, txt) => {
+      const s = document.createElement("span");
+      s.id = id;
+      s.textContent = txt;
+      return s;
+    };
+    dxDictamen.textContent = "";
+    if (via || referencia || ciudad) {
+      dxDictamen.append("El puente antipeatonal ubicado");
+      if (via) dxDictamen.append(" en la vialidad de ", span("DxVialidad", via));
+      if (referencia) dxDictamen.append(via ? ", próximo a " : " próximo a ", span("DxReferencia", referencia));
+      if (ciudad) dxDictamen.append((via || referencia) ? " de la ciudad de " : " en la ciudad de ", span("DxCiudad", ciudad));
+      dxDictamen.append(", es técnicamente factible a retirarse y sustituirse por un cruce peatonal seguro ");
+    } else {
+      dxDictamen.append("El puente antipeatonal evaluado es técnicamente factible a retirarse y sustituirse por un cruce peatonal seguro ");
+    }
+    dxDictamen.append(span("TextoFact2", mensajeFact2), ", esto debido a:");
+  }
+
+  // Título de la pestaña y de lo que se comparte: «IFCS 49 · Periférico, Saltillo — Reporte»
+  const lugar = [via, ciudad].filter(Boolean).join(", ");
+  document.title = `IFCS ${total}${lugar ? ` · ${lugar}` : ""} — Reporte`;
+
+  // ========================================
+  // ENCABEZADO: FOLIO, FECHA DE LEVANTAMIENTO Y COLECTIVO
+  // ========================================
+
+  const metaEl = document.getElementById("expediente-meta");
+  if (metaEl) {
+    const ponerMeta = (id, valor) => {
+      const el = document.getElementById(id);
+      if (!el || !valor) return false;
+      el.querySelector("dd").textContent = valor;
+      el.hidden = false;
+      return true;
+    };
+    const idNum = parseInt(store.id, 10);
+    const folio = !isNaN(idNum) ? "P-" + String(idNum).padStart(3, "0") : "";
+    const hay = [
+      ponerMeta("meta-folio", folio),
+      ponerMeta("meta-fecha", fechaLegible(store.fuente && store.fuente.fecha)),
+      ponerMeta("meta-colectivo", limpio(store.fuente && store.fuente.org))
+    ].some(Boolean);
+    metaEl.hidden = !hay;
   }
 
   // ========================================
   // LINK PERMANENTE
   // ========================================
 
-  const permalinkUrl = store.token
+  // ?pendiente=1: la evaluación quedó en la cola local de form.js (sin
+  // conexión). Aún no existe en la base: se avisa y no se ofrece enlace
+  // permanente ni compartir, porque el link todavía no abriría nada.
+  const pendienteEnvio = params.get("pendiente") === "1";
+  const avisoPendiente = document.getElementById("aviso-pendiente");
+  if (avisoPendiente) avisoPendiente.hidden = !pendienteEnvio;
+
+  const permalinkUrl = (store.token && !pendienteEnvio)
     ? `${window.location.origin}${window.location.pathname}?r=${encodeURIComponent(store.token)}`
     : "";
+
+  if (permalinkUrl) {
+    // canonical y og:url apuntan a ESTE reporte, no a la página genérica
+    const publica = `https://adiospuentesantipeatonales.org/html/resultado.html?r=${encodeURIComponent(store.token)}`;
+    const canon = document.querySelector('link[rel="canonical"]');
+    if (canon) canon.href = publica;
+    const ogUrl = document.querySelector('meta[property="og:url"]');
+    if (ogUrl) ogUrl.content = publica;
+  }
 
   const permalinkBox = document.getElementById("permalink-box");
   if (permalinkBox && permalinkUrl) {
     const input = document.getElementById("permalink-url");
     if (input) input.value = permalinkUrl;
     permalinkBox.hidden = false;
+
+    // Compartir: texto corto + link permanente
+    const plazoCorto = mensajeFact2.toLowerCase().replace(/^a /, "");
+    const textoCompartir = `Reporte IFCS${lugar ? ` del puente en ${lugar}` : ""}: ${total}/100, factible a ${plazoCorto}.`;
+
+    const btnWa = document.getElementById("permalink-whatsapp");
+    if (btnWa) btnWa.href = `https://wa.me/?text=${encodeURIComponent(`${textoCompartir} ${permalinkUrl}`)}`;
+
+    const btnShare = document.getElementById("permalink-share");
+    if (btnShare && typeof navigator.share === "function") {
+      btnShare.hidden = false;
+      btnShare.addEventListener("click", async () => {
+        try {
+          await navigator.share({ title: document.title, text: textoCompartir, url: permalinkUrl });
+        } catch (e) {
+          // Cancelado por la persona: no es un error
+        }
+      });
+    }
 
     const btnCopy = document.getElementById("permalink-copy");
     if (btnCopy) {
@@ -314,16 +438,24 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   const carrilesEl = document.getElementById("DxCarrilesCamellones");
   if (carrilesEl) {
-    const carrilesTxt = getStoredTxt("ViaCarriles");
-    const camellonesTxt = getStoredTxt("ViaCamellones");
+    const carr = limpio(getStoredTxt("ViaCarriles")).toLowerCase();
+    const cam = limpio(getStoredTxt("ViaCamellones")).toLowerCase();
     const camelId = getStoredId("ViaCamellones");
 
+    let texto = "";
     if (camelId === "ViaCamellones_0") {
-      carrilesEl.textContent = `La vialidad cuenta con ${carrilesTxt.toLowerCase()} y no tiene camellones, lo cual implica que las personas peatonas no cuentan con islas de refugio al cruzar.`;
-    } else {
-      carrilesEl.textContent = `La vialidad cuenta con ${carrilesTxt.toLowerCase()} y ${camellonesTxt.toLowerCase()} que pueden funcionar como islas de refugio peatonal.`;
+      texto = carr
+        ? `La vialidad cuenta con ${carr} y no tiene camellones, lo cual implica que las personas peatonas no cuentan con islas de refugio al cruzar.`
+        : "La vialidad no tiene camellones, lo cual implica que las personas peatonas no cuentan con islas de refugio al cruzar.";
+    } else if (cam) {
+      texto = carr
+        ? `La vialidad cuenta con ${carr} y ${cam} que pueden funcionar como islas de refugio peatonal.`
+        : `La vialidad cuenta con ${cam} que pueden funcionar como islas de refugio peatonal.`;
+    } else if (carr) {
+      texto = `La vialidad cuenta con ${carr}; no se registró si tiene camellones.`;
     }
-    carrilesEl.style.display = "list-item";
+    carrilesEl.textContent = texto;
+    carrilesEl.style.display = texto ? "list-item" : "none";
   }
 
   // ========================================
@@ -379,21 +511,31 @@ document.addEventListener("DOMContentLoaded", async () => {
   // DIAGNÓSTICO: EQUIPAMIENTOS - TIPO Y DISTANCIA
   // ========================================
 
-  const spanTipo = document.getElementById("DxEquipTipo");
-  const spanDist = document.getElementById("DxEquipDist");
   const liEquip = document.getElementById("DxEquip");
-
-  if (spanTipo) spanTipo.textContent = getStoredTxt("EquipTipo");
-  if (spanDist) spanDist.textContent = getStoredTxt("EquipDist");
-
+  const equipTipoTxt = limpio(getStoredTxt("EquipTipo"));
+  const equipDistTxt = limpio(getStoredTxt("EquipDist"));
   const idEquipTipo = getStoredId("EquipTipo");
   const idEquipDist = getStoredId("EquipDist");
 
-  // Ocultar si no hay equipamientos o están muy lejos
+  // Ocultar si no hay equipamientos, están muy lejos o no se registró nada.
+  // Cada dato va en su span (textContent) y la frase se arma sólo con lo que hay.
   if (liEquip) {
-    if (idEquipTipo === "EquipTipo_na" || idEquipDist === "EquipDist_1000mas") {
+    const sinDatos = !equipTipoTxt && !equipDistTxt;
+    if (idEquipTipo === "EquipTipo_na" || idEquipDist === "EquipDist_1000mas" || sinDatos) {
       liEquip.style.display = "none";
     } else {
+      const span = (id, txt) => {
+        const s = document.createElement("span");
+        s.id = id;
+        s.textContent = txt;
+        return s;
+      };
+      liEquip.textContent = "";
+      liEquip.append("Existe un equipamiento");
+      if (equipTipoTxt) liEquip.append(" de ", span("DxEquipTipo", equipTipoTxt));
+      if (equipDistTxt) liEquip.append(" a una distancia de ", span("DxEquipDist", equipDistTxt));
+      else liEquip.append(" (no se registró a qué distancia)");
+      liEquip.append(", lo cual justifica la reducción de velocidad en el entorno próximo al puente antipeatonal.");
       liEquip.style.display = "list-item";
     }
   }
@@ -432,7 +574,19 @@ document.addEventListener("DOMContentLoaded", async () => {
   const tipoAccId = getStoredId("PteTipoAcc");
   const liAcceso = document.getElementById("DxPteTipoAcc");
 
+  // Los textos de las opciones (pendiente, descansos, escalones) vienen de la
+  // base o de localStorage: van en nodos con textContent, nunca en innerHTML.
+  // Si un condicional llegó vacío, la cláusula se omite o se dice que no se
+  // registró; no se inventa ningún valor.
+  const IMPIDE_USO = "impidiendo su uso cómodo y seguro por parte de personas con discapacidad, personas mayores y otras personas con capacidades físicas diversas como mujeres embarazadas o personas con carriola o carrito de carga.";
+  const fuerte = txt => {
+    const s = document.createElement("strong");
+    s.textContent = txt;
+    return s;
+  };
+
   if (liAcceso) {
+    liAcceso.textContent = "";
     if (!tipoAccId || tipoAccId === "PteTipoAcc_elev") {
       liAcceso.style.display = "none";
     } else if (tipoAccId === "PteTipoAcc_ramp") {
@@ -440,14 +594,22 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (pendienteId === "PtePendiente_6menos") {
         liAcceso.style.display = "none";
       } else {
-        const pendienteTxt = getStoredTxt("PtePendiente");
-        const distDescTxt = getStoredTxt("PteDistDesc");
-        liAcceso.innerHTML = `Su tipo de acceso es de rampa, sin embargo su pendiente es de <strong>${pendienteTxt}</strong> y la distancia entre descansos es de <strong>${distDescTxt}</strong>, impidiendo su uso cómodo y seguro por parte de personas con discapacidad, personas mayores y otras personas con capacidades físicas diversas como mujeres embarazadas o personas con carriola o carrito de carga.`;
+        const pendienteTxt = limpio(getStoredTxt("PtePendiente"));
+        const distDescTxt = limpio(getStoredTxt("PteDistDesc"));
+        if (pendienteTxt) {
+          liAcceso.append("Su tipo de acceso es de rampa, sin embargo su pendiente es de ", fuerte(pendienteTxt));
+          if (distDescTxt) liAcceso.append(" y la distancia entre descansos es de ", fuerte(distDescTxt));
+          liAcceso.append(", " + IMPIDE_USO);
+        } else if (distDescTxt) {
+          liAcceso.append("Su tipo de acceso es de rampa, con una distancia entre descansos de ", fuerte(distDescTxt), "; no se registró su pendiente.");
+        } else {
+          liAcceso.append("Su tipo de acceso es de rampa; no se registraron su pendiente ni la distancia entre descansos, datos necesarios para valorar si es accesible.");
+        }
         liAcceso.style.display = "list-item";
       }
     } else if (tipoAccId === "PteTipoAcc_esc") {
-      const numEscTxt = getStoredTxt("PteNumEsc");
-      liAcceso.innerHTML = `Su tipo de acceso es de escaleras${numEscTxt ? ` (${numEscTxt.toLowerCase()})` : ""}, impidiendo su uso cómodo y seguro por parte de personas con discapacidad, personas mayores y otras personas con capacidades físicas diversas como mujeres embarazadas o personas con carriola o carrito de carga.`;
+      const numEscTxt = limpio(getStoredTxt("PteNumEsc"));
+      liAcceso.append(`Su tipo de acceso es de escaleras${numEscTxt ? ` (${numEscTxt.toLowerCase()})` : ""}, ${IMPIDE_USO}`);
       liAcceso.style.display = "list-item";
     } else {
       liAcceso.style.display = "none";
@@ -500,12 +662,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       out[f] = getStoredId(f) || null;
     });
     return out;
-  }
-
-  function escapeHtml(str) {
-    return String(str || "").replace(/[&<>"']/g, c => ({
-      "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
-    }[c]));
   }
 
   /**
@@ -644,24 +800,31 @@ document.addEventListener("DOMContentLoaded", async () => {
         pdfPermalinkWrap.style.display = permalinkUrl ? "block" : "none";
       }
 
-      // Diagnostic: copy visible <li> text from the page
+      // Diagnóstico: copia el texto de los <li> visibles. Se construye con
+      // nodos + textContent: li.textContent ya es texto plano (puede traer
+      // `<img …>` literal de la base) y no debe volver a leerse como HTML.
       const dxDiv = document.getElementById("pdf-diagnostico");
       if (dxDiv) {
+        dxDiv.textContent = "";
         const cards = document.querySelectorAll(".dx-gral .dx-card");
-        let html = "";
         cards.forEach(card => {
           const title = card.querySelector("p");
           const items = card.querySelectorAll("li");
-          const visibleItems = Array.from(items).filter(li => li.style.display !== "none");
+          const visibleItems = Array.from(items).filter(li => li.style.display !== "none" && li.textContent.trim());
           if (title && visibleItems.length > 0) {
-            html += `<p style="font-weight:bold; margin:1rem 0 .3rem;">${title.textContent}</p><ul>`;
+            const p = document.createElement("p");
+            p.style.cssText = "font-weight:bold; margin:1rem 0 .3rem;";
+            p.textContent = title.textContent;
+            const ul = document.createElement("ul");
             visibleItems.forEach(li => {
-              html += `<li style="margin-bottom:.4rem;">${li.textContent}</li>`;
+              const item = document.createElement("li");
+              item.style.marginBottom = ".4rem";
+              item.textContent = li.textContent;
+              ul.appendChild(item);
             });
-            html += "</ul>";
+            dxDiv.append(p, ul);
           }
         });
-        dxDiv.innerHTML = html;
       }
 
       // Propuestas de rediseño en PDF (agrupadas por categoría, normas en <strong>)
@@ -730,10 +893,12 @@ document.addEventListener("DOMContentLoaded", async () => {
       // Show element for rendering
       reporteEl.style.display = "block";
 
-      const ciudad = (datos?.ciudad || "").replace(/\s+/g, "_") || "Ciudad";
-      const vialidad = (datos?.vialidad || "").replace(/\s+/g, "_") || "Vialidad";
+      // Nombre de archivo sólo con letras, números y guiones
+      const paraArchivo = s => limpio(s).replace(/[^0-9A-Za-zÁÉÍÓÚÜÑáéíóúüñ-]+/g, "_").replace(/^_+|_+$/g, "");
+      const ciudadArch = paraArchivo(ciudad) || "Ciudad";
+      const viaArch = paraArchivo(via) || "Vialidad";
       const fecha = new Date().toISOString().slice(0, 10);
-      const filename = `IFCS_${ciudad}_${vialidad}_${fecha}.pdf`;
+      const filename = `IFCS_${ciudadArch}_${viaArch}_${fecha}.pdf`;
 
       html2pdf().set({
         margin: [10, 10, 10, 10],

@@ -9,12 +9,38 @@
 }
 
 /* ---- Error message below field ---- */
-.error-msg {
+.error-msg,
+.form-section .error-msg {
   color: var(--largo);
+  font-weight: 500;
   font-size: .8rem;
   margin: .25rem 0 0;
   display: block;
 }
+
+/* ---- Aviso que no bloquea (p. ej. coordenadas fuera de México) ---- */
+.aviso-msg,
+.form-section .aviso-msg {
+  display: block;
+  font-weight: 400;
+  margin: .25rem 0 0;
+  padding-left: .5rem;
+  border-left: 2px solid var(--mediano);
+  color: #6B4800;
+  font-size: .8rem;
+  line-height: 1.4;
+}
+
+/* ---- Resumen de errores al enviar («Faltan N campos») ---- */
+.form-resumen,
+.calc-btn-cont .form-resumen {
+  flex-basis: 100%;
+  max-width: none;
+  color: var(--largo);
+  font-size: var(--t-sm);
+  font-weight: 600;
+}
+.form-resumen:empty { display: none; }
 
 /* ---- Shake animation ---- */
 @keyframes shake {
@@ -27,6 +53,10 @@
 
 .shake {
   animation: shake .4s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shake { animation: none; }
 }
 
 /* ---- Toast / Snackbar ---- */

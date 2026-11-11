@@ -1,106 +1,100 @@
 # Calculadora del IFCS — Índice de Factibilidad de Cruce Seguro
 
-Herramienta web para evaluar la factibilidad de sustituir puentes antipeatonales por cruces peatonales seguros. Desarrollada para Liga Peatonal / Bicivilízate Michoacán A.C.
+Herramienta web para evaluar si un puente antipeatonal puede sustituirse por un cruce peatonal seguro a nivel de calle. Desarrollada para Liga Peatonal / Bicivilízate Michoacán A.C.
+
+Producción: **https://adiospuentesantipeatonales.org** (GitHub Pages desde `main`, dominio en `CNAME`).
+
+## Stack
+
+- **HTML + CSS + JavaScript vanilla**, sin build step ni framework: lo que está en el repo es lo que se publica.
+- **Supabase** como base de datos (tabla `evaluaciones`), consultada por REST con la anon key de `js/config.js`. El panel admin entra con magic link (`@supabase/supabase-js` fijado a una versión exacta con SRI).
+- **GitHub Pages** sirve el sitio desde la rama `main`. Cada push a `main` se publica en un par de minutos.
+- **Leaflet** para los mapas (base Esri World Light Gray, sin llave) y **Chart.js** para las estadísticas, ambos desde CDN.
+- **Playwright** para las pruebas e2e; GitHub Actions las corre en cada PR y en cada push a `main` (`.github/workflows/e2e.yml`).
+
+Sistema visual «El plano y el archivo»: ver `docs/CONCEPTO.md`. Tokens (colores, tipografías Schibsted Grotesk + Azeret Mono) en `css/gral.css`.
 
 ## Estructura del proyecto
 
 ```
-├── index.html                    ← Página principal con el formulario
-├── html/resultado.html           ← Página de resultados y diagnóstico
+├── index.html                ← Portada: plano de Morelia, últimas fichas y la calculadora (formulario)
+├── antecedentes.html         ← Antecedentes y metodología (tabla de ponderación, descargables)
+├── 404.html                  ← Página de error (rutas absolutas: Pages la sirve en cualquier ruta)
+├── home.css                  ← Estilos de la portada y del formulario
+├── html/
+│   ├── archivo.html          ← Archivo de puentes evaluados (fichas con filtros)
+│   ├── mapa.html             ← Mapa de resultados
+│   ├── analytics.html        ← Estadísticas
+│   ├── resultado.html        ← Reporte del puente (?r=<token> = link permanente)
+│   └── admin.html            ← Panel de aprobación (noindex, no enlazado)
 ├── js/
-│   ├── form.js                   ← Lógica del formulario + envío a Google Sheets
-│   ├── resultado.js              ← Generación del diagnóstico dinámico
-│   └── navbar.js                 ← Menú de navegación
-├── css/
-│   ├── gral.css                  ← Estilos generales
-│   ├── gral_result.css           ← Estilos de resultado
-│   └── resultado.css             ← Estilos adicionales de resultado
-├── home.css                      ← Estilos de la página principal
-├── img/                          ← Imágenes y logos
-├── pdf/                          ← Manual y formato de llenado
-└── google-apps-script/
-    └── Code.gs                   ← Script para Google Sheets (ver instrucciones abajo)
+│   ├── config.js             ← URL y anon key de Supabase
+│   ├── form.js               ← Formulario, cálculo del IFCS e INSERT en Supabase
+│   ├── resultado.js          ← Diagnóstico, propuestas y PDF del reporte
+│   ├── archivo.js            ← Carga pública de evaluaciones aprobadas, fichas y plano
+│   ├── portada.js            ← Plano y cifras de la portada
+│   ├── mapa.js / mapa-selector.js / analytics.js / admin.js
+│   ├── propuestas-rediseno.js
+│   └── navbar.js             ← Menú móvil y desplegable «Descargables» (aria-expanded, Escape)
+├── css/                      ← gral.css (tokens, cabecera, pie) + una hoja por página
+├── img/                      ← Logos e imagen para compartir (og-ifcs.jpg, 1200×630)
+├── pdf/                      ← Manual, formato de llenado y archivos de la metodología
+├── supabase/migrations/      ← Esquema, RLS y get_evaluacion_publica
+├── docs/                     ← Concepto del diseño y unificar_cabecera_pie.py
+├── tests/e2e/                ← Specs de Playwright
+├── robots.txt / sitemap.xml  ← SEO (admin excluido)
+└── CNAME                     ← adiospuentesantipeatonales.org
 ```
 
 ## Cómo funciona
 
-1. El usuario llena el formulario con datos de un puente antipeatonal
-2. Se calcula un puntaje total (IFCS) sumando los valores de cada campo
-3. Los datos se envían automáticamente a una hoja de Google Sheets
-4. El usuario ve la página de resultados con un diagnóstico detallado
+1. El usuario llena el formulario de la portada con los datos de un puente antipeatonal.
+2. `form.js` suma los valores de cada campo (IFCS de 0 a 100) y guarda la evaluación en Supabase con `aprobado_mapa = false` y un `public_token`.
+3. El usuario ve su reporte en `html/resultado.html`, con un enlace permanente `?r=<token>`.
+4. Un admin aprueba la evaluación en `html/admin.html`; desde ese momento aparece en el archivo, el mapa y las estadísticas.
 
-## Configuración de Google Sheets (persistencia de datos)
+Factibilidad: 0–30 = largo plazo, 31–60 = mediano plazo, 61–100 = corto plazo.
 
-### Paso 1: Crear la hoja de cálculo
+## Cabecera y pie compartidos
 
-1. Ve a [Google Sheets](https://sheets.google.com) y crea una nueva hoja
-2. Ponle nombre: "Datos IFCS" (o el que prefieras)
+No hay build, así que la cabecera y el pie de todas las páginas los escribe un script:
 
-### Paso 2: Configurar el Apps Script
+```bash
+python docs/unificar_cabecera_pie.py
+```
 
-1. En tu hoja de Google Sheets, ve a **Extensiones → Apps Script**
-2. Borra el código que aparece por defecto
-3. Copia y pega TODO el contenido del archivo `google-apps-script/Code.gs`
-4. Guarda el proyecto (Ctrl+S)
-5. Dale un nombre al proyecto, por ejemplo "IFCS Backend"
+Si cambia un link del menú o del pie, se cambia en el script y se vuelve a correr. El script también pone el enlace «Saltar al contenido» y el `id="contenido"` del primer `<main>` de cada página. Una página nueva se agrega a `PAGINAS` con su prefijo hacia la raíz (`./`, `../` o `/` para `404.html`) y puede traer sólo los marcadores `<header class="header"></header>` y `<footer class="footer"><div class="creditos"></div></footer>`.
 
-### Paso 3: Implementar como aplicación web
+## Correr en local
 
-1. Click en **Implementar → Nueva implementación**
-2. En el engrane ⚙️, selecciona **Aplicación web**
-3. En **"Ejecutar como"**: selecciona tu cuenta de Google
-4. En **"Quién tiene acceso"**: selecciona **"Cualquier persona"**
-5. Click en **Implementar**
-6. Te pedirá autorización — acepta los permisos
-7. **Copia la URL** que te genera (algo como `https://script.google.com/macros/s/AKfy.../exec`)
+Cualquier servidor estático sirve. En la máquina de Memo el puerto 8080 lo ocupa Docker, así que se usa el **8089**:
 
-### Paso 4: Conectar con el formulario
+```bash
+python -m http.server 8089 --bind 127.0.0.1
+# abrir http://127.0.0.1:8089/
+```
 
-1. Abre el archivo `js/form.js`
-2. En la línea que dice `const GOOGLE_SCRIPT_URL = "";`
-3. Pega tu URL entre las comillas:
-   ```javascript
-   const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/TU_URL_AQUI/exec";
-   ```
-4. Guarda el archivo
+El sitio local lee la misma base de producción (Supabase); el formulario local también inserta ahí.
 
-¡Listo! Cada envío del formulario creará una nueva fila en tu Google Sheet.
+## Pruebas
 
-## Hosting (independiente de WordPress)
+```bash
+npm ci
+npx playwright install chromium
 
-Este sitio es completamente estático (HTML/CSS/JS) y se puede hospedar gratis en:
+# con el servidor de arriba corriendo
+BASE_URL=http://127.0.0.1:8089 npx playwright test --grep-invert @prod
 
-### Opción A: GitHub Pages (recomendado)
+# un solo spec
+BASE_URL=http://127.0.0.1:8089 npx playwright test tests/e2e/archivo.spec.js
 
-1. Sube el proyecto a un repositorio en GitHub
-2. Ve a **Settings → Pages**
-3. En Source, selecciona **Deploy from a branch → main**
-4. Tu sitio estará en `https://tuusuario.github.io/nombre-del-repo`
+# humo contra producción (después de un deploy)
+npm run test:prod-smoke
+```
 
-Para usar un subdominio como `calculadora.ligapeatonal.org`:
-1. En Settings → Pages → Custom domain, escribe `calculadora.ligapeatonal.org`
-2. En el DNS de ligapeatonal.org, agrega un registro **CNAME**:
-   - Nombre: `calculadora`
-   - Valor: `tuusuario.github.io`
-
-### Opción B: Netlify
-
-1. Ve a [netlify.com](https://netlify.com) y crea una cuenta
-2. Arrastra la carpeta del proyecto al dashboard
-3. Para dominio personalizado: Settings → Domain management → Add custom domain
-
-### Opción C: Vercel
-
-1. Ve a [vercel.com](https://vercel.com), conecta tu GitHub
-2. Importa el repositorio
-3. Se despliega automáticamente
-
-## Notas técnicas
-
-- Los datos se pasan entre páginas usando `localStorage` + URL params
-- El total IFCS se calcula como la suma de los valores numéricos de los `<select>`
-- Los campos condicionales (rampa, escaleras, publicidad) se muestran/ocultan según las respuestas
-- Factibilidad: ≤20% = largo plazo, 21-65% = mediano plazo, >65% = corto plazo
+- `BASE_URL` es opcional (por defecto `http://localhost:8080`). Con `CI` definido, Playwright levanta solo el servidor estático (`webServer` en `playwright.config.js`).
+- `prod-smoke.spec.ts` está etiquetado `@prod` y sólo corre con `SMOKE_PROD=1`; CI lo excluye.
+- `archivo.spec.js` y `reporte-permalink.spec.ts` interceptan Supabase con `page.route`, no dependen de la base real.
 
 ## Base de datos (Supabase)
 
@@ -185,9 +179,9 @@ El magic link redirige al mismo origen+path desde donde se solicitó. Hay que re
 
 1. Dashboard → **Authentication → URL Configuration → Redirect URLs**.
 2. Añadir:
-   - `http://localhost:8080/html/admin.html` (para trabajo local)
-   - `https://nadiafigo.github.io/Calculadora-del-IFCS/html/admin.html` (producción GitHub Pages)
-   - `https://<dominio-custom>/html/admin.html` (si ya hay un dominio personalizado apuntando al sitio)
+   - `https://adiospuentesantipeatonales.org/html/admin.html` (producción)
+   - `https://nadiafigo.github.io/Calculadora-del-IFCS/html/admin.html` (URL de GitHub Pages)
+   - `http://localhost:8080/html/admin.html` (trabajo local; agrega la de tu puerto si usas otro, p. ej. 8089)
 
 Sin esta configuración, el usuario recibe el correo pero al hacer click cae en un error de Supabase.
 
