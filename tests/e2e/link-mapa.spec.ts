@@ -22,7 +22,7 @@ const SEED = {
 };
 
 function stubMapaList(page: Page, rows: unknown[]) {
-  return page.route(/\/rest\/v1\/evaluaciones\?select=\*/, async (route) => {
+  return page.route(/\/rest\/v1\/evaluaciones\?select=/, async (route) => {
     if (route.request().method() === "GET") {
       await route.fulfill({
         status: 200,
@@ -170,7 +170,7 @@ test.describe("Form ↔ Mapa deep-link", () => {
     await expect(link).toHaveAttribute("rel", /noopener/);
 
     // Stub map list so the new tab does not hang on real Supabase.
-    await context.route(/\/rest\/v1\/evaluaciones\?select=\*/, async (route) => {
+    await context.route(/\/rest\/v1\/evaluaciones\?select=/, async (route) => {
       await route.fulfill({
         status: 200,
         contentType: "application/json",

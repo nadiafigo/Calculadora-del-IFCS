@@ -4,37 +4,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Archivo de los puentes antipeatonales evaluados con la Calculadora del IFCS: cada ficha abre el reporte completo del puente.">
+    <meta name="description" content="Archivo de los puentes antipeatonales evaluados con la Calculadora del IFCS: filtra por plazo, ciudad o vialidad y abre el reporte completo de cada puente.">
     <meta name="theme-color" content="#F3F5F2">
+    <link rel="canonical" href="https://adiospuentesantipeatonales.org/html/archivo.html">
     <meta property="og:type" content="website">
+    <meta property="og:locale" content="es_MX">
+    <meta property="og:site_name" content="Adiós puentes antipeatonales">
     <meta property="og:title" content="Archivo de puentes evaluados — IFCS">
-    <meta property="og:description" content="Todos los puentes antipeatonales evaluados con la Calculadora del IFCS, con su puntaje y su reporte.">
-    <meta property="og:image" content="https://adiospuentesantipeatonales.org/img/LP.png">
+    <meta property="og:description" content="Todos los puentes antipeatonales evaluados con la Calculadora del IFCS, con su puntaje, su plazo y su reporte.">
+    <meta property="og:image" content="https://adiospuentesantipeatonales.org/img/og-ifcs.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="¿Ese puente se puede cambiar por un cruce seguro? Plano de Morelia con los puentes evaluados por plazo.">
     <meta property="og:url" content="https://adiospuentesantipeatonales.org/html/archivo.html">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Archivo de puentes evaluados — IFCS">
+    <meta name="twitter:description" content="Todos los puentes antipeatonales evaluados con la Calculadora del IFCS, con su puntaje y su reporte.">
+    <meta name="twitter:image" content="https://adiospuentesantipeatonales.org/img/og-ifcs.jpg">
     <link rel="icon" type="image/png" sizes="32x32" href="../img/logo_FPNC_32x32.png">
     <link rel="stylesheet" href="../css/gral.css">
     <link rel="stylesheet" href="../css/archivo.css">
-    <title>Archivo de puentes — IFCS</title>
+    <title>Archivo de puentes evaluados — Calculadora IFCS</title>
 </head>
 
 <body>
     <header class="header">
+        <a class="saltar" href="#contenido">Saltar al contenido</a>
         <nav class="navbar" aria-label="Principal">
             <a class="marca" href="../index.html">
                 <img src="../img/LP.png" alt="Liga Peatonal" class="navbar__logo" width="40" height="40">
                 <span class="marca__nombre">Adiós puentes antipeatonales<small>Calculadora IFCS</small></span>
             </a>
-            <input type="checkbox" id="nav__checkbox" class="nav__checkbox" aria-label="Abrir o cerrar el menú">
-            <label for="nav__checkbox" class="nav__toggle"><span class="abrir">Menú</span><span class="cerrar">Cerrar</span></label>
-            <div class="navbar-content">
+            <button type="button" class="nav__toggle" aria-expanded="false" aria-controls="menu-principal"><span class="abrir">Menú</span><span class="cerrar">Cerrar</span></button>
+            <div class="navbar-content" id="menu-principal">
               <ul class="menu">
                 <li class="menu-option"><div class="selected-option"><a class="menu__item" href="../html/archivo.html" aria-current="page">Archivo</a></div></li>
                 <li class="menu-option"><div class="selected-option"><a class="menu__item" href="../html/mapa.html">Mapa</a></div></li>
                 <li class="menu-option"><div class="selected-option"><a class="menu__item" href="../html/analytics.html">Estadísticas</a></div></li>
                 <li class="menu-option"><div class="selected-option"><a class="menu__item" href="../antecedentes.html">Metodología</a></div></li>
                 <li class="menu-option">
-                    <div class="selected-option"><button class="menu__item" type="button" aria-haspopup="true">Descargables</button><span class="item-icon" aria-hidden="true"></span></div>
-                    <div class="submenu">
+                    <div class="selected-option"><button class="menu__item" type="button" aria-expanded="false" aria-controls="submenu-descargables">Descargables</button><span class="item-icon" aria-hidden="true"></span></div>
+                    <div class="submenu" id="submenu-descargables">
                         <ul class="submenu_container">
                             <li><a class="submenu__item" href="../pdf/Tabla 5. Formato de llenado.pdf">Formato de llenado</a></li>
                             <li><a class="submenu__item" href="../pdf/MANUAL_IFCS.pdf">Manual del IFCS</a></li>
@@ -48,7 +58,7 @@
         </nav>
     </header>
 
-    <main>
+    <main id="contenido">
         <section class="lamina cabeza-pagina" aria-labelledby="t-archivo">
             <div class="envoltura">
                 <div class="reticula" aria-hidden="true"></div>
@@ -97,7 +107,7 @@
                         <div class="footer-logo"><img src="../img/logo_bicivilizate.svg" alt="Bicivilízate Michoacán A.C."></div>
                     </div>
                     <p>Una herramienta de Liga Peatonal y Bicivilízate Michoacán A.C. para impulsar cruces seguros a nivel de calle.</p>
-                    <a class="correo" href="mailto:adiospuentesantipeatonales@ligapeatonal.org">adiospuentesantipeatonales@ligapeatonal.org</a>
+                    <a class="correo" href="mailto:adiospuentesantipeatonales@ligapeatonal.org">adiospuentesantipeatonales@<wbr>ligapeatonal.org</a>
                 </div>
                 <nav aria-label="Herramientas">
                     <h2>Herramientas</h2>

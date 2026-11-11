@@ -122,7 +122,35 @@
 .permalink__url:focus-visible { outline: 2px solid var(--verde-tinta); outline-offset: 2px; border-color: var(--tinta); }
 .permalink__copy { flex: 0 0 auto; }
 
+/* Compartir: WhatsApp siempre; el menú nativo (navigator.share) si existe */
+.permalink__compartir {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding-top: 14px;
+    border-top: 1px dashed var(--filete);
+}
+.permalink__wa svg { flex-shrink: 0; }
+.permalink__share[hidden] { display: none; }
+
+/* Evaluación en cola local (?pendiente=1): aviso en ámbar, corto */
+.aviso-pendiente[hidden] { display: none; }
+.aviso-pendiente {
+    margin-top: 24px;
+    padding: 12px 16px;
+    border: 1px solid var(--mediano);
+    border-left-width: 4px;
+    border-radius: var(--r);
+    background: color-mix(in srgb, var(--mediano) 8%, var(--blanco));
+    color: var(--tinta);
+    font-weight: 500;
+    line-height: 1.5;
+}
+
 .permalink__error {
+    display: grid;
+    gap: 12px;
     margin-top: 24px;
     padding: 14px 18px;
     border: 1px solid var(--largo);
@@ -132,7 +160,10 @@
     color: var(--tinta);
     line-height: 1.5;
 }
-.permalink__error a { color: var(--tinta); font-weight: 600; text-underline-offset: 3px; }
+.permalink__error p a { color: var(--tinta); font-weight: 600; text-underline-offset: 3px; }
+.permalink__error .reporte-vacio__botones { margin-top: 0; }
+/* Sin evaluación: el aviso queda solo, con aire arriba y abajo */
+.sin-reporte .permalink__error { margin-block: clamp(32px, 6vw, 72px); }
 
 /* --- ¿Y ahora? ----------------------------------------------------------- */
 .cta-final { padding-block: clamp(36px, 5vw, 56px); background: var(--papel-2); border-top: 1px solid var(--filete); }
@@ -149,6 +180,8 @@
 }
 @media (max-width: 600px) {
     .permalink__row { flex-direction: column; }
+    .permalink__compartir .btn { width: 100%; }
+    .reporte-vacio__botones .btn { width: 100%; }
     .cta-final__buttons { flex-direction: column; width: 100%; }
     .cta-final__buttons .btn { width: 100%; }
     .dx-card { padding: 16px; }

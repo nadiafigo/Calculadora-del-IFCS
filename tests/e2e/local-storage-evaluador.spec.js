@@ -3,7 +3,7 @@ const { test, expect } = require('@playwright/test');
 test.describe('localStorage: recordar evaluador', () => {
   test('guarda nombre/org/correo después de submit y restaura al recargar', async ({ page, context }) => {
     await context.clearCookies();
-    await page.goto('http://localhost:8080/');
+    await page.goto('/');
 
     // Llenar campos del evaluador
     await page.fill('#FuenteNombre', 'Test Evaluador');
@@ -34,7 +34,7 @@ test.describe('localStorage: recordar evaluador', () => {
   });
 
   test('no rompe si localStorage está vacío', async ({ page }) => {
-    await page.goto('http://localhost:8080/');
+    await page.goto('/');
     await page.evaluate(() => localStorage.clear());
     await page.reload();
     // Página debe cargar sin errores; campos vacíos

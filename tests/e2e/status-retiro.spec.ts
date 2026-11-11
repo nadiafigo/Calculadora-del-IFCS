@@ -67,7 +67,7 @@ const SEEDS = [
 ];
 
 function stubMapaList(page: Page, rows: unknown[]) {
-  return page.route(/\/rest\/v1\/evaluaciones\?select=\*/, async (route) => {
+  return page.route(/\/rest\/v1\/evaluaciones\?select=/, async (route) => {
     if (route.request().method() === "GET") {
       await route.fulfill({
         status: 200,

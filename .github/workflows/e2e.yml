@@ -1,0 +1,46 @@
+name: e2e
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+concurrency:
+  group: e2e-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  playwright:
+    runs-on: ubuntu-24.04
+    # Imagen oficial con Chromium ya instalado: `playwright install` se colgaba descargando.
+    # Al subir @playwright/test, subir también esta etiqueta.
+    container: mcr.microsoft.com/playwright:v1.58.2-noble
+    timeout-minutes: 20
+    env:
+      CI: "true"
+      # playwright.config.js levanta el sitio estático (npx http-server) en este puerto
+      # cuando CI está definido; ver la sección webServer del config.
+      BASE_URL: http://127.0.0.1:8080
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          cache: npm
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      # prod-smoke está etiquetado @prod: corre contra producción y se lanza a mano
+      # (npm run test:prod-smoke), no en cada PR.
+      - name: Pruebas e2e (sin @prod)
+        run: npx playwright test --grep-invert @prod
+
+      - name: Guardar reporte si falla
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-resultados
+          path: test-results/
+          retention-days: 7

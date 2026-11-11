@@ -40,7 +40,7 @@
 
 .expediente .cajetin { grid-column: 1 / -1; grid-template-columns: auto 1fr auto; }
 
-/* --- Dictamen: puntaje sobre 100 con barra y marca del 50 ----------------- */
+/* --- Dictamen: puntaje sobre 100, barra con marcas en 30 y 60 ----------------- */
 .dictamen {
     --c: var(--tinta);
     grid-column: 8 / span 5;
@@ -75,23 +75,97 @@
     width: calc(var(--ifcs, 0) * 1%);
     background: var(--c);
 }
-.dictamen-barra::after {
-    content: "";
+/* Marcas en los cortes reales de la metodología: 30 (largo|mediano) y 60 (mediano|corto) */
+.dictamen-barra b {
     position: absolute;
     top: -4px;
     bottom: -4px;
-    left: 50%;
+    left: calc(var(--corte) * 1%);
     border-left: 1px solid var(--tinta);
 }
 .dictamen-escala {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    position: relative;
+    height: 1em;
     font: 500 .6875rem/1 var(--mono);
     letter-spacing: .05em;
     color: var(--tinta-2);
 }
-.dictamen-escala span:nth-child(2) { text-align: center; }
-.dictamen-escala span:nth-child(3) { text-align: right; }
+.dictamen-escala span {
+    position: absolute;
+    left: calc(var(--x) * 1%);
+    transform: translateX(-50%);
+    font-variant-numeric: tabular-nums;
+}
+.dictamen-escala span:first-child { transform: none; }
+.dictamen-escala span:last-child { transform: translateX(-100%); }
+/* Nombre de cada tramo, con el mismo ancho que en la barra (30 · 30 · 40) */
+.dictamen-tramos {
+    display: grid;
+    grid-template-columns: 30fr 30fr 40fr;
+    margin-top: -4px;
+    font: 500 .625rem/1 var(--mono);
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--tinta-3);
+}
+.dictamen-tramos span { text-align: center; }
+.dictamen[data-plazo="largo"]   .dictamen-tramos span:nth-child(1),
+.dictamen[data-plazo="mediano"] .dictamen-tramos span:nth-child(2),
+.dictamen[data-plazo="corto"]   .dictamen-tramos span:nth-child(3) { color: var(--tinta); }
+
+/* Folio, fecha de levantamiento y colectivo */
+.expediente-meta[hidden], .expediente-meta > div[hidden] { display: none; }
+.expediente-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+    border: 1px solid var(--tinta);
+    border-radius: var(--r);
+    background: var(--blanco);
+    justify-self: start;
+    max-width: 100%;
+    overflow: hidden; /* recorta el filete izquierdo del primer dato visible */
+}
+.expediente-meta > div {
+    display: grid;
+    gap: 4px;
+    margin-left: -1px;
+    padding: 8px 14px;
+    border-left: 1px solid var(--filete);
+    min-width: 0;
+}
+.expediente-meta dt {
+    font: 500 .625rem/1 var(--mono);
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--tinta-2);
+}
+.expediente-meta dd {
+    font: 500 .875rem/1.25 var(--mono);
+    color: var(--tinta);
+    overflow-wrap: anywhere;
+}
+#meta-folio dd { color: var(--verde-tinta); font-weight: 600; }
+
+/* --- Estado vacío y enlace sin evaluación -------------------------------- */
+.reporte-vacio[hidden] { display: none; }
+.reporte-vacio { padding-block: clamp(48px, 8vw, 104px); border-bottom: 1px solid var(--filete); }
+.reporte-vacio .contenido { display: grid; gap: 16px; max-width: 46rem; }
+.reporte-vacio .mono { color: var(--verde-tinta); }
+.reporte-vacio h1 {
+    font-size: var(--t-h1-int);
+    line-height: 1.05;
+    font-weight: 700;
+    letter-spacing: -.03em;
+    color: var(--tinta);
+}
+.reporte-vacio .bajada { max-width: 48ch; font-size: var(--t-lg); line-height: 1.5; color: var(--tinta-2); }
+.reporte-vacio__botones { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 8px; }
+
+/* Sin evaluación que mostrar: fuera las secciones del reporte */
+.sin-reporte .expediente,
+.sin-reporte .seccion-reporte,
+.sin-reporte .cta-final { display: none; }
 
 .dictamen-plazo {
     justify-self: start;
@@ -118,7 +192,8 @@
 .res-tittle .reporte-cabeza { margin-bottom: 0; }
 .res-descr { font-size: var(--t-md); line-height: 1.6; color: var(--tinta-2); max-width: 42ch; }
 .cierre-fotos { grid-column: 5 / span 8; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
-.cierre-fotos .img1 { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border: 1px solid var(--filete); border-radius: var(--r); }
+.cierre-fotos picture { display: block; min-width: 0; }
+.cierre-fotos .img1 { display: block; height: auto; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border: 1px solid var(--filete); border-radius: var(--r); }
 
 /* --- Responsive ----------------------------------------------------------- */
 @media (max-width: 1100px) {
@@ -126,7 +201,9 @@
     .dictamen { grid-column: 7 / span 6; }
 }
 @media (max-width: 900px) {
-    .expediente-texto, .dictamen { grid-column: 1 / -1; padding-right: 0; }
+    .expediente-texto, .dictamen { grid-column: 1 / -1; }
+    /* sólo el texto pierde su margen derecho; el dictamen conserva su padding */
+    .expediente-texto { padding-right: 0; }
     .expediente-frase { max-width: 52ch; }
     .res-tittle, .cierre-fotos { grid-column: 1 / -1; padding-right: 0; }
 }

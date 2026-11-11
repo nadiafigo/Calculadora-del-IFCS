@@ -79,6 +79,12 @@
     font: 500 var(--t-xs)/1 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--tinta-3);
 }
 .table-cabeza .mono { color: var(--tinta-2); }
+.table-acciones { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; }
+.btn-csv[hidden] { display: none; }
+@media (max-width: 600px) {
+    .table-acciones { width: 100%; }
+    .btn-csv { width: 100%; }
+}
 .table-wrapper {
     overflow-x: auto; -webkit-overflow-scrolling: touch;
     background: var(--papel); border-bottom: 1px solid var(--filete);

@@ -45,6 +45,15 @@ function baBucketMatch(ratio, bucket) {
   }
 }
 
+// Columnas que el mapa usa de verdad. Nunca `select=*`: la tabla guarda el
+// nombre y el correo de quien evaluó, y anon no debe pedirlos (ni podrá).
+const MAPA_CAMPOS = [
+  "id", "created_at", "loc_ciudad", "loc_vialidad", "loc_referencia", "loc_x", "loc_y",
+  "total_ifcs", "factibilidad", "fuente_org", "status_retiro", "fecha_retiro",
+  "pte_long_cami", "via_dist_cruce", "pte_tipo_acc", "pte_obst_banq",
+  "equip_tipo", "via_dist_semaf", "public_token"
+].join(",");
+
 function populateSelect(selectEl, values) {
   values.forEach(v => {
     const opt = document.createElement("option");
@@ -64,7 +73,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   try {
     const res = await fetch(
-      `${SUPABASE_URL}/rest/v1/evaluaciones?select=*&aprobado_mapa=eq.true&order=created_at.desc`,
+      `${SUPABASE_URL}/rest/v1/evaluaciones?select=${MAPA_CAMPOS}&aprobado_mapa=eq.true&order=created_at.desc`,
       {
         headers: {
           apikey: SUPABASE_ANON_KEY,
@@ -92,7 +101,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // Base gris clara de Esri, la misma del plano de la portada (sin llave).
   L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}", {
-    maxZoom: 16,
+    // Esri Canvas sólo tiene teselas hasta z16: arriba de eso se amplían (antes
+    // el enlace profundo volaba a z17 y el plano quedaba en blanco).
+    maxNativeZoom: 16,
+    maxZoom: 18,
     attribution: "Esri, HERE, Garmin, &copy; OpenStreetMap"
   }).addTo(map);
 
@@ -176,18 +188,24 @@ document.addEventListener("DOMContentLoaded", async () => {
          </div>`
       : "";
 
+    // Link permanente del reporte (resultado.html?r=<token>)
+    const reporteLink = e.public_token
+      ? `<a class="popup-reporte" href="./resultado.html?r=${encodeURIComponent(e.public_token)}">Ver reporte <span aria-hidden="true">→</span></a>`
+      : "";
+
     return `
       <div>
         ${banner}
         <div class="popup-title">${escapeHtml(e.loc_vialidad || "Sin vialidad")}</div>
         <div class="popup-row">${escapeHtml(e.loc_ciudad || "")}</div>
         <div class="popup-row">Ref: ${escapeHtml(e.loc_referencia || "—")}</div>
-        <div class="popup-row">Total IFCS: <strong>${e.total_ifcs ?? "—"}%</strong></div>
+        <div class="popup-row">Total IFCS: <strong>${escapeHtml(e.total_ifcs ?? "—")}%</strong></div>
         <div class="popup-badge popup-badge--${badgeClass}">${escapeHtml(e.factibilidad || "—")}</div>
         ${ratioRow}
         <div class="popup-row" style="margin-top:.35rem;">Fecha: ${escapeHtml(fecha)}</div>
         <div class="popup-row">Org: ${escapeHtml(e.fuente_org || "—")}</div>
         ${fechaRetiroBlock}
+        ${reporteLink}
       </div>
     `;
   }
@@ -356,9 +374,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (!clusterGroup.hasLayer(targetMarker)) {
         clusterGroup.addLayer(targetMarker);
       }
-      map.flyTo(latlng, 17, { duration: 1.0 });
+      map.flyTo(latlng, 16, { duration: 1.0 });
+      // Si a z16 el punto sigue dentro de un cluster, zoomToShowLayer lo
+      // separa antes de abrir el popup.
       setTimeout(() => {
-        targetMarker.openPopup();
+        clusterGroup.zoomToShowLayer(targetMarker, () => targetMarker.openPopup());
       }, 1100);
     } else {
       showMapaToast(
@@ -366,7 +386,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       );
     }
   } else if (!isNaN(wantedLat) && !isNaN(wantedLng)) {
-    map.flyTo([wantedLat, wantedLng], 17, { duration: 1.0 });
+    map.flyTo([wantedLat, wantedLng], 16, { duration: 1.0 });
   }
 
   // ========================================

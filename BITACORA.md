@@ -31,6 +31,31 @@
 
 ---
 
+## 10/11/2026 (noche) — Auditoría de Fable arreglada: seguridad, reporte, formulario, SEO y pruebas
+
+**Qué pasó**
+- Memo pidió una segunda opinión; Fable auditó (15 puntos con evidencia) y Memo dijo «arreglados todos con opus 5.5, pídele el visto bueno a fable». Se hizo en 4 lotes paralelos con dueño exclusivo de archivos (base · reporte/mapa/estadísticas · formulario · SEO/a11y/CI), integración con la suite completa (122/122) y revisión final de Fable: «aprobado con cambios menores», que se arreglaron antes de publicar (duplicado de la cola, fórmulas en lat/long del CSV, correo personal en `docs/PRESENTATION-CHECKLIST.md`, correo del pie partido).
+
+**Base de datos**
+- `010_permisos_admin_y_aprobacion.sql` **aplicada el 11/11/2026 03:15 UTC**: el INSERT anónimo sólo crea filas pendientes (`insert_pendiente`); anon sin UPDATE/DELETE/TRUNCATE (antes podía TRUNCATE); el panel sólo para `public.ifcs_admins` vía `es_admin_ifcs()` (el usuario de Cuervo Café ya no ve ni edita evaluaciones); el RPC `get_evaluacion_publica` ya no devuelve `fuente_correo`. Rollback en el reporte del lote (estado previo en el scratchpad de la sesión).
+- `ifcs_admins` tiene 3 correos: el institucional (en la migración) y los gmails de Memo y Nadia, **dados de alta a mano** porque el repo es público. Un admin nuevo necesita el usuario en Auth **y** su fila en `ifcs_admins`.
+- `011_ocultar_correo_a_anon.sql`: anon ya no puede leer `fuente_correo`. Se aplica **después** de publicar el frontend con columnas explícitas (si no, `select=*` rompería mapa y estadísticas).
+
+**Frontend**
+- Inyección cerrada: todo dato de base/URL/localStorage va escapado o por `textContent` (spec `reporte-seguridad`, probado por mutación).
+- Reporte: frases correctas con condicionales vacíos, folio/fecha/colectivo, título dinámico, marcas 30/60, WhatsApp, estado vacío, aviso `pendiente=1`. Fotos en 800/1200 webp+jpg: 6.3 MB → ~0.5 MB.
+- Formulario: borrador, cola con reintento (reusa el token si se vuelve a enviar), avance por paso, validación (correo, coordenadas, fecha, condicionales visibles), datalist de ciudades, labels reales y foco al primer error; el texto del correo ya no dice «solo tú los ves».
+- Mapa con «Ver reporte», CSV en estadísticas, og 1200×630, canonical, robots, sitemap, 404 propio, «Saltar al contenido», SRI en todas las librerías, CI de Playwright en `.github/workflows/e2e.yml`.
+
+**Pendiente de Nadia (no se tocó sin ella)**
+- La tabla de ponderación: «Características del puente: 15» pero sus renglones suman 23 (máximo posible 103).
+- Si los condicionales deben ser obligatorios con opción «no pude medirlo» (hoy se exigen mientras se ven).
+- 29 evaluaciones pendientes de aprobar en el panel.
+- Texto modelo de un oficio para autoridades; fotos de los 2 puentes sustituidos.
+- El correo personal sigue en el historial de git de `docs/PRESENTATION-CHECKLIST.md` (commit `0fd8ad1`); se quitó del archivo, no se reescribió historia.
+
+---
+
 ## 10/11/2026 — Rediseño: se eligió «El plano y el archivo» y hay maqueta de portada
 
 **Qué pasó**
