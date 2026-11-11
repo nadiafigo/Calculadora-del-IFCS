@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Calculadora del Índice de Factibilidad de Cruce Seguro. Evalúa puentes antipeatonales y determina la factibilidad de sustituirlos por cruces peatonales seguros.">
-    <meta name="theme-color" content="#1e5080">
+    <meta name="theme-color" content="#F3F5F2">
     <!-- Open Graph -->
     <meta property="og:type" content="website">
     <meta property="og:title" content="Calculadora IFCS — Factibilidad de Cruce Peatonal Seguro">
@@ -30,267 +30,272 @@
 
 <body>
     <header class="header">
-        <nav class="navbar">
-            <a href="../index.html">
-                <img src="../img/LP.png" alt="logo_LP" class="navbar__logo">
+        <nav class="navbar" aria-label="Principal">
+            <a class="marca" href="../index.html">
+                <img src="../img/LP.png" alt="Liga Peatonal" class="navbar__logo" width="40" height="40">
+                <span class="marca__nombre">Adiós puentes antipeatonales<small>Calculadora IFCS</small></span>
             </a>
-
-            <input type="checkbox" id="nav__checkbox" class="nav__checkbox">
-            <label for="nav__checkbox" class="nav__toggle">
-                <svg class="menu" width="32" height="18" xmlns="http://www.w3.org/2000/svg">
-                    <g fill="#FFF" fill-rule="evenodd">
-                      <path d="M0 0h32v2H0zM0 8h32v2H0zM0 16h32v2H0z"></path>
-                    </g>
-                </svg>
-                <svg class="close" width="26" height="26" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M23.607.98l1.414 1.413L14.414 13l10.607 10.607-1.414 1.414L13 14.414 2.393 25.021.98 23.607 11.586 13 .98 2.393 2.393.98 13 11.586 23.607.98z"
-                    fill="#FFF" fill-rule="evenodd"/>
-                  </svg>
-            </label>
+            <input type="checkbox" id="nav__checkbox" class="nav__checkbox" aria-label="Abrir o cerrar el menú">
+            <label for="nav__checkbox" class="nav__toggle"><span class="abrir">Menú</span><span class="cerrar">Cerrar</span></label>
             <div class="navbar-content">
-                <div class="menu">
-                    <div class="menu-option">
-                        <div class="selected-option">
-                            <a href="../index.html"><li class="menu__item">Inicio</li></a>
-                        </div>
+              <ul class="menu">
+                <li class="menu-option"><div class="selected-option"><a class="menu__item" href="../html/archivo.html">Archivo</a></div></li>
+                <li class="menu-option"><div class="selected-option"><a class="menu__item" href="../html/mapa.html">Mapa</a></div></li>
+                <li class="menu-option"><div class="selected-option"><a class="menu__item" href="../html/analytics.html">Estadísticas</a></div></li>
+                <li class="menu-option"><div class="selected-option"><a class="menu__item" href="../antecedentes.html">Metodología</a></div></li>
+                <li class="menu-option">
+                    <div class="selected-option"><button class="menu__item" type="button" aria-haspopup="true">Descargables</button><span class="item-icon" aria-hidden="true"></span></div>
+                    <div class="submenu">
+                        <ul class="submenu_container">
+                            <li><a class="submenu__item" href="../pdf/Tabla 5. Formato de llenado.pdf">Formato de llenado</a></li>
+                            <li><a class="submenu__item" href="../pdf/MANUAL_IFCS.pdf">Manual del IFCS</a></li>
+                            <li><a class="submenu__item" href="../pdf/Diagnostico_Puentes_Morelia.pdf">Diagnóstico de puentes de Morelia</a></li>
+                        </ul>
                     </div>
-
-                    <div class="menu-option">
-                        <div class="selected-option">
-                            <a href="../antecedentes.html"><li class="menu__item">Antecedentes</li></a>
-                        </div>
-                    </div>
-
-                    <div class="menu-option">
-                        <div class="selected-option">
-                            <a href="./mapa.html"><li class="menu__item">Mapa de resultados</li></a>
-                        </div>
-                    </div>
-
-                    <div class="menu-option">
-                        <div class="selected-option">
-                            <a href="./analytics.html"><li class="menu__item">Estadísticas</li></a>
-                        </div>
-                    </div>
-
-                    <div class="menu-option">
-                        <div class="selected-option">
-                            <li class="menu__item">Descargables</li>
-                            <div class="item-icon"></div>
-                        </div>
-                        <div class="submenu">
-                            <ul class="submenu_container">
-                                <li><a class="submenu__item" href="../pdf/Tabla 5. Formato de llenado.pdf">Formato de llenado</a></li>
-                                <li><a class="submenu__item" href="../pdf/MANUAL_IFCS.pdf">Manual del IFCS</a></li>
-                                <li><a class="submenu__item" href="../pdf/Diagnostico_Puentes_Morelia.pdf">Diagnóstico de Puentes Peatonales Elevados de Morelia</a></li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="menu-option">
-                        <div class="selected-option">
-                            <li class="menu__item">Contacto</li>
-                            <div class="item-icon"></div>
-                        </div>
-                        <div class="submenu">
-                            <ul class="submenu_container">
-                                <li><a class="submenu__item" href="mailto:adiospuentesantipeatonales@ligapeatonal.org">adiospuentesantipeatonales@ligapeatonal.org</a></li>
-                                <li><a class="submenu__item" href="https://www.facebook.com/LigaPeatonal/" target="_blank" rel="noopener">Facebook</a></li>
-                                <li><a class="submenu__item" href="https://www.instagram.com/ligapeatonal/" target="_blank" rel="noopener">Instagram</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
+                </li>
+                <li class="menu-cta"><a class="btn btn--verde" href="../index.html#CalcForm">Evalúa un puente</a></li>
+              </ul>
             </div>
         </nav>
     </header>
-    <main>
-                <section class="res-gral">
-                <p>Resultado:</p>
-                <h1 id="Resultado"></h1>
-                <p>¡Este Puente AntiPeatonal tiene <span id="TextoFactibilidad"></span> de ser retirado y sustituído por un Cruce Peatonal Seguro!</p>
+    <main class="reporte">
+        <!-- Expediente: encabezado del reporte con el dictamen -->
+        <section class="lamina expediente" aria-labelledby="t-reporte">
+            <div class="envoltura">
+                <div class="reticula" aria-hidden="true"></div>
+                <div class="contenido">
+                    <div class="expediente-texto">
+                        <p class="mono">Reporte IFCS · Índice de Factibilidad de Cruce Seguro</p>
+                        <h1 id="t-reporte">Reporte de factibilidad del puente</h1>
+                        <p class="expediente-frase">Este puente antipeatonal tiene <span id="TextoFactibilidad"></span> de ser retirado y sustituido por un cruce peatonal seguro.</p>
+                    </div>
+
+                    <section class="res-gral dictamen" aria-label="Resultado de la evaluación">
+                        <p class="mono dictamen-etiqueta">Puntaje IFCS · de 0 a 100</p>
+                        <p id="Resultado" class="dictamen-cifra"></p>
+                        <div class="dictamen-barra" aria-hidden="true"><i></i></div>
+                        <div class="dictamen-escala" aria-hidden="true"><span>0</span><span>50</span><span>100</span></div>
+                        <p class="dictamen-plazo"><i class="punto" aria-hidden="true"></i><span class="dictamen-plazo-txt">Factibilidad</span></p>
+                        <div class="pdf-btn-wrap">
+                            <button id="btn-descargar-pdf" type="button" class="btn btn--verde btn-pdf">Descargar reporte PDF</button>
+                        </div>
+                    </section>
+
+                    <div class="cajetin">
+                        <div>Reporte IFCS</div>
+                        <div class="c-titulo">Diagnóstico general y propuestas de rediseño</div>
+                        <div class="c-fecha">Liga Peatonal · Bicivilízate Michoacán</div>
+                    </div>
+                </div>
+            </div>
         </section>
 
-        <div class="pdf-btn-wrap">
-            <button id="btn-descargar-pdf" class="btn-pdf">Descargar reporte PDF</button>
+        <div class="envoltura reporte-avisos">
+            <!-- Link permanente: se muestra solo cuando la evaluación quedó guardada en la base -->
+            <section class="permalink" id="permalink-box" hidden aria-labelledby="permalink-title">
+                <div class="permalink__inner">
+                    <div class="permalink__texto">
+                        <p class="mono permalink__etiqueta">Enlace permanente</p>
+                        <p class="permalink__title" id="permalink-title">Guarda este enlace para volver a ver el reporte</p>
+                        <p class="permalink__hint">Regenera el diagnóstico, las propuestas y el PDF con los datos guardados. Puedes compartirlo con quien necesite consultarlo.</p>
+                    </div>
+                    <div class="permalink__row">
+                        <input type="text" id="permalink-url" class="permalink__url" readonly aria-label="Enlace permanente del reporte">
+                        <button type="button" id="permalink-copy" class="btn btn--linea permalink__copy">Copiar enlace</button>
+                    </div>
+                </div>
+            </section>
+            <p class="permalink__error" id="permalink-error" hidden role="alert">
+                No encontramos una evaluación guardada para este enlace. Revisa que esté completo o
+                <a href="../index.html#CalcForm">haz una nueva evaluación</a>.
+            </p>
         </div>
 
-        <!-- Link permanente: se muestra solo cuando la evaluación quedó guardada en la base -->
-        <section class="permalink" id="permalink-box" hidden aria-labelledby="permalink-title">
-            <div class="permalink__inner">
-                <p class="permalink__title" id="permalink-title">Guarda este enlace para volver a ver el reporte</p>
-                <p class="permalink__hint">Regenera el diagnóstico, las propuestas y el PDF con los datos guardados. Puedes compartirlo con quien necesite consultarlo.</p>
-                <div class="permalink__row">
-                    <input type="text" id="permalink-url" class="permalink__url" readonly aria-label="Enlace permanente del reporte">
-                    <button type="button" id="permalink-copy" class="permalink__copy">Copiar enlace</button>
+        <!-- 01 · Diagnóstico general -->
+        <section class="dx-gral seccion-reporte" aria-labelledby="t-dx">
+            <div class="envoltura">
+                <div class="reporte-cabeza">
+                    <p class="mono num">01</p>
+                    <h2 id="t-dx">Diagnóstico general</h2>
                 </div>
-            </div>
-        </section>
-        <p class="permalink__error" id="permalink-error" hidden role="alert">
-            No encontramos una evaluación guardada para este enlace. Revisa que esté completo o
-            <a href="../index.html#CalcForm">haz una nueva evaluación</a>.
-        </p>
-
-        <section class="tittle-res">
-            <div class="res-tittle">
-                <h1>¡Digamos #AdiósPuentesAntipeatonales!</h1>
-                <h2 class="res-descr">
-                    La transición hacia ciudades caminables se debe realizar de manera paulatina, tomando en cuenta las características actuales del entorno y su capacidad de adecuarse con el fin de brindar seguridad a todas las personas peatonas.
-                </h2>
-                <!-----
-                <h3 class="res-descr">
-                    Esta calculadora te ayudará a determinar el nivel de factibilidad técnica y urbana para <span class="res-descr-n">sustituir un puente AntiPeatonal por un Cruce Peatonal Seguro de un caso en específico</span>, lo cual se traducirá en una acción posible a realizar en un corto, mediano o largo plazo.
-                </h3>
-                -------->
-            </div>
-            <img class="img1" src="../img/mobile/img3-06.jpg" alt="Imagen de personas mayores bajando un puente peatonal">
-        </section>
-
-        <section class="dx-gral">
-            <h1>Diagnóstico general:</h1>
-            <h2>
-                El puente antipeatonal ubicado en la vialidad de
-                <span id="DxVialidad"></span>, próximo a <span id="DxReferencia"></span> de la Ciudad de <span id="DxCiudad"></span>, es técnicamente factible a
-                retirarse y sustituirse por un cruce peatonal
-                seguro <span id="TextoFact2"></span>, esto debido a:
-            </h2>
-            <div class="caracteristicas">
-                <div class="dx-card">
-                    <p>Las características de la vialidad:</p>
-                    <ul class="caract-esp">
-                        <li id="DxSemaforo"></li>
-                        <li id="DxCarrilesCamellones" style="display: none;"></li>
-                        <li id="DxBarreras"></li>
-                        <li id="DxRevo" style="display: none">Existen reductores de velocidad que asisten en una mejor convivencia de velocidades entre vehículos y peatones, sin embargo estos deben ser analizados para asegurar que su funcionamiento sea el adecuado, y en dado caso, complementarse con elementos adicionales.</li>
-                    </ul>
-                </div>
-                <div class="dx-card">
-                    <p>La presencia de equipamientos:</p>
-                    <ul class="caract-esp">
-                        <li id="DxEquipNum"></li>
-                        <li id="DxEquip">Existe un equipamiento de <span id="DxEquipTipo"></span> a una distancia de <span id="DxEquipDist"></span>, lo cual justifica la reducción de velocidad en el entorno próximo al puente AntiPeatonal.</li>
-                    </ul>
-                </div>
-                <div class="dx-card">
-                    <p>Las características del puente:</p>
-                    <ul class="caract-esp">
-                        <li id="DxPteObst" style="display: none;"></li>
-                        <li id="DxPteAnchoAcc" style="display: none;"></li>
-                        <li id="DxPteTipoAcc"></li>
-                        <li id="DxIlumPubli" style="display: none;"></li>
-                    </ul>
+                <p class="dx-dictamen">
+                    El puente antipeatonal ubicado en la vialidad de
+                    <span id="DxVialidad"></span>, próximo a <span id="DxReferencia"></span> de la Ciudad de <span id="DxCiudad"></span>, es técnicamente factible a
+                    retirarse y sustituirse por un cruce peatonal
+                    seguro <span id="TextoFact2"></span>, esto debido a:
+                </p>
+                <div class="caracteristicas">
+                    <div class="dx-card">
+                        <p>Las características de la vialidad:</p>
+                        <ul class="caract-esp">
+                            <li id="DxSemaforo"></li>
+                            <li id="DxCarrilesCamellones" style="display: none;"></li>
+                            <li id="DxBarreras"></li>
+                            <li id="DxRevo" style="display: none">Existen reductores de velocidad que asisten en una mejor convivencia de velocidades entre vehículos y peatones, sin embargo estos deben ser analizados para asegurar que su funcionamiento sea el adecuado, y en dado caso, complementarse con elementos adicionales.</li>
+                        </ul>
+                    </div>
+                    <div class="dx-card">
+                        <p>La presencia de equipamientos:</p>
+                        <ul class="caract-esp">
+                            <li id="DxEquipNum"></li>
+                            <li id="DxEquip">Existe un equipamiento de <span id="DxEquipTipo"></span> a una distancia de <span id="DxEquipDist"></span>, lo cual justifica la reducción de velocidad en el entorno próximo al puente AntiPeatonal.</li>
+                        </ul>
+                    </div>
+                    <div class="dx-card">
+                        <p>Las características del puente:</p>
+                        <ul class="caract-esp">
+                            <li id="DxPteObst" style="display: none;"></li>
+                            <li id="DxPteAnchoAcc" style="display: none;"></li>
+                            <li id="DxPteTipoAcc"></li>
+                            <li id="DxIlumPubli" style="display: none;"></li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <section id="propuestas-rediseno" class="propuestas-section">
-            <h2>Propuestas de rediseño para la sustitución del puente antipeatonal</h2>
-            <p class="subtitle">Recomendaciones generales basadas en normatividad mexicana vigente, generadas a partir de tu evaluación.</p>
-            <div id="propuestas-container"></div>
-            <div class="normas-referencia" id="normas-referencia">
-                <h3>Normatividad referenciada</h3>
-                <ul id="normas-list"></ul>
+        <!-- 02 · Propuestas de rediseño -->
+        <section id="propuestas-rediseno" class="propuestas-section seccion-reporte" aria-labelledby="t-prop">
+            <div class="envoltura">
+                <div class="reporte-cabeza">
+                    <p class="mono num">02</p>
+                    <h2 id="t-prop">Propuestas de rediseño para la sustitución del puente antipeatonal</h2>
+                    <p class="subtitle">Recomendaciones generales basadas en normatividad mexicana vigente, generadas a partir de tu evaluación.</p>
+                </div>
+                <div id="propuestas-container"></div>
+                <div class="normas-referencia" id="normas-referencia">
+                    <h3>Normatividad referenciada</h3>
+                    <ul id="normas-list"></ul>
+                </div>
+                <p class="propuestas-disclaimer">
+                    Las propuestas de rediseño aquí planteadas son de carácter general y tienen el objetivo de brindar una fundamentación técnica y jurídica para sustentar la sustitución de un puente antipeatonal por un cruce seguro, sin embargo, deberán realizarse revisiones puntuales y propuestas específicas antes de su implementación.
+                </p>
             </div>
-            <p class="propuestas-disclaimer">
-                Las propuestas de rediseño aquí planteadas son de carácter general y tienen el objetivo de brindar una fundamentación técnica y jurídica para sustentar la sustitución de un puente antipeatonal por un cruce seguro, sin embargo, deberán realizarse revisiones puntuales y propuestas específicas antes de su implementación.
-            </p>
         </section>
 
-        <section class="intro">
-            <img class="img1" src="../img/mobile/img2.jpg" alt="Imagen de personas mayores bajando un puente peatonal">
-            <!------
-            <div class="quote-container">
-                <p class="quote">"Las ciudades tienen la capacidad de proporcionar algo para todas la personas, sólo porque, y sólo cuando, se crean por y para todas las personas." <br><br> —Jane Jacobs, 1961.</p>
+        <!-- 03 · Cierre -->
+        <section class="tittle-res seccion-reporte" aria-labelledby="t-cierre">
+            <div class="envoltura cierre">
+                <div class="res-tittle">
+                    <div class="reporte-cabeza">
+                        <p class="mono num">03</p>
+                        <h2 id="t-cierre">¡Digamos #AdiósPuentes<wbr>Antipeatonales!</h2>
+                    </div>
+                    <p class="res-descr">
+                        La transición hacia ciudades caminables se debe realizar de manera paulatina, tomando en cuenta las características actuales del entorno y su capacidad de adecuarse con el fin de brindar seguridad a todas las personas peatonas.
+                    </p>
+                </div>
+                <div class="cierre-fotos">
+                    <img class="img1" src="../img/mobile/img3-06.jpg" alt="Imagen de personas mayores bajando un puente peatonal">
+                    <img class="img1" src="../img/mobile/img2.jpg" alt="Imagen de personas mayores bajando un puente peatonal">
+                </div>
             </div>
-            ---->
         </section>
 
-        <section class="cta-final">
-            <div class="cta-final__inner">
-                <h2 class="cta-final__title">¿Y ahora?</h2>
+        <section class="cta-final" aria-labelledby="t-cta">
+            <div class="envoltura cta-final__inner">
+                <h2 class="cta-final__title" id="t-cta">¿Y ahora?</h2>
                 <div class="cta-final__buttons">
-                    <button id="cta-ver-mapa" type="button" class="btn-cta btn-cta--primary">Ver mi evaluación en el mapa</button>
-                    <a href="../index.html#CalcForm" class="btn-cta btn-cta--secondary">Hacer otra evaluación</a>
-                    <button id="cta-descargar-pdf" type="button" class="btn-cta btn-cta--secondary">Descargar PDF de resultado</button>
+                    <button id="cta-ver-mapa" type="button" class="btn btn--verde">Ver mi evaluación en el mapa</button>
+                    <a href="../index.html#CalcForm" class="btn btn--linea">Hacer otra evaluación</a>
+                    <button id="cta-descargar-pdf" type="button" class="btn btn--linea">Descargar PDF de resultado</button>
                 </div>
             </div>
         </section>
-        <section class="footer">
-            <div class="footer-logo">
-                <img src="../img/logo_bicivilizate.svg" alt="Logo de Bicivilizate michoacan AC">
-            </div>
-            <ul class="footer-menu">
-                <li><a href="./mapa.html">Mapa de resultados</a></li>
-                <li><a href="../antecedentes.html">Conoce la metodología</a></li>
-                <li><a href="../antecedentes.html#descargas-meta">Descargables</a></li>
-                <li><a href="mailto:adiospuentesantipeatonales@ligapeatonal.org">Contacto</a></li>
-            </ul>
-            <div class="footer-social" aria-label="Redes sociales de Liga Peatonal">
-                <a href="https://facebook.com/LigaPeatonal" target="_blank" rel="noopener" aria-label="Liga Peatonal en Facebook">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12c0 5 3.66 9.13 8.44 9.88v-6.99H7.9V12h2.54V9.8c0-2.51 1.49-3.89 3.78-3.89 1.09 0 2.23.19 2.23.19v2.47h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.77l-.44 2.89h-2.33v6.99C18.34 21.13 22 17 22 12c0-5.52-4.48-10-10-10z"/></svg>
-                </a>
-                <a href="https://instagram.com/ligapeatonal" target="_blank" rel="noopener" aria-label="Liga Peatonal en Instagram">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 3.25.15 4.77 1.69 4.92 4.92.06 1.27.07 1.65.07 4.85 0 3.2-.01 3.58-.07 4.85-.15 3.23-1.66 4.77-4.92 4.92-1.27.06-1.64.07-4.85.07-3.2 0-3.58-.01-4.85-.07-3.26-.15-4.77-1.7-4.92-4.92-.06-1.27-.07-1.65-.07-4.85 0-3.2.01-3.58.07-4.85.15-3.23 1.66-4.77 4.92-4.92 1.27-.06 1.65-.07 4.85-.07zM12 0C8.74 0 8.33.01 7.05.07c-4.36.2-6.78 2.62-6.98 6.98C.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.2 4.36 2.62 6.78 6.98 6.98C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c4.35-.2 6.78-2.62 6.98-6.98.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.2-4.35-2.62-6.78-6.98-6.98C15.67.01 15.26 0 12 0zm0 5.84c-3.4 0-6.16 2.76-6.16 6.16s2.76 6.16 6.16 6.16 6.16-2.76 6.16-6.16S15.4 5.84 12 5.84zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm6.41-11.85c-.8 0-1.44.65-1.44 1.44 0 .8.65 1.44 1.44 1.44s1.44-.65 1.44-1.44c0-.79-.64-1.44-1.44-1.44z"/></svg>
-                </a>
-                <a href="mailto:adiospuentesantipeatonales@ligapeatonal.org" aria-label="Enviar correo a adiospuentesantipeatonales@ligapeatonal.org">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-                </a>
+        <footer class="footer">
+        <div class="envoltura">
+            <div class="pie-grid">
+                <div class="pie-marca">
+                    <div class="pie-logos">
+                        <img class="pie-lp" src="../img/LP.png" alt="Liga Peatonal" width="56" height="56">
+                        <div class="footer-logo"><img src="../img/logo_bicivilizate.svg" alt="Bicivilízate Michoacán A.C."></div>
+                    </div>
+                    <p>Una herramienta de Liga Peatonal y Bicivilízate Michoacán A.C. para impulsar cruces seguros a nivel de calle.</p>
+                    <a class="correo" href="mailto:adiospuentesantipeatonales@ligapeatonal.org">adiospuentesantipeatonales@ligapeatonal.org</a>
+                </div>
+                <nav aria-label="Herramientas">
+                    <h2>Herramientas</h2>
+                    <ul class="footer-menu">
+                        <li><a href="../index.html#CalcForm">Calculadora</a></li>
+                        <li><a href="../html/archivo.html">Archivo de puentes</a></li>
+                        <li><a href="../html/mapa.html">Mapa de resultados</a></li>
+                        <li><a href="../html/analytics.html">Estadísticas</a></li>
+                    </ul>
+                </nav>
+                <nav aria-label="Saber más">
+                    <h2>Saber más</h2>
+                    <ul class="footer-menu">
+                        <li><a href="../antecedentes.html">Antecedentes y metodología</a></li>
+                        <li><a href="../pdf/MANUAL_IFCS.pdf">Manual del IFCS</a></li>
+                        <li><a href="../pdf/Tabla 5. Formato de llenado.pdf">Formato de llenado</a></li>
+                        <li><a href="../antecedentes.html#descargas-meta">Todos los descargables</a></li>
+                    </ul>
+                </nav>
+                <div>
+                    <h2>Síguenos</h2>
+                    <div class="footer-social" aria-label="Redes sociales de Liga Peatonal">
+                        <a href="https://facebook.com/LigaPeatonal" target="_blank" rel="noopener" aria-label="Liga Peatonal en Facebook"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12c0 5 3.66 9.13 8.44 9.88v-6.99H7.9V12h2.54V9.8c0-2.51 1.49-3.89 3.78-3.89 1.09 0 2.23.19 2.23.19v2.47h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.77l-.44 2.89h-2.33v6.99C18.34 21.13 22 17 22 12c0-5.52-4.48-10-10-10z"/></svg></a>
+                        <a href="https://instagram.com/ligapeatonal" target="_blank" rel="noopener" aria-label="Liga Peatonal en Instagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 3.25.15 4.77 1.69 4.92 4.92.06 1.27.07 1.65.07 4.85 0 3.2-.01 3.58-.07 4.85-.15 3.23-1.66 4.77-4.92 4.92-1.27.06-1.64.07-4.85.07-3.2 0-3.58-.01-4.85-.07-3.26-.15-4.77-1.7-4.92-4.92-.06-1.27-.07-1.65-.07-4.85 0-3.2.01-3.58.07-4.85.15-3.23 1.66-4.77 4.92-4.92 1.27-.06 1.65-.07 4.85-.07zM12 0C8.74 0 8.33.01 7.05.07c-4.36.2-6.78 2.62-6.98 6.98C.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.2 4.36 2.62 6.78 6.98 6.98C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c4.35-.2 6.78-2.62 6.98-6.98.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.2-4.35-2.62-6.78-6.98-6.98C15.67.01 15.26 0 12 0zm0 5.84c-3.4 0-6.16 2.76-6.16 6.16s2.76 6.16 6.16 6.16 6.16-2.76 6.16-6.16S15.4 5.84 12 5.84zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm6.41-11.85c-.8 0-1.44.65-1.44 1.44 0 .8.65 1.44 1.44 1.44s1.44-.65 1.44-1.44c0-.79-.64-1.44-1.44-1.44z"/></svg></a>
+                        <a href="mailto:adiospuentesantipeatonales@ligapeatonal.org" aria-label="Enviar correo a adiospuentesantipeatonales@ligapeatonal.org"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg></a>
+                    </div>
+                </div>
             </div>
             <div class="creditos">
-                <p>Metodología y Diseño elaborados por Nadia F. para Bicivilízate, Michoacán A.C. y Liga Peatonal, A.C.</p>
+                <p>Metodología y diseño del IFCS: Nadia F. para Bicivilízate Michoacán A.C. y Liga Peatonal A.C.</p>
                 <p>Desarrollado por <a href="https://www.izalith.net/" class="link-izalith" target="_blank" rel="noopener">Izalith Consulting Corporation</a></p>
             </div>
-        </section>
+        </div>
+    </footer>
     </main>
 
 
     <!-- Hidden PDF report template -->
     <div id="reporte-pdf" style="display:none;">
       <div style="font-family:Arial,sans-serif; max-width:700px; margin:0 auto; padding:2rem;">
-        <h1 style="text-align:center; color:#1a237e; margin-bottom:.25rem;">Reporte IFCS</h1>
+        <h1 style="text-align:center; color:#17201B; margin-bottom:.25rem;">Reporte IFCS</h1>
         <p style="text-align:center; color:#555; margin-top:0;">Calculadora de Factibilidad de Cruce Peatonal Seguro</p>
-        <hr style="border:none; border-top:2px solid #1a237e; margin:1.5rem 0;">
+        <hr style="border:none; border-top:2px solid #17201B; margin:1.5rem 0;">
 
-        <h2 style="color:#1a237e;">Resultado</h2>
+        <h2 style="color:#17201B;">Resultado</h2>
         <p style="font-size:1.3rem;"><strong>Total IFCS:</strong> <span id="pdf-total"></span>%</p>
         <p style="font-size:1.3rem;"><strong>Factibilidad:</strong> <span id="pdf-factibilidad"></span></p>
 
         <hr style="border:none; border-top:1px solid #ccc; margin:1.5rem 0;">
 
-        <h2 style="color:#1a237e;">Datos de ubicaci&oacute;n</h2>
+        <h2 style="color:#17201B;">Datos de ubicaci&oacute;n</h2>
         <table style="width:100%; border-collapse:collapse; margin-bottom:1rem;">
           <tr><td style="padding:.4rem .5rem; font-weight:bold; width:40%;">Pa&iacute;s:</td><td id="pdf-pais" style="padding:.4rem .5rem;"></td></tr>
-          <tr style="background:#f5f5f5;"><td style="padding:.4rem .5rem; font-weight:bold;">Ciudad:</td><td id="pdf-ciudad" style="padding:.4rem .5rem;"></td></tr>
+          <tr style="background:#F3F5F2;"><td style="padding:.4rem .5rem; font-weight:bold;">Ciudad:</td><td id="pdf-ciudad" style="padding:.4rem .5rem;"></td></tr>
           <tr><td style="padding:.4rem .5rem; font-weight:bold;">Vialidad:</td><td id="pdf-vialidad" style="padding:.4rem .5rem;"></td></tr>
-          <tr style="background:#f5f5f5;"><td style="padding:.4rem .5rem; font-weight:bold;">Colonia:</td><td id="pdf-colonia" style="padding:.4rem .5rem;"></td></tr>
+          <tr style="background:#F3F5F2;"><td style="padding:.4rem .5rem; font-weight:bold;">Colonia:</td><td id="pdf-colonia" style="padding:.4rem .5rem;"></td></tr>
           <tr><td style="padding:.4rem .5rem; font-weight:bold;">Referencia:</td><td id="pdf-referencia" style="padding:.4rem .5rem;"></td></tr>
-          <tr style="background:#f5f5f5;"><td style="padding:.4rem .5rem; font-weight:bold;">Coordenadas:</td><td id="pdf-coords" style="padding:.4rem .5rem;"></td></tr>
+          <tr style="background:#F3F5F2;"><td style="padding:.4rem .5rem; font-weight:bold;">Coordenadas:</td><td id="pdf-coords" style="padding:.4rem .5rem;"></td></tr>
         </table>
 
-        <h2 style="color:#1a237e;">Diagn&oacute;stico general</h2>
+        <h2 style="color:#17201B;">Diagn&oacute;stico general</h2>
         <div id="pdf-diagnostico" style="line-height:1.6;"></div>
 
         <hr style="border:none; border-top:1px solid #ccc; margin:1.5rem 0;">
 
-        <h2 style="color:#1a237e;">Propuestas de redise&ntilde;o</h2>
+        <h2 style="color:#17201B;">Propuestas de redise&ntilde;o</h2>
         <div id="pdf-propuestas" style="line-height:1.6;"></div>
-        <p style="margin-top:1rem; padding:0.75rem 1rem; border-left:3px solid #1a237e; background:#f0f3ff; font-style:italic; font-size:0.9rem; line-height:1.5; color:#333;">
+        <p style="margin-top:1rem; padding:0.75rem 1rem; border-left:3px solid #0B6A33; background:#F3F5F2; font-style:italic; font-size:0.9rem; line-height:1.5; color:#333;">
             Las propuestas de rediseño aquí planteadas son de carácter general y tienen el objetivo de brindar una fundamentación técnica y jurídica para sustentar la sustitución de un puente antipeatonal por un cruce seguro, sin embargo, deberán realizarse revisiones puntuales y propuestas específicas antes de su implementación.
         </p>
 
         <hr style="border:none; border-top:1px solid #ccc; margin:1.5rem 0;">
 
-        <h2 style="color:#1a237e;">Fuente de los datos</h2>
+        <h2 style="color:#17201B;">Fuente de los datos</h2>
         <table style="width:100%; border-collapse:collapse;">
           <tr><td style="padding:.4rem .5rem; font-weight:bold; width:40%;">Nombre:</td><td id="pdf-fuente-nombre" style="padding:.4rem .5rem;"></td></tr>
-          <tr style="background:#f5f5f5;"><td style="padding:.4rem .5rem; font-weight:bold;">Fecha:</td><td id="pdf-fuente-fecha" style="padding:.4rem .5rem;"></td></tr>
+          <tr style="background:#F3F5F2;"><td style="padding:.4rem .5rem; font-weight:bold;">Fecha:</td><td id="pdf-fuente-fecha" style="padding:.4rem .5rem;"></td></tr>
           <tr><td style="padding:.4rem .5rem; font-weight:bold;">Organizaci&oacute;n:</td><td id="pdf-fuente-org" style="padding:.4rem .5rem;"></td></tr>
-          <tr style="background:#f5f5f5;"><td style="padding:.4rem .5rem; font-weight:bold;">Correo:</td><td id="pdf-fuente-correo" style="padding:.4rem .5rem;"></td></tr>
+          <tr style="background:#F3F5F2;"><td style="padding:.4rem .5rem; font-weight:bold;">Correo:</td><td id="pdf-fuente-correo" style="padding:.4rem .5rem;"></td></tr>
         </table>
 
-        <div id="pdf-permalink-wrap" style="display:none; margin-top:1.5rem; padding:.75rem 1rem; background:#f0f3ff; border-left:3px solid #1a237e; font-size:.85rem; line-height:1.5; color:#333;">
+        <div id="pdf-permalink-wrap" style="display:none; margin-top:1.5rem; padding:.75rem 1rem; background:#F3F5F2; border-left:3px solid #0B6A33; font-size:.85rem; line-height:1.5; color:#333;">
           <strong>Consulta este reporte en l&iacute;nea:</strong><br>
-          <span id="pdf-permalink" style="word-break:break-all; color:#1a237e;"></span>
+          <span id="pdf-permalink" style="word-break:break-all; color:#0B6A33;"></span>
         </div>
 
         <p style="text-align:center; color:#999; font-size:.8rem; margin-top:2rem;">Generado por la Calculadora IFCS &mdash; Bicivilizate, Michoac&aacute;n A.C.</p>
@@ -302,5 +307,31 @@
     <script src="../js/navbar.js"></script>
     <script src="../js/propuestas-rediseno.js"></script>
     <script src="../js/resultado.js"></script>
+    <script>
+    // Presentación del dictamen: lee lo que pinta resultado.js (#Resultado y
+    // #TextoFactibilidad) y lo lleva a la barra y al color del plazo. No calcula nada.
+    (function () {
+        var cifra = document.getElementById("Resultado");
+        var fact = document.getElementById("TextoFactibilidad");
+        var dictamen = document.querySelector(".dictamen");
+        var plazoTxt = document.querySelector(".dictamen-plazo-txt");
+        if (!cifra || !dictamen) return;
+        var NOMBRES = { corto: "Corto plazo", mediano: "Mediano plazo", largo: "Largo plazo" };
+        function pintar() {
+            var n = parseInt(cifra.textContent, 10);
+            if (!isNaN(n)) dictamen.style.setProperty("--ifcs", String(Math.max(0, Math.min(100, n))));
+            var t = ((fact && fact.textContent) || "").toUpperCase();
+            var p = t.indexOf("CORTO") >= 0 ? "corto" : t.indexOf("MEDIANO") >= 0 ? "mediano" : t.indexOf("LARGO") >= 0 ? "largo" : "";
+            if (p && dictamen.getAttribute("data-plazo") !== p) {
+                dictamen.setAttribute("data-plazo", p);
+                if (plazoTxt) plazoTxt.textContent = NOMBRES[p];
+            }
+        }
+        var opciones = { childList: true, characterData: true, subtree: true };
+        new MutationObserver(pintar).observe(cifra, opciones);
+        if (fact) new MutationObserver(pintar).observe(fact, opciones);
+        pintar();
+    })();
+    </script>
 </body>
 </html>

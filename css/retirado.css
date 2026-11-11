@@ -1,261 +1,216 @@
 /* ==========================================================================
    CALCULADORA IFCS — Status de retiro de puentes
-   Marker, popup y filtros para registros con status_retiro = "Retirado".
+   Marker, popup y filtro del mapa para status_retiro = "Retirado", el KPI de
+   sustituidos (como cota) y el bloque de status en las tarjetas del admin.
+   Sustituido = tinta (como en la leyenda de la portada), no un plazo.
    ========================================================================== */
 
-/* --- Marker custom verde con check ---------------------------------------- */
-
-.marker-retirado {
-    background: transparent;
-    border: none;
-}
+/* --- Marker: punto de tinta con palomita --------------------------------- */
+.marker-retirado { background: transparent; border: none; }
 
 .marker-retirado-inner {
-    background: #2e7d32;        /* WCAG AA contra blanco: 5.4 */
-    border: 3px solid #ffffff;
-    border-radius: 50%;
     width: 32px;
     height: 32px;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-    transition: transform 0.2s ease;
+    border: 3px solid var(--blanco);
+    border-radius: 50%;
+    background: var(--tinta);
+    box-shadow: 0 0 0 1px rgb(23 32 27 / .55);
+    transition: transform .15s ease;
     outline: none;
 }
-
 .marker-retirado-inner:hover,
 .marker-retirado-inner:focus,
 .marker-retirado-inner:focus-within {
-    transform: scale(1.15);
-    outline: 2px solid #1b5e20;
+    transform: scale(1.12);
+    outline: 2px solid var(--verde-tinta);
     outline-offset: 2px;
 }
-
 @media (prefers-reduced-motion: reduce) {
-    .marker-retirado-inner {
-        transition: none;
-    }
+    .marker-retirado-inner { transition: none; }
     .marker-retirado-inner:hover,
     .marker-retirado-inner:focus,
-    .marker-retirado-inner:focus-within {
-        transform: none;
-    }
+    .marker-retirado-inner:focus-within { transform: none; }
 }
 
-/* --- Popup destacado ------------------------------------------------------- */
-
+/* --- Popup del sustituido ------------------------------------------------- */
 .popup-retirado-banner {
+    order: -2;
     display: flex;
     align-items: center;
-    gap: 0.4rem;
-    background: #2e7d32;
-    color: #ffffff;
-    padding: 0.4rem 0.6rem;
-    border-radius: 4px;
-    margin-bottom: 0.6rem;
-    font-size: 0.9rem;
-    font-weight: 600;
+    gap: 6px;
+    align-self: flex-start;
+    margin-bottom: 8px;
+    padding: 6px 9px;
+    border-radius: var(--r);
+    background: var(--tinta);
+    color: var(--papel);
+    font: 500 .6875rem/1 var(--mono);
+    letter-spacing: .06em;
+    text-transform: uppercase;
 }
-
-.popup-retirado-banner svg {
-    flex-shrink: 0;
-}
+.popup-retirado-banner strong { font-weight: 500; }
+.popup-retirado-banner svg { flex-shrink: 0; width: 14px; height: 14px; color: var(--verde); }
 
 .popup-retirado-fecha {
-    margin-top: 0.8rem;
-    padding-top: 0.6rem;
-    border-top: 2px solid #2e7d32;
-    font-size: 0.85rem;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid var(--filete);
+    font-size: .8125rem;
 }
-
 .popup-retirado-label {
-    color: var(--grayText, #555);
-    margin-right: 0.3rem;
+    margin-right: 4px;
+    font: 500 .6875rem/1.4 var(--mono);
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    color: var(--tinta-2);
 }
-
-.popup-retirado-valor {
-    font-weight: 600;
-    color: #2e7d32;
-}
+.popup-retirado-valor { font-weight: 600; color: var(--tinta); }
 
 /* ==========================================================================
-   FILTRO: Status de retiro
+   FILTRO: Status de retiro (radios)
    ========================================================================== */
 
-.filtro-status-retiro {
-    border: none;
-    padding: 0;
-    margin: 0;
-}
-
-.filtro-status-retiro legend {
-    font-size: 0.95rem;
-    font-weight: 600;
-    color: var(--darkBlue);
-    padding: 0;
-    margin-bottom: 0.5rem;
-}
-
-.filtro-radio-group {
-    display: flex;
-    flex-direction: column;
-    gap: 0.35rem;
-}
-
+.filtro-radio-group { display: grid; gap: 2px; }
 .filtro-radio-group label {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 10px;
+    min-height: 36px;
+    font-size: var(--t-sm);
+    color: var(--tinta);
     cursor: pointer;
-    min-height: 2.25rem;
-    font-size: 0.9rem;
-    color: var(--darkBlue);
 }
-
 .filtro-radio-group input[type="radio"] {
-    width: 1.1rem;
-    height: 1.1rem;
-    accent-color: #2e7d32;
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    accent-color: var(--verde-tinta);
     cursor: pointer;
 }
 
 /* ==========================================================================
-   KPI: Puentes sustituidos
+   KPI: Puentes sustituidos — como cota (línea con remates, cifra y nota)
    ========================================================================== */
 
 .kpi-retirados {
-    background: #2e7d32;
-    color: #ffffff;
-    padding: 0.85rem 1rem;
-    border-radius: var(--radius);
-    text-align: center;
-    margin-bottom: 1.25rem;
-    box-shadow: var(--shadow-sm);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.15rem;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: end;
+    gap: 10px 12px;
 }
-
+.kpi-retirados::before {
+    content: "";
+    grid-column: 1 / -1;
+    height: 9px;
+    border-inline: 1px solid var(--tinta);
+    background: linear-gradient(var(--tinta), var(--tinta)) center / 100% 1px no-repeat;
+}
 .kpi-retirados .kpi-numero {
-    font-size: 2.25rem;
-    font-weight: 700;
-    line-height: 1;
+    font-size: clamp(2.25rem, 1.8rem + 1.2vw, 2.75rem);
+    font-weight: 600;
+    line-height: .9;
+    letter-spacing: -.03em;
     font-variant-numeric: tabular-nums;
+    color: var(--tinta);
+}
+.kpi-retirados .kpi-label {
+    max-width: 16ch;
+    font-size: .8125rem;
+    line-height: 1.3;
+    color: var(--tinta-2);
 }
 
-.kpi-retirados .kpi-label {
-    font-size: 0.8rem;
-    font-weight: 600;
-    line-height: 1.25;
-    letter-spacing: 0.02em;
+@media (max-width: 820px) {
+    .kpi-retirados { min-width: 9.5rem; }
 }
 
 /* ==========================================================================
-   ADMIN — bloque status_retiro en cada card
+   ADMIN — bloque status_retiro en cada tarjeta
    ========================================================================== */
 
 .admin-status-retiro {
-    margin-top: 0.85rem;
-    padding-top: 0.85rem;
-    border-top: 1px dashed var(--gray);
     display: grid;
     grid-template-columns: 1fr;
-    gap: 0.5rem;
+    gap: 10px;
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px dashed var(--filete);
 }
-
 .admin-status-retiro label {
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: var(--darkBlue);
+    display: grid;
+    gap: 6px;
+    font: 500 .6875rem/1.2 var(--mono);
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    color: var(--tinta-2);
 }
+.admin-status-retiro label[hidden] { display: none; }
 
 .admin-status-retiro select,
 .admin-status-retiro input[type="text"] {
     width: 100%;
-    height: 2.25rem;
-    padding: 0.35rem 0.5rem;
-    border: 1px solid var(--grayText);
-    border-radius: 4px;
-    font-family: inherit;
-    font-size: 0.9rem;
-    color: var(--darkBlue);
-    background: #ffffff;
+    min-height: 40px;
+    padding: 6px 10px;
+    border: 1px solid var(--tinta);
+    border-radius: var(--r);
+    background: var(--blanco);
+    color: var(--tinta);
+    font: 500 var(--t-sm)/1.2 var(--sans);
+    letter-spacing: 0;
+    text-transform: none;
 }
-
-.admin-status-retiro select:focus,
-.admin-status-retiro input[type="text"]:focus {
-    outline: none;
-    border-color: #2e7d32;
-    box-shadow: 0 0 0 2px rgba(46, 125, 50, 0.2);
-}
+.admin-status-retiro select:focus-visible,
+.admin-status-retiro input[type="text"]:focus-visible { outline: 2px solid var(--verde-tinta); outline-offset: 2px; }
 
 .admin-status-retiro .btn-guardar-retiro {
-    align-self: flex-start;
-    padding: 0.5rem 1rem;
-    background: #2e7d32;
-    color: #ffffff;
-    border: none;
-    border-radius: 4px;
-    font-family: inherit;
-    font-size: 0.85rem;
-    font-weight: 600;
+    justify-self: start;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 40px;
+    padding: 8px 16px;
+    border: 1px solid var(--verde-tinta);
+    border-radius: var(--r);
+    background: transparent;
+    color: var(--verde-tinta);
+    font: 600 var(--t-sm)/1.1 var(--sans);
     cursor: pointer;
-    transition: background-color var(--transition);
+    transition: background-color var(--transition), color var(--transition);
 }
+.admin-status-retiro .btn-guardar-retiro:hover { background: var(--verde-tinta); color: var(--blanco); }
+.admin-status-retiro .btn-guardar-retiro:disabled { opacity: .55; cursor: not-allowed; }
 
-.admin-status-retiro .btn-guardar-retiro:hover {
-    background: #1b5e20;
-}
-
-.admin-status-retiro .btn-guardar-retiro:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-}
-
-/* Tabs admin */
-
+/* --- Pestañas del admin --------------------------------------------------- */
 .admin-tabs {
     display: flex;
-    gap: 0.25rem;
-    margin-bottom: 1rem;
-    border-bottom: 2px solid var(--gray);
+    gap: 4px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid var(--tinta);
 }
-
 .admin-tab {
-    padding: 0.6rem 1rem;
+    margin-bottom: -1px;
+    padding: 10px 14px;
+    border: 1px solid transparent;
+    border-bottom: 0;
+    border-radius: var(--r) var(--r) 0 0;
     background: transparent;
-    border: none;
-    border-bottom: 3px solid transparent;
-    font-family: inherit;
-    font-size: 0.95rem;
-    font-weight: 600;
-    color: var(--grayText);
+    color: var(--tinta-2);
+    font: 600 var(--t-sm)/1 var(--sans);
     cursor: pointer;
-    margin-bottom: -2px;
-    transition: color var(--transition), border-color var(--transition);
+    transition: color var(--transition), background-color var(--transition);
 }
-
-.admin-tab:hover {
-    color: var(--darkBlue);
-}
-
+.admin-tab:hover { color: var(--tinta); background: var(--papel-2); }
 .admin-tab.active {
-    color: var(--darkBlue);
-    border-bottom-color: #2e7d32;
+    color: var(--tinta);
+    background: var(--blanco);
+    border-color: var(--tinta);
+    box-shadow: inset 0 2px 0 var(--verde-tinta);
 }
 
 @media (min-width: 600px) {
-    .admin-status-retiro {
-        grid-template-columns: 1fr 1fr auto;
-        align-items: end;
-    }
-
-    .admin-status-retiro .btn-guardar-retiro {
-        align-self: end;
-    }
+    .admin-status-retiro { grid-template-columns: 1fr 1fr auto; align-items: end; }
+    .admin-status-retiro .btn-guardar-retiro { align-self: end; }
 }

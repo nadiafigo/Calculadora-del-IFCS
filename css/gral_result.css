@@ -1,180 +1,147 @@
 /* ==========================================================================
-   CALCULADORA IFCS — Result Page: General Layout
-   Score display, title, intro
+   REPORTE IFCS — expediente (encabezado de lámina), dictamen con el puntaje,
+   cierre y ajustes de la plantilla del PDF.
+   El color del plazo lo pone el script de presentación de resultado.html en
+   .dictamen[data-plazo] a partir de lo que pinta js/resultado.js.
    ========================================================================== */
 
-/* ==========================================================================
-   RESULT SCORE SECTION
-   ========================================================================== */
-
-.res-gral {
-    background-color: var(--darkBlue);
-    padding: 2.5rem 1.5rem;
-    text-align: center;
-    color: var(--white);
+/* --- Expediente ----------------------------------------------------------- */
+.expediente {
+    padding-block: clamp(36px, 5vw, 64px) clamp(28px, 4vw, 44px);
+    border-bottom: 1px solid var(--filete);
 }
-
-.res-gral > p {
-    font-weight: 300;
-    font-size: 1.25rem;
-    letter-spacing: 0.04rem;
+.expediente .contenido {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 32px 0;
+    align-items: start;
 }
+.expediente-texto {
+    grid-column: 1 / span 7;
+    display: grid;
+    gap: 18px;
+    padding: 8px clamp(16px, 3vw, 48px) 0 0;
+}
+.expediente-texto .mono { color: var(--verde-tinta); }
+.expediente h1 {
+    font-size: var(--t-h1-int);
+    line-height: 1.05;
+    font-weight: 700;
+    letter-spacing: -.03em;
+    color: var(--tinta);
+}
+.expediente-frase {
+    max-width: 40ch;
+    font-size: var(--t-lg);
+    line-height: 1.5;
+    color: var(--tinta-2);
+}
+#TextoFactibilidad { text-transform: lowercase; font-weight: 600; color: var(--tinta); }
 
-.res-gral h1 {
-    font-style: italic;
-    font-weight: 900;
-    font-size: clamp(3.5rem, 12vw, 6rem);
+.expediente .cajetin { grid-column: 1 / -1; grid-template-columns: auto 1fr auto; }
+
+/* --- Dictamen: puntaje sobre 100 con barra y marca del 50 ----------------- */
+.dictamen {
+    --c: var(--tinta);
+    grid-column: 8 / span 5;
+    display: grid;
+    gap: 12px;
+    padding: 20px 22px 22px;
+    background: var(--blanco);
+    border: 1px solid var(--tinta);
+    border-top: 4px solid var(--c);
+    border-radius: var(--r);
+}
+.dictamen[data-plazo="corto"]   { --c: var(--corto); }
+.dictamen[data-plazo="mediano"] { --c: var(--mediano); }
+.dictamen[data-plazo="largo"]   { --c: var(--largo); }
+
+.dictamen-etiqueta { color: var(--tinta-2); }
+.dictamen-cifra {
+    min-height: 1em;
+    font-size: clamp(3.25rem, 2.4rem + 2.8vw, 5rem);
+    font-weight: 600;
     line-height: 1;
-    margin: 1rem auto;
-    width: 8rem;
-    height: 8rem;
-    display: flex;
+    letter-spacing: -.045em;
+    font-variant-numeric: tabular-nums;
+    color: var(--tinta);
+}
+#Resultado:empty::before { content: "—"; color: var(--tinta-3); }
+
+.dictamen-barra { position: relative; height: 10px; margin-top: 4px; background: var(--filete-2); }
+.dictamen-barra i {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: calc(var(--ifcs, 0) * 1%);
+    background: var(--c);
+}
+.dictamen-barra::after {
+    content: "";
+    position: absolute;
+    top: -4px;
+    bottom: -4px;
+    left: 50%;
+    border-left: 1px solid var(--tinta);
+}
+.dictamen-escala {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    font: 500 .6875rem/1 var(--mono);
+    letter-spacing: .05em;
+    color: var(--tinta-2);
+}
+.dictamen-escala span:nth-child(2) { text-align: center; }
+.dictamen-escala span:nth-child(3) { text-align: right; }
+
+.dictamen-plazo {
+    justify-self: start;
+    display: inline-flex;
     align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--yellow), hsl(40, 76%, 48%));
-    box-shadow: 0 0.25rem 1.5rem rgba(0, 0, 0, 0.25);
+    gap: 8px;
+    margin-top: 4px;
+    padding: 7px 10px;
+    border-radius: var(--r);
+    background: var(--papel-2);
+    font: 500 .75rem/1 var(--mono);
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--tinta);
+}
+.dictamen-plazo .punto { width: 9px; height: 9px; background: var(--c); }
+
+.pdf-btn-wrap { margin-top: 6px; padding-top: 16px; border-top: 1px dashed var(--filete); }
+.btn-pdf { width: 100%; }
+
+/* --- 03 · Cierre ---------------------------------------------------------- */
+.cierre { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 24px 0; align-items: start; }
+.res-tittle { grid-column: 1 / span 4; display: grid; gap: 16px; padding-right: clamp(16px, 3vw, 40px); }
+.res-tittle .reporte-cabeza { margin-bottom: 0; }
+.res-descr { font-size: var(--t-md); line-height: 1.6; color: var(--tinta-2); max-width: 42ch; }
+.cierre-fotos { grid-column: 5 / span 8; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.cierre-fotos .img1 { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border: 1px solid var(--filete); border-radius: var(--r); }
+
+/* --- Responsive ----------------------------------------------------------- */
+@media (max-width: 1100px) {
+    .expediente-texto { grid-column: 1 / span 6; }
+    .dictamen { grid-column: 7 / span 6; }
+}
+@media (max-width: 900px) {
+    .expediente-texto, .dictamen { grid-column: 1 / -1; padding-right: 0; }
+    .expediente-frase { max-width: 52ch; }
+    .res-tittle, .cierre-fotos { grid-column: 1 / -1; padding-right: 0; }
+}
+@media (max-width: 520px) {
+    .expediente .cajetin { grid-template-columns: auto 1fr; }
+    .expediente .cajetin .c-titulo { display: none; }
+    .cierre-fotos { grid-template-columns: minmax(0, 1fr); }
 }
 
-.res-gral span {
-    font-style: italic;
-    font-weight: 700;
-    display: block;
-    margin-top: 0.5rem;
-    font-size: 1.1rem;
-}
+/* --- Plantilla oculta del PDF (#reporte-pdf) ------------------------------ */
+/* gral.css quita las viñetas de todas las listas; el PDF las necesita. */
+#reporte-pdf #pdf-diagnostico ul { list-style: disc; padding-left: 1.25rem; }
 
-/* ==========================================================================
-   PDF DOWNLOAD BUTTON
-   ========================================================================== */
-
-.pdf-btn-wrap {
-    text-align: center;
-    padding: 1.25rem 1.5rem;
-}
-
-.btn-pdf {
-    background: #1a237e;
-    color: #fff;
-    border: none;
-    border-radius: 0.5rem;
-    padding: 0.75rem 1.5rem;
-    font-size: 1rem;
-    font-family: inherit;
-    cursor: pointer;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-    transition: background 0.2s;
-    min-height: 2.75rem;
-}
-
-.btn-pdf:hover {
-    background: #283593;
-}
-
-@media (max-width: 480px) {
-    .btn-pdf {
-        width: 100%;
-        max-width: 20rem;
-        padding: 0.875rem 1.5rem;
-    }
-}
-
-/* ==========================================================================
-   TITLE / DESCRIPTION
-   ========================================================================== */
-
-.tittle-res {
-    display: flex;
-    flex-direction: column;
-}
-
-.res-tittle {
-    padding: 2rem 1.5rem;
-    color: var(--darkBlue);
-    line-height: 1.4;
-}
-
-.res-tittle h1 {
-    font-size: clamp(1.25rem, 3.5vw, 1.75rem);
-    font-weight: 700;
-}
-
-.res-descr {
-    font-weight: 300;
-    font-size: clamp(1rem, 2.5vw, 1.15rem);
-    font-style: italic;
-    margin-top: 0.75rem;
-    text-align: justify;
-    line-height: 1.55;
-}
-
-.res-descr-n {
-    font-weight: 900;
-}
-
-/* ==========================================================================
-   RESPONSIVE — Tablet
-   ========================================================================== */
-
-@media (min-width: 768px) {
-    .res-gral {
-        padding: 3rem 2.5rem;
-    }
-
-    .res-gral h1 {
-        width: 9rem;
-        height: 9rem;
-        margin: 1.25rem auto;
-    }
-
-    .res-tittle {
-        padding: 2.5rem 3rem;
-    }
-
-    .tittle-res {
-        flex-direction: row;
-        align-items: stretch;
-    }
-
-    .tittle-res .res-tittle {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-    }
-
-    .tittle-res .img1 {
-        width: 45%;
-        object-fit: cover;
-        max-height: none;
-    }
-}
-
-/* ==========================================================================
-   RESPONSIVE — Desktop
-   ========================================================================== */
-
-@media (min-width: 1024px) {
-    .res-gral {
-        padding: 3.5rem max(2.5rem, calc(50% - 25rem));
-    }
-
-    .res-gral h1 {
-        width: 10rem;
-        height: 10rem;
-        font-size: 4.5rem;
-        margin: 1.5rem auto;
-    }
-
-    .res-gral > p {
-        font-size: 1.4rem;
-    }
-
-    .res-gral span {
-        font-size: 1.25rem;
-    }
-
-    .res-tittle {
-        padding: 3rem max(2.5rem, calc(50% - 25rem));
-    }
+/* --- Impresión ------------------------------------------------------------ */
+@media print {
+    .pdf-btn-wrap, .cta-final, .permalink__row, .cierre-fotos { display: none !important; }
+    .dictamen { border-color: #000; }
 }

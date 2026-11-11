@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Calculadora del Índice de Factibilidad de Cruce Seguro. Evalúa puentes antipeatonales y determina la factibilidad de sustituirlos por cruces peatonales seguros.">
-    <meta name="theme-color" content="#1e5080">
+    <meta name="theme-color" content="#F3F5F2">
     <!-- Open Graph -->
     <meta property="og:type" content="website">
     <meta property="og:title" content="Calculadora IFCS — Factibilidad de Cruce Peatonal Seguro">
@@ -20,6 +20,7 @@
     <meta name="twitter:image" content="https://adiospuentesantipeatonales.org/img/LP.png">
     <link rel="icon" type="image/png" sizes="32x32" href="./img/logo_FPNC_32x32.png">
     <link rel="stylesheet" href="./css/gral.css">
+    <link rel="stylesheet" href="./css/archivo.css">
     <link rel="stylesheet" href="home.css">
     <link rel="stylesheet" href="./css/validation.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
@@ -30,108 +31,176 @@
 
 <body>
     <header class="header">
-        <nav class="navbar">
-            <a href="./index.html">
-                <img src="./img/LP.png" alt="logo_LP" class="navbar__logo">
+        <nav class="navbar" aria-label="Principal">
+            <a class="marca" href="./index.html">
+                <img src="./img/LP.png" alt="Liga Peatonal" class="navbar__logo" width="40" height="40">
+                <span class="marca__nombre">Adiós puentes antipeatonales<small>Calculadora IFCS</small></span>
             </a>
-
-            <input type="checkbox" id="nav__checkbox" class="nav__checkbox">
-            <label for="nav__checkbox" class="nav__toggle">
-                <svg class="menu" width="32" height="18" xmlns="http://www.w3.org/2000/svg">
-                    <g fill="#FFF" fill-rule="evenodd">
-                      <path d="M0 0h32v2H0zM0 8h32v2H0zM0 16h32v2H0z"></path>
-                    </g>
-                </svg>
-                <svg class="close" width="26" height="26" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M23.607.98l1.414 1.413L14.414 13l10.607 10.607-1.414 1.414L13 14.414 2.393 25.021.98 23.607 11.586 13 .98 2.393 2.393.98 13 11.586 23.607.98z"
-                    fill="#FFF" fill-rule="evenodd"/>
-                  </svg>
-            </label>
+            <input type="checkbox" id="nav__checkbox" class="nav__checkbox" aria-label="Abrir o cerrar el menú">
+            <label for="nav__checkbox" class="nav__toggle"><span class="abrir">Menú</span><span class="cerrar">Cerrar</span></label>
             <div class="navbar-content">
-                <div class="menu">
-
-                    <div class="menu-option">
-                        <div class="selected-option">
-                            <a href="./antecedentes.html"><li class="menu__item">Antecedentes</li></a>
-                        </div>
+              <ul class="menu">
+                <li class="menu-option"><div class="selected-option"><a class="menu__item" href="./html/archivo.html">Archivo</a></div></li>
+                <li class="menu-option"><div class="selected-option"><a class="menu__item" href="./html/mapa.html">Mapa</a></div></li>
+                <li class="menu-option"><div class="selected-option"><a class="menu__item" href="./html/analytics.html">Estadísticas</a></div></li>
+                <li class="menu-option"><div class="selected-option"><a class="menu__item" href="./antecedentes.html">Metodología</a></div></li>
+                <li class="menu-option">
+                    <div class="selected-option"><button class="menu__item" type="button" aria-haspopup="true">Descargables</button><span class="item-icon" aria-hidden="true"></span></div>
+                    <div class="submenu">
+                        <ul class="submenu_container">
+                            <li><a class="submenu__item" href="./pdf/Tabla 5. Formato de llenado.pdf">Formato de llenado</a></li>
+                            <li><a class="submenu__item" href="./pdf/MANUAL_IFCS.pdf">Manual del IFCS</a></li>
+                            <li><a class="submenu__item" href="./pdf/Diagnostico_Puentes_Morelia.pdf">Diagnóstico de puentes de Morelia</a></li>
+                        </ul>
                     </div>
-
-                    <div class="menu-option">
-                        <div class="selected-option">
-                            <a href="./html/mapa.html"><li class="menu__item">Mapa de resultados</li></a>
-                        </div>
-                    </div>
-
-                    <div class="menu-option">
-                        <div class="selected-option">
-                            <a href="./html/analytics.html"><li class="menu__item">Estadísticas</li></a>
-                        </div>
-                    </div>
-
-                    <div class="menu-option">
-                        <div class="selected-option">
-                            <li class="menu__item">Descargables</li>
-                            <div class="item-icon"></div>
-                        </div>
-                        <div class="submenu">
-                            <ul class="submenu_container">
-                                <li><a class="submenu__item" href="./pdf/Tabla 5. Formato de llenado.pdf">Formato de llenado</a></li>
-                                <li><a class="submenu__item" href="./pdf/MANUAL_IFCS.pdf">Manual del IFCS</a></li>
-                                <li><a class="submenu__item" href="./pdf/Diagnostico_Puentes_Morelia.pdf">Diagnóstico de Puentes Peatonales Elevados de Morelia</a></li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="menu-option">
-                        <div class="selected-option">
-                            <li class="menu__item">Contacto</li>
-                            <div class="item-icon"></div>
-                        </div>
-                        <div class="submenu">
-                            <ul class="submenu_container">
-                                <li><a class="submenu__item" href="mailto:adiospuentesantipeatonales@ligapeatonal.org">adiospuentesantipeatonales@ligapeatonal.org</a></li>
-                                <li><a class="submenu__item" href="https://www.facebook.com/LigaPeatonal/" target="_blank" rel="noopener">Facebook</a></li>
-                                <li><a class="submenu__item" href="https://www.instagram.com/ligapeatonal/" target="_blank" rel="noopener">Instagram</a></li>
-                            </ul>
-                        </div>
-                    </div>
-
-                </div>
+                </li>
+                <li class="menu-cta"><a class="btn btn--verde" href="./index.html#CalcForm">Evalúa un puente</a></li>
+              </ul>
             </div>
         </nav>
     </header>
 
     <main>
-        <section class="hero">
-            <div class="tittle-cont">
-                <h1 class="hero-tittle">Calculadora de Factibilidad<br>de Cruce Peatonal Seguro</h1>
-                <p class="hero-subt">en Zonas con Puentes AntiPeatonales</p>
-            </div>
-            <div class="paragraph-container">
-                <p class="hero-paragraph">¡Calcula qué tan factible es<br>la sustitución de un Puente AntiPeatonal<br>por un Cruce Seguro en tu Ciudad!</p>
-            </div>
-            <div class="button-container">
-                <a href="#CalcForm" class="btn btn--white">Comenzar</a>
-                <a href="./pdf/MANUAL_IFCS.pdf" class="btn btn--transparent">Conoce más</a>
-            </div>
-        </section>
-        <section class="cta-mapa">
-            <p class="cta-mapa__text">¿Solo quieres ver el mapa?</p>
-            <a href="./html/mapa.html" class="cta-mapa__btn">Explorar el mapa</a>
-        </section>
-        <section class="intro">
-            <img class="img1" src="./img/mobile/portada_small.jpg" alt="Imagen de personas mayores bajando un puente peatonal">
-            <div class="quote-container">
-                <p class="quote">"Las ciudades tienen la capacidad de proporcionar algo para todas la personas, sólo porque, y sólo cuando, se crean por y para todas las personas." <br><br> —Jane Jacobs, 1961.</p>
+        <!-- Lámina 01: portada con el plano -->
+        <section class="lamina portada" aria-labelledby="t-portada">
+            <div class="envoltura">
+                <div class="reticula" aria-hidden="true"></div>
+                <div class="contenido">
+                    <div class="portada-texto">
+                        <p class="mono">Índice de Factibilidad de Cruce Seguro</p>
+                        <h1 id="t-portada">¿Ese puente se puede <em>cambiar por un cruce seguro?</em></h1>
+                        <p class="bajada">Evalúa un puente antipeatonal de tu ciudad y obtén qué tan factible es sustituirlo por un cruce a nivel de calle. <span data-dato="frase-total"></span></p>
+                        <div class="acciones">
+                            <a class="btn btn--verde" href="#CalcForm">Evalúa un puente <span aria-hidden="true">→</span></a>
+                            <a class="btn btn--linea" href="./html/archivo.html">Ver el archivo</a>
+                        </div>
+                    </div>
+                    <div class="portada-plano">
+                        <div class="leyenda" aria-label="Leyenda del plano">
+                            <span><i class="punto" style="background:var(--corto)"></i>Corto plazo</span>
+                            <span><i class="punto" style="background:var(--mediano)"></i>Mediano plazo</span>
+                            <span><i class="punto" style="background:var(--largo)"></i>Largo plazo</span>
+                            <span><i class="punto" style="background:var(--tinta)"></i>Sustituido</span>
+                        </div>
+                        <div class="plano" id="plano" role="region" aria-label="Plano de Morelia con los puentes evaluados"></div>
+                        <div class="cajetin">
+                            <div>Lámina 01</div>
+                            <div class="c-titulo">Puentes evaluados · Morelia</div>
+                            <div><span class="escala" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span id="escala-txt">—</span></div>
+                            <div>N ↑</div>
+                            <div class="c-fecha" id="cajetin-fecha">Datos en vivo</div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 
-        <form class="calc-form" id="CalcForm" novalidate>
-            <div class="form-title">
-                <h2 class="form-start">¡COMIENZA CON EL CÁLCULO!</h2>
-                <p class="form-desc">Deposita los datos recolectados aquí:</p>
-                <a href="./pdf/Tabla 5. Formato de llenado.pdf">¿Cómo recolecto los datos?</a>
+        <!-- Cotas: cifras calculadas de las evaluaciones aprobadas -->
+        <div class="envoltura">
+            <div class="cotas" aria-live="polite">
+                <div class="cota"><span class="cota-linea" aria-hidden="true"></span><strong data-dato="total">—</strong><p>puentes evaluados y aprobados para el mapa</p></div>
+                <div class="cota"><span class="cota-linea" aria-hidden="true"></span><strong data-dato="ciudades">—</strong><p>ciudades con al menos una evaluación</p></div>
+                <div class="cota"><span class="cota-linea" aria-hidden="true"></span><strong data-dato="promedio">—</strong><p>puntaje IFCS promedio</p></div>
+                <div class="cota"><span class="cota-linea" aria-hidden="true"></span><strong data-dato="sustituidos">—</strong><p>puentes ya sustituidos por cruces seguros</p></div>
             </div>
+        </div>
+
+        <!-- Lámina 02: herramientas -->
+        <section class="lamina seccion" id="herramientas" aria-labelledby="t-herr">
+            <div class="envoltura">
+                <div class="reticula" aria-hidden="true"></div>
+                <div class="contenido">
+                    <div class="seccion-cabeza">
+                        <p class="mono num">Lámina 02</p>
+                        <h2 id="t-herr">Todo lo que necesitas para pedir un cruce seguro</h2>
+                        <p>Gratis y abierto. El resultado sirve para hablar con tu municipio con datos.</p>
+                    </div>
+                    <div class="bento">
+                        <a class="celda celda--evalua" href="#CalcForm">
+                            <span class="flecha" aria-hidden="true">↓</span>
+                            <div class="celda-texto">
+                                <p class="mono">Calculadora</p>
+                                <h3>Evalúa un puente</h3>
+                                <p>Con los datos que juntas en campo, la calculadora te dice si el puente se puede sustituir a corto, mediano o largo plazo, y te da un reporte con propuestas de rediseño.</p>
+                            </div>
+                            <ol class="pasos">
+                                <li><span>01</span>Ubicación</li>
+                                <li><span>02</span>La vialidad</li>
+                                <li><span>03</span>Equipamientos cercanos</li>
+                                <li><span>04</span>El puente</li>
+                                <li><span>05</span>Quién levantó los datos</li>
+                            </ol>
+                        </a>
+                        <a class="celda celda--mapa" href="./html/mapa.html">
+                            <span class="flecha" aria-hidden="true">↗</span>
+                            <p class="mono">Mapa de resultados</p>
+                            <div class="celda-texto"><h3>Todos los puentes, en el mapa</h3><p>Filtra por ciudad, plazo, tipo de acceso u obstáculos en la banqueta.</p></div>
+                        </a>
+                        <a class="celda celda--stats" href="./html/analytics.html">
+                            <span class="flecha" aria-hidden="true">↗</span>
+                            <p class="mono">Estadísticas</p>
+                            <div class="celda-texto"><div class="mini-barras" id="mini-barras" aria-hidden="true"></div><h3>Lo que dicen los datos</h3></div>
+                        </a>
+                        <a class="celda celda--desc" href="./antecedentes.html#descargas-meta">
+                            <span class="flecha" aria-hidden="true">↗</span>
+                            <p class="mono">Descargables</p>
+                            <ul class="desc-lista">
+                                <li>Manual del IFCS</li>
+                                <li>Formato de llenado</li>
+                                <li>Diagnóstico de Morelia</li>
+                            </ul>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Archivo: las evaluaciones más recientes -->
+        <section class="archivo seccion" id="archivo" aria-labelledby="t-archivo">
+            <div class="envoltura">
+                <div class="seccion-cabeza">
+                    <p class="mono num">Archivo</p>
+                    <h2 id="t-archivo">Los últimos puentes evaluados</h2>
+                    <p>Cada ficha abre el reporte completo del puente, con su diagnóstico y las propuestas de rediseño.</p>
+                </div>
+                <ul class="fichas" id="fichas-recientes" aria-live="polite">
+                    <li class="fichas-vacio">Cargando el archivo…</li>
+                </ul>
+                <div class="archivo-pie"><a class="btn btn--linea" href="./html/archivo.html" id="ver-archivo">Ver todo el archivo</a></div>
+            </div>
+        </section>
+
+        <!-- Por qué -->
+        <section class="seccion porque-seccion" aria-labelledby="t-porque">
+            <div class="envoltura">
+                <div class="porque">
+                    <figure>
+                        <img class="img1" src="./img/mobile/img2.jpg" alt="Personas de todas las edades suben y bajan apretadas por la escalera angosta de un puente peatonal." width="2000" height="1337" decoding="async">
+                        <figcaption class="mono">Cruzar por arriba</figcaption>
+                    </figure>
+                    <div class="porque-texto">
+                        <h2 id="t-porque" class="visually-hidden">Por qué cruces a nivel</h2>
+                        <blockquote>«Las ciudades tienen la capacidad de proporcionar algo para todas las personas, sólo porque, y sólo cuando, se crean por y para todas las personas.»</blockquote>
+                        <p class="cita">Jane Jacobs, 1961</p>
+                        <div class="dato" hidden id="dato-escaleras"><b data-dato="pct-escaleras"></b><p>de los puentes evaluados sólo tiene escaleras: quien va en silla de ruedas, con carriola o con bastón no puede usarlo.</p></div>
+                        <a class="btn btn--linea" href="./antecedentes.html">Antecedentes y metodología</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Lámina 03: la calculadora -->
+        <section class="lamina seccion calc-lamina" aria-labelledby="t-calc">
+            <div class="envoltura">
+                <div class="reticula" aria-hidden="true"></div>
+                <div class="contenido">
+                    <div class="seccion-cabeza">
+                        <p class="mono num">Lámina 03</p>
+                        <h2 id="t-calc">Suma un puente al archivo</h2>
+                        <p>Primero levanta los datos en campo con el <a href="./pdf/Tabla 5. Formato de llenado.pdf">formato de llenado</a>. Después captúralos aquí; tu evaluación se revisa antes de aparecer en el mapa.</p>
+                    </div>
+
+        <form class="calc-form" id="CalcForm" novalidate>
             <!-- --------------------------------------------- Sección 1 -->
             <div class="form-section-cont">
                 <div class="form-section sect1">
@@ -172,7 +241,7 @@
                         </div>
                         <div class="form-input">
                             <button type="button" id="btn-abrir-mapa" class="btn-mapa-selector">
-                                📍 Seleccionar en mapa
+                                Marcar en el mapa
                             </button>
                             <small class="form-hint">Toca el mapa para llenar coordenadas y dirección automáticamente.</small>
                         </div>
@@ -407,9 +476,6 @@
                     </div>
                 </div>
             </div>
-            <!-- --------------------------------------------- Imagen -->
-            
-            <img class="img2" src="./img/mobile/img2.jpg" alt="Mujeres y niño encontrándose en escaleras congestionadas de un puente antipeatonal">
 
             <!-- --------------------------------------------- Sección 4 -->
             <div class="form-section-cont">
@@ -617,35 +683,59 @@
                 </div>
             </div>
             <div class="calc-btn-cont">
-                <button id="VerResultado" type="submit" class="btn-yellow">¡CALCULAR!</button>
+                <p>Al calcular verás el diagnóstico del puente y las propuestas de rediseño. Tu reporte queda guardado con un enlace permanente.</p>
+                <button id="VerResultado" type="submit" class="btn-yellow">Calcular el IFCS <span aria-hidden="true">→</span></button>
             </div>
         </form>
-        <section class="footer">
-            <div class="footer-logo">
-                <img src="./img/logo_bicivilizate.svg" alt="Logo de Bicivilizate michoacan AC">
-            </div>
-            <ul class="footer-menu">
-                <li><a href="html/mapa.html">Mapa de resultados</a></li>
-                <li><a href="antecedentes.html">Conoce la metodología</a></li>
-                <li><a href="antecedentes.html#descargas-meta">Descargables</a></li>
-                <li><a href="mailto:adiospuentesantipeatonales@ligapeatonal.org">Contacto</a></li>
-            </ul>
-            <div class="footer-social" aria-label="Redes sociales de Liga Peatonal">
-                <a href="https://facebook.com/LigaPeatonal" target="_blank" rel="noopener" aria-label="Liga Peatonal en Facebook">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12c0 5 3.66 9.13 8.44 9.88v-6.99H7.9V12h2.54V9.8c0-2.51 1.49-3.89 3.78-3.89 1.09 0 2.23.19 2.23.19v2.47h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.77l-.44 2.89h-2.33v6.99C18.34 21.13 22 17 22 12c0-5.52-4.48-10-10-10z"/></svg>
-                </a>
-                <a href="https://instagram.com/ligapeatonal" target="_blank" rel="noopener" aria-label="Liga Peatonal en Instagram">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 3.25.15 4.77 1.69 4.92 4.92.06 1.27.07 1.65.07 4.85 0 3.2-.01 3.58-.07 4.85-.15 3.23-1.66 4.77-4.92 4.92-1.27.06-1.64.07-4.85.07-3.2 0-3.58-.01-4.85-.07-3.26-.15-4.77-1.7-4.92-4.92-.06-1.27-.07-1.65-.07-4.85 0-3.2.01-3.58.07-4.85.15-3.23 1.66-4.77 4.92-4.92 1.27-.06 1.65-.07 4.85-.07zM12 0C8.74 0 8.33.01 7.05.07c-4.36.2-6.78 2.62-6.98 6.98C.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.2 4.36 2.62 6.78 6.98 6.98C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c4.35-.2 6.78-2.62 6.98-6.98.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.2-4.35-2.62-6.78-6.98-6.98C15.67.01 15.26 0 12 0zm0 5.84c-3.4 0-6.16 2.76-6.16 6.16s2.76 6.16 6.16 6.16 6.16-2.76 6.16-6.16S15.4 5.84 12 5.84zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm6.41-11.85c-.8 0-1.44.65-1.44 1.44 0 .8.65 1.44 1.44 1.44s1.44-.65 1.44-1.44c0-.79-.64-1.44-1.44-1.44z"/></svg>
-                </a>
-                <a href="mailto:adiospuentesantipeatonales@ligapeatonal.org" aria-label="Enviar correo a adiospuentesantipeatonales@ligapeatonal.org">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-                </a>
-            </div>
-            <div class="creditos">
-                <p>Metodología y Diseño elaborados por Nadia F. para Bicivilízate, Michoacán A.C. y Liga Peatonal, A.C.</p>
-                <p>Desarrollado por <a href="https://www.izalith.net/" class="link-izalith" target="_blank" rel="noopener">Izalith Consulting Corporation</a></p>
+                </div>
             </div>
         </section>
+    </main>
+
+        <footer class="footer">
+        <div class="envoltura">
+            <div class="pie-grid">
+                <div class="pie-marca">
+                    <div class="pie-logos">
+                        <img class="pie-lp" src="./img/LP.png" alt="Liga Peatonal" width="56" height="56">
+                        <div class="footer-logo"><img src="./img/logo_bicivilizate.svg" alt="Bicivilízate Michoacán A.C."></div>
+                    </div>
+                    <p>Una herramienta de Liga Peatonal y Bicivilízate Michoacán A.C. para impulsar cruces seguros a nivel de calle.</p>
+                    <a class="correo" href="mailto:adiospuentesantipeatonales@ligapeatonal.org">adiospuentesantipeatonales@ligapeatonal.org</a>
+                </div>
+                <nav aria-label="Herramientas">
+                    <h2>Herramientas</h2>
+                    <ul class="footer-menu">
+                        <li><a href="./index.html#CalcForm">Calculadora</a></li>
+                        <li><a href="./html/archivo.html">Archivo de puentes</a></li>
+                        <li><a href="./html/mapa.html">Mapa de resultados</a></li>
+                        <li><a href="./html/analytics.html">Estadísticas</a></li>
+                    </ul>
+                </nav>
+                <nav aria-label="Saber más">
+                    <h2>Saber más</h2>
+                    <ul class="footer-menu">
+                        <li><a href="./antecedentes.html">Antecedentes y metodología</a></li>
+                        <li><a href="./pdf/MANUAL_IFCS.pdf">Manual del IFCS</a></li>
+                        <li><a href="./pdf/Tabla 5. Formato de llenado.pdf">Formato de llenado</a></li>
+                        <li><a href="./antecedentes.html#descargas-meta">Todos los descargables</a></li>
+                    </ul>
+                </nav>
+                <div>
+                    <h2>Síguenos</h2>
+                    <div class="footer-social" aria-label="Redes sociales de Liga Peatonal">
+                        <a href="https://facebook.com/LigaPeatonal" target="_blank" rel="noopener" aria-label="Liga Peatonal en Facebook"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12c0 5 3.66 9.13 8.44 9.88v-6.99H7.9V12h2.54V9.8c0-2.51 1.49-3.89 3.78-3.89 1.09 0 2.23.19 2.23.19v2.47h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.77l-.44 2.89h-2.33v6.99C18.34 21.13 22 17 22 12c0-5.52-4.48-10-10-10z"/></svg></a>
+                        <a href="https://instagram.com/ligapeatonal" target="_blank" rel="noopener" aria-label="Liga Peatonal en Instagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 3.25.15 4.77 1.69 4.92 4.92.06 1.27.07 1.65.07 4.85 0 3.2-.01 3.58-.07 4.85-.15 3.23-1.66 4.77-4.92 4.92-1.27.06-1.64.07-4.85.07-3.2 0-3.58-.01-4.85-.07-3.26-.15-4.77-1.7-4.92-4.92-.06-1.27-.07-1.65-.07-4.85 0-3.2.01-3.58.07-4.85.15-3.23 1.66-4.77 4.92-4.92 1.27-.06 1.65-.07 4.85-.07zM12 0C8.74 0 8.33.01 7.05.07c-4.36.2-6.78 2.62-6.98 6.98C.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.2 4.36 2.62 6.78 6.98 6.98C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c4.35-.2 6.78-2.62 6.98-6.98.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.2-4.35-2.62-6.78-6.98-6.98C15.67.01 15.26 0 12 0zm0 5.84c-3.4 0-6.16 2.76-6.16 6.16s2.76 6.16 6.16 6.16 6.16-2.76 6.16-6.16S15.4 5.84 12 5.84zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm6.41-11.85c-.8 0-1.44.65-1.44 1.44 0 .8.65 1.44 1.44 1.44s1.44-.65 1.44-1.44c0-.79-.64-1.44-1.44-1.44z"/></svg></a>
+                        <a href="mailto:adiospuentesantipeatonales@ligapeatonal.org" aria-label="Enviar correo a adiospuentesantipeatonales@ligapeatonal.org"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg></a>
+                    </div>
+                </div>
+            </div>
+            <div class="creditos">
+                <p>Metodología y diseño del IFCS: Nadia F. para Bicivilízate Michoacán A.C. y Liga Peatonal A.C.</p>
+                <p>Desarrollado por <a href="https://www.izalith.net/" class="link-izalith" target="_blank" rel="noopener">Izalith Consulting Corporation</a></p>
+            </div>
+        </div>
+    </footer>
     </main>
 
     
@@ -673,6 +763,8 @@
     <script src="./js/config.js"></script>
     <script src="./js/form.js"></script>
     <script src="./js/mapa-selector.js"></script>
+    <script src="./js/archivo.js"></script>
+    <script src="./js/portada.js"></script>
 
 </body>
 </html>

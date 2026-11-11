@@ -73,6 +73,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
     );
     if (res.ok) evaluaciones = await res.json();
+    // «MERIDA» y «Merida» son la misma ciudad en el filtro (archivo.js)
+    if (typeof archivoUnificarCiudades === "function") archivoUnificarCiudades(evaluaciones);
   } catch (err) {
     console.warn("Error cargando datos:", err);
   }
@@ -88,9 +90,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   const map = L.map("mapa").setView([23.6345, -102.5528], 5);
 
-  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    maxZoom: 19,
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+  // Base gris clara de Esri, la misma del plano de la portada (sin llave).
+  L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}", {
+    maxZoom: 16,
+    attribution: "Esri, HERE, Garmin, &copy; OpenStreetMap"
   }).addTo(map);
 
   const clusterGroup = L.markerClusterGroup();
@@ -102,16 +105,17 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   function markerIcon(factibilidad) {
     let color;
-    if (factibilidad === "Corto plazo") color = "#2e7d32";
-    else if (factibilidad === "Mediano plazo") color = "#f9a825";
-    else color = "#c62828";
+    // Semántica de plazo del sistema (css/gral.css: --corto, --mediano, --largo)
+    if (factibilidad === "Corto plazo") color = "#1E8A4C";
+    else if (factibilidad === "Mediano plazo") color = "#C98B12";
+    else color = "#B4472D";
 
     return L.divIcon({
       className: "",
       html: `<div style="
         width:14px; height:14px; border-radius:50%;
         background:${color}; border:2px solid #fff;
-        box-shadow:0 1px 4px rgba(0,0,0,.4);
+        box-shadow:0 0 0 1px rgba(23,32,27,.55);
       "></div>`,
       iconSize: [14, 14],
       iconAnchor: [7, 7]
