@@ -17,13 +17,16 @@
 - Lo anterior (03/09/2026 y 06/05/2026): link permanente, formulario con validación, resultado con propuestas y PDF, mapa con filtros, estadísticas, admin con aprobación manual y status de retiro.
 
 **A medias**
-- Rediseño completo del sitio (10/11/2026) en la rama local `feat/rediseno-plano`, **sin commit ni push**: las 7 páginas ya están con «El plano y el archivo» (`docs/CONCEPTO.md`) y hay una página nueva, `html/archivo.html`. Falta que Memo lo vea, el commit/PR y publicarlo (GitHub Pages publica `main` directo: no mergear sin su visto bueno).
+- Nada.
+
+**Rediseño en producción (10/11/2026)**
+- «El plano y el archivo» publicado en las 7 páginas + página nueva `html/archivo.html`. PR #2 mergeado (`79b91d3`), Pages desplegó en 53 s. Verificado en vivo: inicio, archivo, mapa, estadísticas, metodología y reporte responden 200 en 1440 y 390, con Schibsted Grotesk, datos reales (88 puntos/fichas, reporte 65%), sin scroll horizontal ni errores de consola.
 
 **Bloqueado**
 - Nada del lado del cliente.
 
 **Siguiente paso**
-- Avisarle a Nadia que el mapa ya está arriba (Memo le dijo que fue una caída de AWS; no contradecirlo).
+- Memo decide si cierra la lectura pública de `fuente_nombre`/`fuente_correo` (ver entrada del 10/11/2026).
 - Decidir qué hacer con el proyecto `CouncilAI` pausado: ya no tiene nada que no esté en `cuervo-cafe`, se puede borrar cuando Memo quiera.
 
 ---
