@@ -26,6 +26,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
     );
     if (res.ok) allData = await res.json();
+    // «MERIDA» y «Merida» cuentan como una sola ciudad (archivo.js)
+    if (typeof archivoUnificarCiudades === "function") archivoUnificarCiudades(allData);
   } catch (err) {
     console.warn("Error cargando datos:", err);
   }
@@ -69,10 +71,26 @@ document.addEventListener("DOMContentLoaded", async () => {
   // COLORS
   // ========================================
 
-  const colCorto = "#2e7d32";
-  const colMedio = "#f9a825";
-  const colLargo = "#c62828";
-  const colBlue  = "hsl(209, 74%, 27%)";
+  // Paleta «El plano y el archivo» (css/gral.css): plazos + tinta.
+  const colCorto = "#1E8A4C";   // --corto
+  const colMedio = "#C98B12";   // --mediano
+  const colLargo = "#B4472D";   // --largo
+  const colBlue  = "#4F5B55";   // --tinta-2 (barras neutras)
+  const colTinta = "#17201B";   // --tinta
+  const colVerdeTinta = "#0B6A33"; // --verde-tinta
+  const colFilete = "#DDE3DF";  // --filete-2 (retícula tenue)
+
+  // Tipografía y color base de Chart.js
+  Chart.defaults.font.family = '"Azeret Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace';
+  Chart.defaults.font.size = 11;
+  Chart.defaults.color = "#4F5B55";
+  Chart.defaults.borderColor = colFilete;
+  Chart.defaults.plugins.tooltip.backgroundColor = colTinta;
+  Chart.defaults.plugins.tooltip.titleFont = { family: '"Schibsted Grotesk", system-ui, sans-serif', size: 13, weight: "600" };
+  Chart.defaults.plugins.tooltip.bodyFont = { family: '"Azeret Mono", ui-monospace, monospace', size: 11 };
+  Chart.defaults.plugins.tooltip.cornerRadius = 4;
+  Chart.defaults.plugins.legend.labels.boxWidth = 10;
+  Chart.defaults.plugins.legend.labels.boxHeight = 10;
 
   // ========================================
   // RENDER FUNCTION
@@ -136,7 +154,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           data: [countCorto, countMedio, countLargo],
           backgroundColor: [colCorto, colMedio, colLargo],
           borderWidth: 2,
-          borderColor: "#fff"
+          borderColor: "#FFFFFF"
         }]
       },
       options: {
@@ -195,7 +213,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         datasets: [{
           label: "Evaluaciones",
           data: rangoData,
-          backgroundColor: ["#c62828", "#e65100", colMedio, "#558b2f", colCorto],
+          backgroundColor: [colLargo, "#BF6A20", colMedio, colCorto, colVerdeTinta],
           borderRadius: 4
         }]
       },
@@ -229,7 +247,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         datasets: [{
           label: "Evaluaciones",
           data: sortedMonths.map(m => monthCount[m]),
-          backgroundColor: "hsl(188, 100%, 33%)",
+          backgroundColor: colVerdeTinta,
           borderRadius: 4
         }]
       },
@@ -260,7 +278,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         datasets: [{
           label: "Puentes afectados",
           data: problemas.map(p => p.count),
-          backgroundColor: "#d84315",
+          backgroundColor: colBlue,
           borderRadius: 4
         }]
       },

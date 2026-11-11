@@ -1,248 +1,204 @@
 /* =============================================================
-   admin.css — Panel de aprobación (admin-only)
+   admin.css — Panel de aprobación (sólo administración)
+   Misma paleta y tipografía que el sitio; tarjetas sobrias.
+   Los botones que pinta js/admin.js (.btn-primary / .btn-secondary
+   / .btn-danger) se ven como .btn del sistema.
    ============================================================= */
 
+/* Cabecera propia, sin menú */
 .admin-badge {
-    color: var(--white);
-    font-weight: 600;
-    font-size: .95rem;
-    letter-spacing: .02em;
+    margin-left: auto;
+    padding-left: 14px;
+    border-left: 1px solid var(--filete);
+    font: 500 var(--t-xs)/1.2 var(--mono);
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--tinta-2);
 }
 
-.admin-main {
-    max-width: 920px;
-    margin: 0 auto;
-    padding: 2rem 1rem 4rem;
-}
+.admin-main { padding-top: clamp(28px, 4vw, 48px); }
+.admin-envoltura { max-width: calc(980px + 2 * var(--gutter)); padding-bottom: clamp(40px, 6vw, 72px); }
 
 .admin-card {
-    background: var(--white);
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow);
-    padding: 2rem 1.75rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 24px;
+    padding: clamp(20px, 3vw, 32px);
+    background: var(--blanco);
+    border: 1px solid var(--tinta);
+    border-radius: var(--r);
 }
+.admin-card[hidden] { display: none; }
+.admin-login { max-width: 520px; margin-inline: auto; }
 
+.admin-etiqueta { color: var(--verde-tinta); margin-bottom: 8px; }
 .admin-card h1 {
-    margin: 0 0 .75rem;
-    color: var(--darkBlue);
-    font-size: 1.5rem;
+    margin: 0 0 10px;
+    font-size: var(--t-xl);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -.025em;
+    color: var(--tinta);
 }
 
-/* --- Login view ---------------------------------------------- */
-
-#login-view p {
-    color: var(--darkBlue);
-    margin-bottom: 1.25rem;
-}
-
-#login-form label {
-    display: flex;
-    flex-direction: column;
-    gap: .4rem;
-    margin-bottom: 1rem;
-}
-
+/* --- Inicio de sesión ---------------------------------------- */
+#login-view > p:not(.mono):not(.admin-msg) { margin-bottom: 20px; color: var(--tinta-2); }
+#login-form { display: grid; gap: 16px; }
+#login-form label { display: grid; gap: 6px; }
 #login-form label span {
-    font-weight: 600;
-    color: var(--darkBlue);
+    font: 500 .6875rem/1.2 var(--mono);
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--tinta-2);
 }
-
 #login-form input[type="email"] {
-    padding: .75rem .9rem;
-    font-size: 1rem;
-    font-family: inherit;
-    border: 1px solid var(--grayText);
-    border-radius: var(--radius);
-    min-height: 2.75rem;
-    color: var(--darkBlue);
+    min-height: 44px;
+    padding: 10px 12px;
+    border: 1px solid var(--tinta);
+    border-radius: var(--r);
+    background: var(--papel);
+    color: var(--tinta);
+    font: 400 var(--t-md)/1.2 var(--sans);
 }
+#login-form input[type="email"]:focus-visible { outline: 2px solid var(--verde-tinta); outline-offset: 2px; }
+#login-form .btn { justify-self: start; }
 
-#login-form input[type="email"]:focus {
-    outline: none;
-    border-color: var(--blue);
-    box-shadow: 0 0 0 2px rgba(0, 152, 166, .2);
-}
-
-/* --- Buttons ------------------------------------------------- */
-
+/* --- Botones (los de JS heredan el aspecto de .btn) ---------- */
 .btn-primary, .btn-secondary, .btn-danger {
-    padding: .65rem 1.1rem;
-    border-radius: var(--radius);
-    border: none;
-    font-family: inherit;
-    font-weight: 600;
-    font-size: .95rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 10px 18px;
+    border: 1px solid transparent;
+    border-radius: var(--r);
+    font: 600 var(--t-sm)/1.1 var(--sans);
     cursor: pointer;
-    transition: background var(--transition), opacity var(--transition);
-    min-height: 2.75rem;
+    transition: background-color var(--transition), border-color var(--transition), color var(--transition);
 }
+.btn-primary { background: var(--verde-tinta); color: var(--blanco); }
+.btn-primary:hover { background: var(--verde-hover); }
+.btn-secondary { background: transparent; border-color: var(--tinta); color: var(--tinta); }
+.btn-secondary:hover { background: var(--tinta); color: var(--papel); }
+.btn-danger { background: transparent; border-color: var(--largo); color: var(--largo); }
+.btn-danger:hover { background: var(--largo); color: var(--blanco); }
+.btn-primary:disabled, .btn-secondary:disabled, .btn-danger:disabled { opacity: .55; cursor: not-allowed; }
 
-.btn-primary {
-    background: var(--darkBlue);
-    color: var(--white);
-}
-.btn-primary:hover  { background: hsl(209, 74%, 22%); }
-.btn-primary:disabled { opacity: .6; cursor: not-allowed; }
-
-.btn-secondary {
-    background: var(--gray);
-    color: var(--darkBlue);
-}
-.btn-secondary:hover { background: hsl(0, 0%, 88%); }
-
-.btn-danger {
-    background: #c62828;
-    color: var(--white);
-}
-.btn-danger:hover { background: #9c1f1f; }
-
-/* --- Admin view ---------------------------------------------- */
-
+/* --- Vista de evaluaciones ----------------------------------- */
 .admin-header {
     display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 1rem;
-    margin-bottom: 1rem;
     flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 16px;
+    margin-bottom: 20px;
 }
+.admin-titulo h1 { margin-bottom: 0; }
+.admin-user { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; font-size: var(--t-sm); color: var(--tinta-2); }
+#admin-email { font-family: var(--mono); font-size: .8125rem; overflow-wrap: anywhere; }
 
-.admin-user {
-    display: flex;
-    align-items: center;
-    gap: .75rem;
-    font-size: .9rem;
-    color: var(--darkBlue);
-}
-
-.admin-toolbar {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 1.25rem;
-}
-
+.admin-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px; margin-bottom: 18px; }
 .admin-counter {
-    font-size: .9rem;
-    color: var(--grayText);
-    font-weight: 600;
+    font: 500 var(--t-xs)/1.2 var(--mono);
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--tinta-2);
 }
 
-/* --- Pending cards ------------------------------------------- */
-
-#pending-list {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
+/* --- Tarjetas de evaluación ---------------------------------- */
+#pending-list { display: grid; gap: 12px; }
 
 .pending-card {
-    border: 1px solid var(--gray);
-    border-radius: var(--radius);
-    padding: 1.25rem;
-    background: var(--white);
+    padding: 18px 20px;
+    background: var(--papel);
+    border: 1px solid var(--filete);
+    border-radius: var(--r);
 }
+.pending-card:hover { border-color: var(--tinta-3); }
 
 .pending-card-head {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: flex-start;
-    gap: 1rem;
-    margin-bottom: .75rem;
-    flex-wrap: wrap;
+    gap: 12px 16px;
+    margin-bottom: 12px;
 }
-
-.pending-card-head h3 {
-    margin: 0 0 .15rem;
-    color: var(--darkBlue);
-    font-size: 1.1rem;
-}
-
+.pending-card-head h3 { margin: 0 0 4px; font-size: 1.1rem; font-weight: 600; line-height: 1.25; color: var(--tinta); overflow-wrap: anywhere; }
 .pending-sub {
     margin: 0;
-    color: var(--grayText);
-    font-size: .9rem;
+    font: 500 .6875rem/1.3 var(--mono);
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--tinta-2);
 }
 
-.pending-score {
-    text-align: right;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-}
-
+.pending-score { display: grid; justify-items: end; gap: 4px; text-align: right; }
 .score-num {
-    font-weight: 700;
-    font-size: 1.5rem;
-    color: var(--darkBlue);
+    font-size: 1.6rem;
+    font-weight: 600;
     line-height: 1;
+    letter-spacing: -.03em;
+    font-variant-numeric: tabular-nums;
+    color: var(--tinta);
 }
-
 .score-tag {
-    font-size: .8rem;
-    color: var(--grayText);
-    margin-top: .15rem;
+    font: 500 .6875rem/1.2 var(--mono);
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    color: var(--tinta-2);
 }
 
 .pending-fields {
     display: grid;
-    grid-template-columns: 1fr;
-    gap: .35rem .75rem;
-    margin: .5rem 0 1rem;
-    padding: .5rem 0;
-    border-top: 1px solid var(--gray);
-    border-bottom: 1px solid var(--gray);
+    grid-template-columns: minmax(0, 1fr);
+    gap: 4px 24px;
+    margin: 0 0 14px;
+    padding: 10px 0;
+    border-block: 1px solid var(--filete-2);
 }
-
-@media (min-width: 600px) {
-    .pending-fields {
-        grid-template-columns: 1fr 1fr;
-    }
+@media (min-width: 640px) {
+    .pending-fields { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
-
-.pending-fields div {
-    display: flex;
-    gap: .4rem;
-    font-size: .9rem;
-    padding: .2rem 0;
-}
-
+.pending-fields div { display: flex; gap: 10px; padding: 3px 0; font-size: var(--t-sm); min-width: 0; }
 .pending-fields dt {
-    color: var(--grayText);
-    font-weight: 600;
-    min-width: 7rem;
+    flex: 0 0 8.5rem;
+    padding-top: 2px;
+    font: 500 .6875rem/1.4 var(--mono);
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    color: var(--tinta-2);
 }
+.pending-fields dd { margin: 0; min-width: 0; color: var(--tinta); overflow-wrap: anywhere; }
+.pending-fields a { color: var(--verde-tinta); text-underline-offset: 3px; }
 
-.pending-fields dd {
-    margin: 0;
-    color: var(--darkBlue);
-    word-break: break-word;
-}
+.pending-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
 
-.pending-actions {
-    display: flex;
-    gap: .75rem;
-    flex-wrap: wrap;
-}
-
-/* --- Messages ------------------------------------------------ */
-
+/* --- Mensajes ------------------------------------------------ */
 .admin-msg {
-    margin-top: 1rem;
-    padding: .75rem 1rem;
-    border-radius: var(--radius);
-    font-size: .95rem;
-    font-weight: 500;
+    margin-top: 16px;
+    padding: 12px 14px;
+    border: 1px solid var(--filete);
+    border-left-width: 3px;
+    border-radius: var(--r);
+    background: var(--papel);
+    color: var(--tinta);
+    font-size: var(--t-sm);
 }
-
-.admin-msg--info    { background: hsl(210, 80%, 94%); color: var(--darkBlue); }
-.admin-msg--success { background: hsl(120, 50%, 90%); color: #1e5e1e; }
-.admin-msg--error   { background: hsl(0, 70%, 93%);   color: #8a1f1f; }
+.admin-msg[hidden] { display: none; }
+.admin-msg--info    { border-left-color: var(--tinta-2); }
+.admin-msg--success { border-left-color: var(--verde); background: var(--verde-claro); }
+.admin-msg--error   { border-left-color: var(--largo); background: color-mix(in srgb, var(--largo) 7%, var(--blanco)); }
 
 .admin-loading, .admin-empty {
+    padding: 28px 16px;
+    border: 1px dashed var(--filete);
+    border-radius: var(--r);
     text-align: center;
-    padding: 2rem 1rem;
-    color: var(--grayText);
-    font-style: italic;
+    color: var(--tinta-2);
+}
+
+@media (max-width: 520px) {
+    .admin-badge { display: none; }
+    .pending-fields dt { flex-basis: 7rem; }
+    .pending-score { justify-items: start; text-align: left; }
 }

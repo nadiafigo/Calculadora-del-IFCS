@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Antecedentes de la Calculadora del Índice de Factibilidad de Cruce Seguro (IFCS).">
-    <meta name="theme-color" content="#1e5080">
+    <meta name="theme-color" content="#F3F5F2">
     <!-- Open Graph -->
     <meta property="og:type" content="website">
     <meta property="og:title" content="Antecedentes — Calculadora IFCS">
@@ -26,313 +26,369 @@
 
 <body>
     <header class="header">
-        <nav class="navbar">
-            <a href="./index.html">
-                <img src="./img/LP.png" alt="logo_LP" class="navbar__logo">
+        <nav class="navbar" aria-label="Principal">
+            <a class="marca" href="./index.html">
+                <img src="./img/LP.png" alt="Liga Peatonal" class="navbar__logo" width="40" height="40">
+                <span class="marca__nombre">Adiós puentes antipeatonales<small>Calculadora IFCS</small></span>
             </a>
-
-            <input type="checkbox" id="nav__checkbox" class="nav__checkbox">
-            <label for="nav__checkbox" class="nav__toggle">
-                <svg class="menu" width="32" height="18" xmlns="http://www.w3.org/2000/svg">
-                    <g fill="#FFF" fill-rule="evenodd">
-                      <path d="M0 0h32v2H0zM0 8h32v2H0zM0 16h32v2H0z"></path>
-                    </g>
-                </svg>
-                <svg class="close" width="26" height="26" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M23.607.98l1.414 1.413L14.414 13l10.607 10.607-1.414 1.414L13 14.414 2.393 25.021.98 23.607 11.586 13 .98 2.393 2.393.98 13 11.586 23.607.98z"
-                    fill="#FFF" fill-rule="evenodd"/>
-                  </svg>
-            </label>
+            <input type="checkbox" id="nav__checkbox" class="nav__checkbox" aria-label="Abrir o cerrar el menú">
+            <label for="nav__checkbox" class="nav__toggle"><span class="abrir">Menú</span><span class="cerrar">Cerrar</span></label>
             <div class="navbar-content">
-                <div class="menu">
-                    <div class="menu-option">
-                        <div class="selected-option">
-                            <a href="./index.html"><li class="menu__item">Inicio</li></a>
-                        </div>
+              <ul class="menu">
+                <li class="menu-option"><div class="selected-option"><a class="menu__item" href="./html/archivo.html">Archivo</a></div></li>
+                <li class="menu-option"><div class="selected-option"><a class="menu__item" href="./html/mapa.html">Mapa</a></div></li>
+                <li class="menu-option"><div class="selected-option"><a class="menu__item" href="./html/analytics.html">Estadísticas</a></div></li>
+                <li class="menu-option"><div class="selected-option"><a class="menu__item" href="./antecedentes.html" aria-current="page">Metodología</a></div></li>
+                <li class="menu-option">
+                    <div class="selected-option"><button class="menu__item" type="button" aria-haspopup="true">Descargables</button><span class="item-icon" aria-hidden="true"></span></div>
+                    <div class="submenu">
+                        <ul class="submenu_container">
+                            <li><a class="submenu__item" href="./pdf/Tabla 5. Formato de llenado.pdf">Formato de llenado</a></li>
+                            <li><a class="submenu__item" href="./pdf/MANUAL_IFCS.pdf">Manual del IFCS</a></li>
+                            <li><a class="submenu__item" href="./pdf/Diagnostico_Puentes_Morelia.pdf">Diagnóstico de puentes de Morelia</a></li>
+                        </ul>
                     </div>
-
-                    <div class="menu-option">
-                        <div class="selected-option">
-                            <a href="./antecedentes.html"><li class="menu__item">Antecedentes</li></a>
-                        </div>
-                    </div>
-
-                    <div class="menu-option">
-                        <div class="selected-option">
-                            <a href="./html/mapa.html"><li class="menu__item">Mapa de resultados</li></a>
-                        </div>
-                    </div>
-
-                    <div class="menu-option">
-                        <div class="selected-option">
-                            <a href="./html/analytics.html"><li class="menu__item">Estadísticas</li></a>
-                        </div>
-                    </div>
-
-                    <div class="menu-option">
-                        <div class="selected-option">
-                            <li class="menu__item">Descargables</li>
-                            <div class="item-icon"></div>
-                        </div>
-                        <div class="submenu">
-                            <ul class="submenu_container">
-                                <li><a class="submenu__item" href="./pdf/Tabla 5. Formato de llenado.pdf">Formato de llenado</a></li>
-                                <li><a class="submenu__item" href="./pdf/MANUAL_IFCS.pdf">Manual del IFCS</a></li>
-                                <li><a class="submenu__item" href="./pdf/Diagnostico_Puentes_Morelia.pdf">Diagnóstico de Puentes Peatonales Elevados de Morelia</a></li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="menu-option">
-                        <div class="selected-option">
-                            <li class="menu__item">Contacto</li>
-                            <div class="item-icon"></div>
-                        </div>
-                        <div class="submenu">
-                            <ul class="submenu_container">
-                                <li><a class="submenu__item" href="mailto:adiospuentesantipeatonales@ligapeatonal.org">adiospuentesantipeatonales@ligapeatonal.org</a></li>
-                                <li><a class="submenu__item" href="https://www.facebook.com/LigaPeatonal/" target="_blank" rel="noopener">Facebook</a></li>
-                                <li><a class="submenu__item" href="https://www.instagram.com/ligapeatonal/" target="_blank" rel="noopener">Instagram</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
+                </li>
+                <li class="menu-cta"><a class="btn btn--verde" href="./index.html#CalcForm">Evalúa un puente</a></li>
+              </ul>
             </div>
         </nav>
     </header>
 
     <main class="antecedentes-main">
-        <section class="antecedentes-hero">
-            <div class="container">
-                <h1>Antecedentes y metodología</h1>
-                <p class="hero-subtitle">
-                    Cómo evaluamos la factibilidad de sustituir un puente antipeatonal por un cruce seguro.
-                </p>
-            </div>
-        </section>
-
-        <section class="antecedentes-section" id="que-es">
-            <div class="container">
-                <h2>¿Qué es?</h2>
-                <p>
-                    La Calculadora del Índice de Factibilidad de Cruce Seguro (IFCS) es una
-                    herramienta para impulsar la construcción de cruces seguros a través
-                    de la evaluación de los datos del contexto espacial y urbano, y de las
-                    características del puente antipeatonal que se busca sustituir. Genera
-                    información valiosa para la construcción de un diagnóstico que sustente
-                    una narrativa colectiva en el derribo de los puentes antipeatonales.
-                </p>
-            </div>
-        </section>
-
-        <section class="antecedentes-section" id="para-que">
-            <div class="container">
-                <h2>¿Para qué?</h2>
-                <p>
-                    El resultado busca mostrar de manera práctica la factibilidad del retiro
-                    y sustitución del puente antipeatonal por un cruce seguro, en función
-                    de las características del contexto inmediato. Se expresa en una acción
-                    posible a realizarse a corto, mediano o largo plazo, ya que existen
-                    muchos otros factores a atender más allá del espacial.
-                </p>
-            </div>
-        </section>
-
-        <section class="antecedentes-section" id="origen">
-            <div class="container">
-                <h2>Antecedentes</h2>
-                <p>
-                    Esta calculadora nace de la necesidad de hacer uso y evaluar los datos
-                    recolectados en la ciudad de Morelia, Michoacán, sobre los 56 puentes
-                    antipeatonales existentes en aquel entonces. A través de
-                    <strong>Bicivilízate Michoacán A.C.</strong> se desarrolló una metodología
-                    que ponderaba los datos sobre cuatro factores principales:
-                </p>
-                <ol>
-                    <li>Características de la vialidad</li>
-                    <li>Zona o uso de suelo</li>
-                    <li>Características del puente</li>
-                    <li>Factores de riesgo</li>
-                </ol>
-                <p>
-                    Esto se hizo a través de una tabla de Excel que contenía las fórmulas
-                    correspondientes para aplicar la ponderación. Con esta metodología se logró
-                    demostrar la factibilidad de retiro y posteriormente el derribo y sustitución
-                    de dos puentes antipeatonales por cruces seguros.
-                </p>
-                <p>
-                    Posteriormente se desarrolló un manual, el cual se presentó en el
-                    <strong>11° Congreso Nacional de Ciclismo Urbano</strong> y se difundió
-                    junto con el formato y la tabla de Excel originales.
-                </p>
-            </div>
-        </section>
-
-        <section class="antecedentes-section" id="metodologia">
-            <div class="container">
-                <h2>Metodología de evaluación</h2>
-                <p>
-                    La metodología de evaluación se desarrolló analizando los factores
-                    urbanos de acuerdo con su nivel de impacto en la posible implementación
-                    de un cruce peatonal seguro. Se retomó de manera general la ponderación
-                    del manual original y se realizó una simplificación en la selección de
-                    datos, buscando que la herramienta sea fácil de usar y aplicable de
-                    manera amplia en el territorio nacional o mundial.
-                </p>
-                <p>
-                    Del análisis se determinó que <strong>los datos sobre la vialidad son
-                    el factor con mayor valor</strong> al momento de implementar un cruce
-                    peatonal seguro, pues el entorno físico inmediato puede abrir la posibilidad
-                    de contener soluciones de diseño peatonal accesible. En segundo lugar
-                    se posicionan los datos sobre equipamiento o uso de suelo, y por último
-                    los datos sobre el puente antipeatonal.
-                </p>
-
-                <h3>Plazos de factibilidad</h3>
-                <p>
-                    El puntaje de 0 a 100 se traduce en un porcentaje de factibilidad
-                    categorizado en plazos, con fines de narrativa práctica para colectivos
-                    y actores sociales:
-                </p>
-
-                <div class="factibilidad-cards">
-                    <article class="factibilidad-card factibilidad-corto">
-                        <span class="factibilidad-rango">61 – 100</span>
-                        <h4>Corto plazo</h4>
-                        <p>Sustitución factible en el horizonte inmediato.</p>
-                    </article>
-                    <article class="factibilidad-card factibilidad-mediano">
-                        <span class="factibilidad-rango">31 – 60</span>
-                        <h4>Mediano plazo</h4>
-                        <p>Sustitución viable con intervenciones complementarias.</p>
-                    </article>
-                    <article class="factibilidad-card factibilidad-largo">
-                        <span class="factibilidad-rango">0 – 30</span>
-                        <h4>Largo plazo</h4>
-                        <p>Sustitución requiere transformaciones estructurales mayores.</p>
-                    </article>
+        <section class="lamina cabeza-pagina antecedentes-hero" aria-labelledby="t-antecedentes">
+            <div class="envoltura">
+                <div class="reticula" aria-hidden="true"></div>
+                <div class="contenido">
+                    <p class="mono">Lámina 04 · Metodología</p>
+                    <h1 id="t-antecedentes">Antecedentes y metodología</h1>
+                    <p class="bajada">Cómo evaluamos la factibilidad de sustituir un puente antipeatonal por un cruce seguro.</p>
                 </div>
             </div>
         </section>
 
-        <section class="antecedentes-section" id="ponderacion">
-            <div class="container">
-                <h2>Tabla de ponderación de datos</h2>
-                <p>
-                    Cada dato del formulario aporta un peso específico al puntaje total.
-                    La suma de todos los valores resulta en un porcentaje de 100.
-                </p>
+        <div class="lamina informe-lamina">
+            <div class="envoltura">
+                <div class="reticula" aria-hidden="true"></div>
+                <div class="contenido informe">
+                    <nav class="indice" aria-label="En esta página">
+                        <p class="mono">En esta página</p>
+                        <ol>
+                            <li><a href="#que-es"><span>01</span>¿Qué es?</a></li>
+                            <li><a href="#para-que"><span>02</span>¿Para qué sirve?</a></li>
+                            <li><a href="#origen"><span>03</span>Antecedentes</a></li>
+                            <li><a href="#metodologia"><span>04</span>Metodología</a></li>
+                            <li><a href="#plazos"><span>05</span>Plazos de factibilidad</a></li>
+                            <li><a href="#ponderacion"><span>06</span>Tabla de ponderación</a></li>
+                            <li><a href="#descargas-meta"><span>07</span>Documentos</a></li>
+                        </ol>
+                    </nav>
 
-                <div class="ponderacion-table-wrapper">
-                    <table class="ponderacion-table">
-                        <thead>
-                            <tr>
-                                <th scope="col">ID</th>
-                                <th scope="col">Descripción</th>
-                                <th scope="col" class="text-right">Valor</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="categoria-row">
-                                <th colspan="2" scope="rowgroup">Características de la vialidad</th>
-                                <td class="text-right categoria-total">60</td>
-                            </tr>
-                            <tr><td>ViaCarriles</td><td>Número de carriles</td><td class="text-right">0</td></tr>
-                            <tr><td>ViaDistCruce</td><td>Distancia de cruce bajo el puente</td><td class="text-right">10</td></tr>
-                            <tr><td>ViaDistSemaf</td><td>Distancia a un semáforo</td><td class="text-right">7</td></tr>
-                            <tr><td>ViaBarreras</td><td>Barreras peatonales bajo el puente</td><td class="text-right">8</td></tr>
-                            <tr><td>ViaCamellones</td><td>Número de camellones existentes</td><td class="text-right">10</td></tr>
-                            <tr><td>ViaRevo</td><td>Reductores de velocidad</td><td class="text-right">6</td></tr>
-                            <tr><td>ViaRevoTipo</td><td>Tipo de reductores de velocidad</td><td class="text-right">3</td></tr>
-                            <tr><td>ViaVelPermi</td><td>Velocidad permitida</td><td class="text-right">8</td></tr>
-                            <tr><td>ViaVelOper</td><td>Velocidad de operación en hora valle</td><td class="text-right">8</td></tr>
+                    <div class="informe-cuerpo">
+                        <section class="antecedentes-section" id="que-es" aria-labelledby="t-que-es">
+                            <p class="mono sec-num">01</p>
+                            <h2 id="t-que-es">¿Qué es?</h2>
+                            <p>
+                                La Calculadora del Índice de Factibilidad de Cruce Seguro (IFCS) es una
+                                herramienta para impulsar la construcción de cruces seguros a través
+                                de la evaluación de los datos del contexto espacial y urbano, y de las
+                                características del puente antipeatonal que se busca sustituir. Genera
+                                información valiosa para la construcción de un diagnóstico que sustente
+                                una narrativa colectiva en el derribo de los puentes antipeatonales.
+                            </p>
+                        </section>
 
-                            <tr class="categoria-row">
-                                <th colspan="2" scope="rowgroup">Uso de suelo o equipamientos próximos</th>
-                                <td class="text-right categoria-total">25</td>
-                            </tr>
-                            <tr><td>EquipNum</td><td>Número de equipamientos (en un radio de 250 m)</td><td class="text-right">10</td></tr>
-                            <tr><td>EquipDist</td><td>Distancia al equipamiento con mayor afluencia</td><td class="text-right">10</td></tr>
-                            <tr><td>EquipTipo</td><td>Tipo del equipamiento con mayor afluencia</td><td class="text-right">5</td></tr>
+                        <section class="antecedentes-section" id="para-que" aria-labelledby="t-para-que">
+                            <p class="mono sec-num">02</p>
+                            <h2 id="t-para-que">¿Para qué sirve?</h2>
+                            <p>
+                                El resultado busca mostrar de manera práctica la factibilidad del retiro
+                                y sustitución del puente antipeatonal por un cruce seguro, en función
+                                de las características del contexto inmediato. Se expresa en una acción
+                                posible a realizarse a corto, mediano o largo plazo, ya que existen
+                                muchos otros factores a atender más allá del espacial.
+                            </p>
+                        </section>
 
-                            <tr class="categoria-row">
-                                <th colspan="2" scope="rowgroup">Características del puente</th>
-                                <td class="text-right categoria-total">15</td>
-                            </tr>
-                            <tr><td>PteObstBanq</td><td>Obstaculización de banqueta</td><td class="text-right">3</td></tr>
-                            <tr><td>PteAnchoAcc</td><td>Ancho de acceso</td><td class="text-right">1</td></tr>
-                            <tr><td>PteTipoAcc</td><td>Tipo de acceso</td><td class="text-right">4</td></tr>
-                            <tr><td>PteNumEsc</td><td>Cantidad de escalones</td><td class="text-right">5</td></tr>
-                            <tr><td>PteLongCami</td><td>Longitud total caminada (incluyendo rampas)</td><td class="text-right">2</td></tr>
-                            <tr><td>PtePendiente</td><td>Pendiente de la rampa</td><td class="text-right">1</td></tr>
-                            <tr><td>PteDistDesc</td><td>Distancia entre descansos</td><td class="text-right">2</td></tr>
-                            <tr><td>PteAnchoPas</td><td>Ancho de la pasarela del puente</td><td class="text-right">1</td></tr>
-                            <tr><td>PteCubierta</td><td>¿Cuenta con cubierta?</td><td class="text-right">1</td></tr>
-                            <tr><td>PteIluminacion</td><td>Iluminación interior</td><td class="text-right">1</td></tr>
-                            <tr><td>PtePubli</td><td>Publicidad</td><td class="text-right">1</td></tr>
-                            <tr><td>PtePubliVisib</td><td>Publicidad obstaculiza visibilidad</td><td class="text-right">1</td></tr>
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <th colspan="2" scope="row">Total</th>
-                                <td class="text-right total-final">100</td>
-                            </tr>
-                        </tfoot>
-                    </table>
-                </div>
-            </div>
-        </section>
+                        <section class="antecedentes-section" id="origen" aria-labelledby="t-origen">
+                            <p class="mono sec-num">03</p>
+                            <h2 id="t-origen">Antecedentes</h2>
+                            <p>
+                                Esta calculadora nace de la necesidad de hacer uso y evaluar los datos
+                                recolectados en la ciudad de Morelia, Michoacán, sobre los 56 puentes
+                                antipeatonales existentes en aquel entonces. A través de
+                                <strong>Bicivilízate Michoacán A.C.</strong> se desarrolló una metodología
+                                que ponderaba los datos sobre cuatro factores principales:
+                            </p>
+                            <ol class="factores">
+                                <li>Características de la vialidad</li>
+                                <li>Zona o uso de suelo</li>
+                                <li>Características del puente</li>
+                                <li>Factores de riesgo</li>
+                            </ol>
+                            <p>
+                                Esto se hizo a través de una tabla de Excel que contenía las fórmulas
+                                correspondientes para aplicar la ponderación. Con esta metodología se logró
+                                demostrar la factibilidad de retiro y posteriormente el derribo y sustitución
+                                de dos puentes antipeatonales por cruces seguros.
+                            </p>
+                            <p>
+                                Posteriormente se desarrolló un manual, el cual se presentó en el
+                                <strong>11° Congreso Nacional de Ciclismo Urbano</strong> y se difundió
+                                junto con el formato y la tabla de Excel originales.
+                            </p>
+                        </section>
 
-        <section class="antecedentes-section descargas-section" id="descargas-meta">
-            <div class="container">
-                <h2>Documentos originales</h2>
-                <p>Si quieres consultar los archivos fuente de la metodología:</p>
-                <div class="descargas-grid">
-                    <a href="./pdf/Metodologia.pptx" class="descarga-card" download>
-                        <span class="descarga-icon" aria-hidden="true">📊</span>
-                        <div>
-                            <strong>Presentación de metodología</strong>
-                            <span class="descarga-meta">PowerPoint (.pptx)</span>
+                        <section class="antecedentes-section" id="metodologia" aria-labelledby="t-metodologia">
+                            <p class="mono sec-num">04</p>
+                            <h2 id="t-metodologia">Metodología de evaluación</h2>
+                            <p>
+                                La metodología de evaluación se desarrolló analizando los factores
+                                urbanos de acuerdo con su nivel de impacto en la posible implementación
+                                de un cruce peatonal seguro. Se retomó de manera general la ponderación
+                                del manual original y se realizó una simplificación en la selección de
+                                datos, buscando que la herramienta sea fácil de usar y aplicable de
+                                manera amplia en el territorio nacional o mundial.
+                            </p>
+                            <p>
+                                Del análisis se determinó que <strong>los datos sobre la vialidad son
+                                el factor con mayor valor</strong> al momento de implementar un cruce
+                                peatonal seguro, pues el entorno físico inmediato puede abrir la posibilidad
+                                de contener soluciones de diseño peatonal accesible. En segundo lugar
+                                se posicionan los datos sobre equipamiento o uso de suelo, y por último
+                                los datos sobre el puente antipeatonal.
+                            </p>
+                            <figure class="reparto" aria-labelledby="t-reparto">
+                                <figcaption id="t-reparto" class="mono">Reparto de los 100 puntos</figcaption>
+                                <div class="reparto-barra" aria-hidden="true">
+                                    <i style="flex-grow:60"></i><i style="flex-grow:25"></i><i style="flex-grow:15"></i>
+                                </div>
+                                <ul class="reparto-leyenda">
+                                    <li style="flex-grow:60"><b>60</b>Vialidad</li>
+                                    <li style="flex-grow:25"><b>25</b>Uso de suelo y equipamientos</li>
+                                    <li style="flex-grow:15"><b>15</b>Puente</li>
+                                </ul>
+                            </figure>
+                        </section>
+
+                        <section class="antecedentes-section" id="plazos" aria-labelledby="t-plazos">
+                            <p class="mono sec-num">05</p>
+                            <h2 id="t-plazos">Plazos de factibilidad</h2>
+                            <p>
+                                El puntaje de 0 a 100 se traduce en un porcentaje de factibilidad
+                                categorizado en plazos, con fines de narrativa práctica para colectivos
+                                y actores sociales:
+                            </p>
+
+                            <div class="factibilidad-cards">
+                                <article class="factibilidad-card factibilidad-corto">
+                                    <span class="factibilidad-rango">61 – 100</span>
+                                    <h3><i class="punto" aria-hidden="true"></i>Corto plazo</h3>
+                                    <p>Sustitución factible en el horizonte inmediato.</p>
+                                </article>
+                                <article class="factibilidad-card factibilidad-mediano">
+                                    <span class="factibilidad-rango">31 – 60</span>
+                                    <h3><i class="punto" aria-hidden="true"></i>Mediano plazo</h3>
+                                    <p>Sustitución viable con intervenciones complementarias.</p>
+                                </article>
+                                <article class="factibilidad-card factibilidad-largo">
+                                    <span class="factibilidad-rango">0 – 30</span>
+                                    <h3><i class="punto" aria-hidden="true"></i>Largo plazo</h3>
+                                    <p>Sustitución requiere transformaciones estructurales mayores.</p>
+                                </article>
+                            </div>
+                        </section>
+
+                        <section class="antecedentes-section" id="ponderacion" aria-labelledby="t-ponderacion">
+                            <p class="mono sec-num">06</p>
+                            <h2 id="t-ponderacion">Tabla de ponderación de datos</h2>
+                            <p>
+                                Cada dato del formulario aporta un peso específico al puntaje total.
+                                La suma de todos los valores resulta en un porcentaje de 100.
+                            </p>
+
+                            <div class="ponderacion-table-wrapper" role="region" aria-labelledby="t-ponderacion" tabindex="0">
+                                <table class="ponderacion-table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">ID</th>
+                                            <th scope="col">Descripción</th>
+                                            <th scope="col" class="text-right">Valor</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="categoria-row">
+                                            <th colspan="2" scope="rowgroup">Características de la vialidad</th>
+                                            <td class="text-right categoria-total">60</td>
+                                        </tr>
+                                        <tr><td>ViaCarriles</td><td>Número de carriles</td><td class="text-right">0</td></tr>
+                                        <tr><td>ViaDistCruce</td><td>Distancia de cruce bajo el puente</td><td class="text-right">10</td></tr>
+                                        <tr><td>ViaDistSemaf</td><td>Distancia a un semáforo</td><td class="text-right">7</td></tr>
+                                        <tr><td>ViaBarreras</td><td>Barreras peatonales bajo el puente</td><td class="text-right">8</td></tr>
+                                        <tr><td>ViaCamellones</td><td>Número de camellones existentes</td><td class="text-right">10</td></tr>
+                                        <tr><td>ViaRevo</td><td>Reductores de velocidad</td><td class="text-right">6</td></tr>
+                                        <tr><td>ViaRevoTipo</td><td>Tipo de reductores de velocidad</td><td class="text-right">3</td></tr>
+                                        <tr><td>ViaVelPermi</td><td>Velocidad permitida</td><td class="text-right">8</td></tr>
+                                        <tr><td>ViaVelOper</td><td>Velocidad de operación en hora valle</td><td class="text-right">8</td></tr>
+
+                                        <tr class="categoria-row">
+                                            <th colspan="2" scope="rowgroup">Uso de suelo o equipamientos próximos</th>
+                                            <td class="text-right categoria-total">25</td>
+                                        </tr>
+                                        <tr><td>EquipNum</td><td>Número de equipamientos (en un radio de 250 m)</td><td class="text-right">10</td></tr>
+                                        <tr><td>EquipDist</td><td>Distancia al equipamiento con mayor afluencia</td><td class="text-right">10</td></tr>
+                                        <tr><td>EquipTipo</td><td>Tipo del equipamiento con mayor afluencia</td><td class="text-right">5</td></tr>
+
+                                        <tr class="categoria-row">
+                                            <th colspan="2" scope="rowgroup">Características del puente</th>
+                                            <td class="text-right categoria-total">15</td>
+                                        </tr>
+                                        <tr><td>PteObstBanq</td><td>Obstaculización de banqueta</td><td class="text-right">3</td></tr>
+                                        <tr><td>PteAnchoAcc</td><td>Ancho de acceso</td><td class="text-right">1</td></tr>
+                                        <tr><td>PteTipoAcc</td><td>Tipo de acceso</td><td class="text-right">4</td></tr>
+                                        <tr><td>PteNumEsc</td><td>Cantidad de escalones</td><td class="text-right">5</td></tr>
+                                        <tr><td>PteLongCami</td><td>Longitud total caminada (incluyendo rampas)</td><td class="text-right">2</td></tr>
+                                        <tr><td>PtePendiente</td><td>Pendiente de la rampa</td><td class="text-right">1</td></tr>
+                                        <tr><td>PteDistDesc</td><td>Distancia entre descansos</td><td class="text-right">2</td></tr>
+                                        <tr><td>PteAnchoPas</td><td>Ancho de la pasarela del puente</td><td class="text-right">1</td></tr>
+                                        <tr><td>PteCubierta</td><td>¿Cuenta con cubierta?</td><td class="text-right">1</td></tr>
+                                        <tr><td>PteIluminacion</td><td>Iluminación interior</td><td class="text-right">1</td></tr>
+                                        <tr><td>PtePubli</td><td>Publicidad</td><td class="text-right">1</td></tr>
+                                        <tr><td>PtePubliVisib</td><td>Publicidad obstaculiza visibilidad</td><td class="text-right">1</td></tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <th colspan="2" scope="row">Total</th>
+                                            <td class="text-right total-final">100</td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </section>
+
+                        <section class="antecedentes-section descargas-section" id="descargas-meta" aria-labelledby="t-descargas">
+                            <p class="mono sec-num">07</p>
+                            <h2 id="t-descargas">Documentos</h2>
+
+                            <h3 class="descargas-sub">Manual y formatos</h3>
+                            <div class="descargas-grid">
+                                <a href="./pdf/MANUAL_IFCS.pdf" class="descarga-card">
+                                    <span class="formato" aria-hidden="true">PDF</span>
+                                    <span class="descarga-texto">
+                                        <strong>Manual del IFCS</strong>
+                                        <span class="descarga-meta">PDF · 7.7 MB</span>
+                                    </span>
+                                    <span class="descarga-flecha" aria-hidden="true">↗</span>
+                                </a>
+                                <a href="./pdf/Tabla 5. Formato de llenado.pdf" class="descarga-card">
+                                    <span class="formato" aria-hidden="true">PDF</span>
+                                    <span class="descarga-texto">
+                                        <strong>Formato de llenado</strong>
+                                        <span class="descarga-meta">PDF · 226 KB</span>
+                                    </span>
+                                    <span class="descarga-flecha" aria-hidden="true">↗</span>
+                                </a>
+                                <a href="./pdf/Diagnostico_Puentes_Morelia.pdf" class="descarga-card">
+                                    <span class="formato" aria-hidden="true">PDF</span>
+                                    <span class="descarga-texto">
+                                        <strong>Diagnóstico de puentes de Morelia</strong>
+                                        <span class="descarga-meta">PDF · 2.8 MB</span>
+                                    </span>
+                                    <span class="descarga-flecha" aria-hidden="true">↗</span>
+                                </a>
+                            </div>
+
+                            <h3 class="descargas-sub">Archivos fuente de la metodología</h3>
+                            <div class="descargas-grid">
+                                <a href="./pdf/Metodologia.pptx" class="descarga-card" download>
+                                    <span class="formato" aria-hidden="true">PPT</span>
+                                    <span class="descarga-texto">
+                                        <strong>Presentación de metodología</strong>
+                                        <span class="descarga-meta">PowerPoint (.pptx) · 758 KB</span>
+                                    </span>
+                                    <span class="descarga-flecha" aria-hidden="true">↓</span>
+                                </a>
+                                <a href="./pdf/Tabla-de-ponderacion.xlsx" class="descarga-card" download>
+                                    <span class="formato" aria-hidden="true">XLS</span>
+                                    <span class="descarga-texto">
+                                        <strong>Tabla de ponderación</strong>
+                                        <span class="descarga-meta">Excel (.xlsx) · 54 KB</span>
+                                    </span>
+                                    <span class="descarga-flecha" aria-hidden="true">↓</span>
+                                </a>
+                            </div>
+                        </section>
+
+                        <div class="cajetin informe-cajetin" aria-label="Datos de la lámina">
+                            <div>Lámina 04</div>
+                            <div class="c-titulo">Antecedentes y metodología · IFCS</div>
+                            <div class="c-autor">Bicivilízate Michoacán · Liga Peatonal</div>
                         </div>
-                    </a>
-                    <a href="./pdf/Tabla-de-ponderacion.xlsx" class="descarga-card" download>
-                        <span class="descarga-icon" aria-hidden="true">📋</span>
-                        <div>
-                            <strong>Tabla de ponderación</strong>
-                            <span class="descarga-meta">Excel (.xlsx)</span>
-                        </div>
-                    </a>
+                    </div>
                 </div>
             </div>
-        </section>
-        <section class="footer">
-            <div class="footer-logo">
-                <img src="./img/logo_bicivilizate.svg" alt="Logo de Bicivilizate michoacan AC">
-            </div>
-            <ul class="footer-menu">
-                <li><a href="html/mapa.html">Mapa de resultados</a></li>
-                <li><a href="antecedentes.html">Conoce la metodología</a></li>
-                <li><a href="antecedentes.html#descargas-meta">Descargables</a></li>
-                <li><a href="mailto:adiospuentesantipeatonales@ligapeatonal.org">Contacto</a></li>
-            </ul>
-            <div class="footer-social" aria-label="Redes sociales de Liga Peatonal">
-                <a href="https://facebook.com/LigaPeatonal" target="_blank" rel="noopener" aria-label="Liga Peatonal en Facebook">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12c0 5 3.66 9.13 8.44 9.88v-6.99H7.9V12h2.54V9.8c0-2.51 1.49-3.89 3.78-3.89 1.09 0 2.23.19 2.23.19v2.47h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.77l-.44 2.89h-2.33v6.99C18.34 21.13 22 17 22 12c0-5.52-4.48-10-10-10z"/></svg>
-                </a>
-                <a href="https://instagram.com/ligapeatonal" target="_blank" rel="noopener" aria-label="Liga Peatonal en Instagram">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 3.25.15 4.77 1.69 4.92 4.92.06 1.27.07 1.65.07 4.85 0 3.2-.01 3.58-.07 4.85-.15 3.23-1.66 4.77-4.92 4.92-1.27.06-1.64.07-4.85.07-3.2 0-3.58-.01-4.85-.07-3.26-.15-4.77-1.7-4.92-4.92-.06-1.27-.07-1.65-.07-4.85 0-3.2.01-3.58.07-4.85.15-3.23 1.66-4.77 4.92-4.92 1.27-.06 1.65-.07 4.85-.07zM12 0C8.74 0 8.33.01 7.05.07c-4.36.2-6.78 2.62-6.98 6.98C.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.2 4.36 2.62 6.78 6.98 6.98C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c4.35-.2 6.78-2.62 6.98-6.98.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.2-4.35-2.62-6.78-6.98-6.98C15.67.01 15.26 0 12 0zm0 5.84c-3.4 0-6.16 2.76-6.16 6.16s2.76 6.16 6.16 6.16 6.16-2.76 6.16-6.16S15.4 5.84 12 5.84zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm6.41-11.85c-.8 0-1.44.65-1.44 1.44 0 .8.65 1.44 1.44 1.44s1.44-.65 1.44-1.44c0-.79-.64-1.44-1.44-1.44z"/></svg>
-                </a>
-                <a href="mailto:adiospuentesantipeatonales@ligapeatonal.org" aria-label="Enviar correo a adiospuentesantipeatonales@ligapeatonal.org">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-                </a>
-            </div>
-            <div class="creditos">
-                <p>Metodología y Diseño elaborados por Nadia F. para Bicivilízate, Michoacán A.C. y Liga Peatonal, A.C.</p>
-                <p>Desarrollado por <a href="https://www.izalith.net/" class="link-izalith" target="_blank" rel="noopener">Izalith Consulting Corporation</a></p>
-            </div>
-        </section>
+        </div>
     </main>
 
+        <footer class="footer">
+        <div class="envoltura">
+            <div class="pie-grid">
+                <div class="pie-marca">
+                    <div class="pie-logos">
+                        <img class="pie-lp" src="./img/LP.png" alt="Liga Peatonal" width="56" height="56">
+                        <div class="footer-logo"><img src="./img/logo_bicivilizate.svg" alt="Bicivilízate Michoacán A.C."></div>
+                    </div>
+                    <p>Una herramienta de Liga Peatonal y Bicivilízate Michoacán A.C. para impulsar cruces seguros a nivel de calle.</p>
+                    <a class="correo" href="mailto:adiospuentesantipeatonales@ligapeatonal.org">adiospuentesantipeatonales@ligapeatonal.org</a>
+                </div>
+                <nav aria-label="Herramientas">
+                    <h2>Herramientas</h2>
+                    <ul class="footer-menu">
+                        <li><a href="./index.html#CalcForm">Calculadora</a></li>
+                        <li><a href="./html/archivo.html">Archivo de puentes</a></li>
+                        <li><a href="./html/mapa.html">Mapa de resultados</a></li>
+                        <li><a href="./html/analytics.html">Estadísticas</a></li>
+                    </ul>
+                </nav>
+                <nav aria-label="Saber más">
+                    <h2>Saber más</h2>
+                    <ul class="footer-menu">
+                        <li><a href="./antecedentes.html">Antecedentes y metodología</a></li>
+                        <li><a href="./pdf/MANUAL_IFCS.pdf">Manual del IFCS</a></li>
+                        <li><a href="./pdf/Tabla 5. Formato de llenado.pdf">Formato de llenado</a></li>
+                        <li><a href="./antecedentes.html#descargas-meta">Todos los descargables</a></li>
+                    </ul>
+                </nav>
+                <div>
+                    <h2>Síguenos</h2>
+                    <div class="footer-social" aria-label="Redes sociales de Liga Peatonal">
+                        <a href="https://facebook.com/LigaPeatonal" target="_blank" rel="noopener" aria-label="Liga Peatonal en Facebook"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12c0 5 3.66 9.13 8.44 9.88v-6.99H7.9V12h2.54V9.8c0-2.51 1.49-3.89 3.78-3.89 1.09 0 2.23.19 2.23.19v2.47h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.77l-.44 2.89h-2.33v6.99C18.34 21.13 22 17 22 12c0-5.52-4.48-10-10-10z"/></svg></a>
+                        <a href="https://instagram.com/ligapeatonal" target="_blank" rel="noopener" aria-label="Liga Peatonal en Instagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 3.25.15 4.77 1.69 4.92 4.92.06 1.27.07 1.65.07 4.85 0 3.2-.01 3.58-.07 4.85-.15 3.23-1.66 4.77-4.92 4.92-1.27.06-1.64.07-4.85.07-3.2 0-3.58-.01-4.85-.07-3.26-.15-4.77-1.7-4.92-4.92-.06-1.27-.07-1.65-.07-4.85 0-3.2.01-3.58.07-4.85.15-3.23 1.66-4.77 4.92-4.92 1.27-.06 1.65-.07 4.85-.07zM12 0C8.74 0 8.33.01 7.05.07c-4.36.2-6.78 2.62-6.98 6.98C.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.2 4.36 2.62 6.78 6.98 6.98C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c4.35-.2 6.78-2.62 6.98-6.98.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.2-4.35-2.62-6.78-6.98-6.98C15.67.01 15.26 0 12 0zm0 5.84c-3.4 0-6.16 2.76-6.16 6.16s2.76 6.16 6.16 6.16 6.16-2.76 6.16-6.16S15.4 5.84 12 5.84zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm6.41-11.85c-.8 0-1.44.65-1.44 1.44 0 .8.65 1.44 1.44 1.44s1.44-.65 1.44-1.44c0-.79-.64-1.44-1.44-1.44z"/></svg></a>
+                        <a href="mailto:adiospuentesantipeatonales@ligapeatonal.org" aria-label="Enviar correo a adiospuentesantipeatonales@ligapeatonal.org"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg></a>
+                    </div>
+                </div>
+            </div>
+            <div class="creditos">
+                <p>Metodología y diseño del IFCS: Nadia F. para Bicivilízate Michoacán A.C. y Liga Peatonal A.C.</p>
+                <p>Desarrollado por <a href="https://www.izalith.net/" class="link-izalith" target="_blank" rel="noopener">Izalith Consulting Corporation</a></p>
+            </div>
+        </div>
+    </footer>
+
     <script src="./js/navbar.js"></script>
+    <script>
+    // Índice lateral: marca la sección que se está leyendo.
+    (function () {
+      const enlaces = [...document.querySelectorAll(".indice a[href^='#']")];
+      const secciones = enlaces.map(a => document.getElementById(a.hash.slice(1))).filter(Boolean);
+      if (!("IntersectionObserver" in window) || !secciones.length) return;
+      const marcar = id => enlaces.forEach(a => a.toggleAttribute("aria-current", a.hash === "#" + id));
+      const io = new IntersectionObserver(entradas => {
+        const visibles = entradas.filter(e => e.isIntersecting);
+        if (visibles.length) marcar(visibles[0].target.id);
+      }, { rootMargin: "-90px 0px -65% 0px" });
+      secciones.forEach(s => io.observe(s));
+    })();
+    </script>
 </body>
 </html>

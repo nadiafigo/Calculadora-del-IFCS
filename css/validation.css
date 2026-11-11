@@ -4,13 +4,13 @@
 
 /* ---- Error state on inputs/selects ---- */
 .field-error {
-  border-color: #d32f2f !important;
-  box-shadow: 0 0 0 2px rgba(211, 47, 47, .2) !important;
+  border-color: var(--largo) !important;
+  box-shadow: 0 0 0 2px rgb(180 71 45 / .2) !important;
 }
 
 /* ---- Error message below field ---- */
 .error-msg {
-  color: #d32f2f;
+  color: var(--largo);
   font-size: .8rem;
   margin: .25rem 0 0;
   display: block;
@@ -40,10 +40,10 @@
 }
 
 .toast {
-  background: #323232;
+  background: var(--tinta);
   color: #fff;
   padding: .85rem 1.5rem;
-  border-radius: .5rem;
+  border-radius: var(--r);
   font-size: .95rem;
   box-shadow: 0 4px 12px rgba(0,0,0,.25);
   opacity: 0;
@@ -60,9 +60,9 @@
 }
 
 .toast--success {
-  background: #2e7d32;
+  background: var(--verde-tinta);
 }
 
 .toast--error {
-  background: #d32f2f;
+  background: var(--largo);
 }

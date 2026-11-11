@@ -1,0 +1,90 @@
+/* ==========================================================================
+   ARCHIVO — fichas de puentes, filtros, plano y encabezados de sección
+   (portada e html/archivo.html)
+   ========================================================================== */
+
+/* --- Encabezado de sección ------------------------------------------------ */
+.seccion { padding-block: clamp(48px, 7vw, 96px); }
+.seccion-cabeza { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 16px 0; align-items: end; margin-bottom: clamp(24px, 3.5vw, 40px); }
+.seccion-cabeza .num { grid-column: 1 / span 2; color: var(--tinta-2); align-self: start; padding-top: 10px; }
+.seccion-cabeza h2 { grid-column: 3 / span 6; font-size: var(--t-h2); line-height: 1.08; font-weight: 600; }
+.seccion-cabeza > p:last-child { grid-column: 9 / span 4; color: var(--tinta-2); font-size: var(--t-sm); padding-left: 16px; }
+.seccion-cabeza a { color: var(--verde-tinta); }
+
+/* --- Plano (Leaflet) ------------------------------------------------------ */
+.plano { border: 1px solid var(--tinta); border-bottom: 0; background: var(--papel-2); }
+.plano .leaflet-tile-pane { filter: grayscale(1) contrast(1.05); }
+.leaflet-container { font-family: var(--sans); }
+.leaflet-popup-content-wrapper { border-radius: var(--r); box-shadow: 0 6px 24px -10px rgb(23 32 27 / .45); }
+.leaflet-popup-content { margin: 12px 14px; font-size: var(--t-sm); line-height: 1.4; color: var(--tinta); }
+.pop-folio { font: 500 .6875rem/1 var(--mono); letter-spacing: .06em; color: var(--tinta-2); }
+.pop-via { display: block; font-weight: 600; margin: 4px 0; }
+.leyenda {
+    display: flex; flex-wrap: wrap; gap: 6px 16px; padding: 10px 12px;
+    border: 1px solid var(--tinta); border-bottom: 0; background: var(--papel);
+    font: 500 .6875rem/1 var(--mono); letter-spacing: .05em; text-transform: uppercase;
+}
+.leyenda span { display: inline-flex; align-items: center; gap: 6px; }
+.leyenda .punto { border: 1.5px solid var(--blanco); box-shadow: 0 0 0 1px var(--tinta); }
+
+/* --- Filtros -------------------------------------------------------------- */
+.filtros { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; margin-bottom: 20px; }
+.chip {
+    min-height: 38px; padding: 6px 14px; border-radius: 999px; border: 1px solid var(--tinta);
+    background: transparent; color: var(--tinta); font: 500 var(--t-sm)/1 var(--sans);
+    cursor: pointer; display: inline-flex; align-items: center; gap: 8px;
+}
+.chip:hover { background: var(--blanco); }
+.chip[aria-pressed="true"] { background: var(--tinta); color: var(--papel); }
+.chip .punto { width: 8px; height: 8px; }
+.filtros-campos { margin-left: auto; display: flex; flex-wrap: wrap; gap: 8px 12px; }
+.filtros label { display: inline-flex; align-items: center; gap: 8px; font-size: var(--t-sm); color: var(--tinta-2); }
+.filtros select, .filtros input[type="search"] {
+    min-height: 38px; padding: 4px 12px; border: 1px solid var(--tinta); border-radius: var(--r);
+    background: var(--papel); color: var(--tinta); font: 500 var(--t-sm) var(--sans);
+}
+.filtros input[type="search"] { min-width: 14rem; }
+.cuenta { font: 500 var(--t-xs)/1.4 var(--mono); color: var(--tinta-2); letter-spacing: .05em; text-transform: uppercase; margin-bottom: 12px; }
+
+/* --- Fichas --------------------------------------------------------------- */
+.archivo { background: var(--papel-2); border-block: 1px solid var(--filete); }
+.fichas { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.fichas-vacio { grid-column: 1 / -1; padding: 32px 0; color: var(--tinta-2); }
+.ficha {
+    display: grid; grid-template-rows: auto auto 1fr auto; gap: 10px; height: 100%; padding: 16px;
+    background: var(--papel); border: 1px solid var(--filete); border-radius: var(--r);
+    text-decoration: none; color: var(--tinta); min-width: 0;
+    transition: border-color var(--transition), transform var(--transition);
+}
+a.ficha:hover { border-color: var(--tinta); transform: translateY(-2px); }
+.ficha-top { display: flex; justify-content: space-between; gap: 8px; font: 500 .6875rem/1.2 var(--mono); letter-spacing: .06em; color: var(--tinta-2); text-transform: uppercase; }
+.ficha-top span:last-child { text-align: right; overflow-wrap: anywhere; }
+.ficha h3 { font-size: 1.05rem; line-height: 1.25; font-weight: 600; letter-spacing: -.01em; overflow-wrap: anywhere; }
+.ficha-lugar { font-size: var(--t-sm); color: var(--tinta-2); overflow-wrap: anywhere; }
+.medidor { display: grid; gap: 6px; }
+.medidor-fila { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.medidor-fila b { font-size: 1.5rem; font-weight: 600; letter-spacing: -.02em; font-variant-numeric: tabular-nums; line-height: 1; }
+.medidor-fila b small { font: 500 .6875rem var(--mono); color: var(--tinta-2); letter-spacing: .05em; margin-left: 4px; }
+.barra { position: relative; height: 6px; background: var(--filete-2); }
+.barra i { position: absolute; inset: 0 auto 0 0; }
+.barra::after { content: ""; position: absolute; top: -3px; bottom: -3px; left: 50%; border-left: 1px solid var(--tinta-2); }
+.ficha-acceso { font-size: .8125rem; color: var(--tinta-2); border-top: 1px dashed var(--filete); padding-top: 10px; }
+.ficha--sustituido { border-color: var(--verde); background: var(--verde-claro); }
+.plazo--sustituido { background: var(--verde-tinta); color: var(--blanco); }
+.archivo-pie { display: flex; justify-content: center; margin-top: 28px; }
+
+@media (max-width: 1080px) { .fichas { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 900px) {
+    .seccion-cabeza .num { grid-column: 1 / -1; padding-top: 0; }
+    .seccion-cabeza h2 { grid-column: 1 / -1; }
+    .seccion-cabeza > p:last-child { grid-column: 1 / -1; padding-left: 0; max-width: 60ch; }
+}
+@media (max-width: 720px) {
+    .fichas { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .filtros-campos { margin-left: 0; width: 100%; }
+    .filtros input[type="search"] { min-width: 0; width: 100%; }
+    .filtros label { flex: 1 1 100%; }
+    .filtros label select, .filtros label input { flex: 1; }
+}
+@media (max-width: 520px) { .fichas { grid-template-columns: minmax(0, 1fr); } }
+@media (prefers-reduced-motion: reduce) { a.ficha:hover { transform: none; } }
