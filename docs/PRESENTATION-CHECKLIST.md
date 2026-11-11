@@ -17,7 +17,7 @@ Ejecutar en orden. Cada bloque marca un riesgo distinto.
 ## B. Smoke admin (5 min)
 
 - [ ] Abrir `https://adiospuentesantipeatonales.org/html/admin.html`.
-- [ ] Pedir magic link a `guillermo.sanchezy@gmail.com`. Confirmar que llega.
+- [ ] Pedir magic link con un correo dado de alta en `ifcs_admins`. Confirmar que llega.
 - [ ] Click el link → verificar acceso al panel.
 - [ ] Ver lista de evaluaciones. Pickar 1 seed cualquiera.
 - [ ] Cambiar `status_retiro` a "Retirado", agregar `fecha_retiro` (ej: "Test 2026-05-05"). Guardar.

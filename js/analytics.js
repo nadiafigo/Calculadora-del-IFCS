@@ -34,11 +34,13 @@ const CSV_COLUMNAS = [
 ];
 const CSV_NUMERICAS = new Set(["id", "latitud", "longitud", "ifcs"]);
 
-/** Celda CSV (RFC 4180). En texto, neutraliza fórmulas (=, +, -, @) para Excel. */
+/** Celda CSV (RFC 4180). Neutraliza fórmulas (=, +, -, @) para Excel; una columna
+ *  «numérica» sólo se deja tal cual si de verdad es un número (lat/long son TEXT en la base). */
 function csvCelda(valor, numerica) {
   if (valor === null || valor === undefined || valor === "None") return "";
   let s = String(valor).trim();
-  if (!numerica && /^[=+\-@\t\r]/.test(s)) s = "'" + s;
+  const esNumero = numerica && /^[-+]?\d+(\.\d+)?$/.test(s);
+  if (!esNumero && /^[=+\-@\t\r]/.test(s)) s = "'" + s;
   return /[",\r\n;]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
 }
 

@@ -80,7 +80,7 @@ def pie(p):
                         <div class="footer-logo"><img src="{p}img/logo_bicivilizate.svg" alt="Bicivilízate Michoacán A.C."></div>
                     </div>
                     <p>Una herramienta de Liga Peatonal y Bicivilízate Michoacán A.C. para impulsar cruces seguros a nivel de calle.</p>
-                    <a class="correo" href="mailto:{CORREO}">{CORREO}</a>
+                    <a class="correo" href="mailto:{CORREO}">{CORREO.replace("@", "@<wbr>")}</a>
                 </div>
                 <nav aria-label="Herramientas">
                     <h2>Herramientas</h2>

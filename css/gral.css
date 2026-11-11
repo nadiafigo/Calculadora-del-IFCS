@@ -312,7 +312,7 @@ main:focus { outline: none; }
 .pie-logos .pie-lp { width: 56px; height: 56px; background: var(--blanco); border-radius: 50%; padding: 2px; }
 .footer-logo { width: 150px; }
 .footer-logo img { width: 100%; filter: brightness(0) invert(1); opacity: .9; }
-.correo { font-family: var(--mono); font-size: .8125rem; overflow-wrap: anywhere; color: var(--blanco); }
+.correo { font-family: var(--mono); font-size: .8125rem; overflow-wrap: break-word; color: var(--blanco); }
 .footer h2 { margin: 0 0 12px; font: 500 var(--t-xs)/1 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--pie-tenue); }
 .footer-menu { display: grid; gap: 8px; font-size: var(--t-sm); }
 .footer-menu a { text-decoration: none; }

@@ -898,8 +898,18 @@ document.addEventListener("DOMContentLoaded", () => {
     // return=minimal y no podemos leer la fila de vuelta. Un UUID v4 no se
     // puede adivinar, así que sirve como "llave" del reporte. Si el envío
     // falla, el token viaja en la cola y el link sirve cuando se envíe.
-    const publicToken = uuid();
+    // Si esta misma evaluación ya está en la cola (se volvió a pulsar «Calcular»
+    // tras un fallo), se reusa su token: así el reintento automático y este envío
+    // chocan en el índice único (409) en vez de crear dos filas.
+    const enCola = leerCola().find(it => it.token && firma(it.payload) === firma(payload));
+    const publicToken = enCola ? enCola.token : uuid();
     if (publicToken) payload.public_token = publicToken;
+    const sacarDeCola = () => {
+      if (!publicToken) return;
+      const cola = leerCola();
+      const resto = cola.filter(it => it.token !== publicToken);
+      if (resto.length !== cola.length) escribirCola(resto);
+    };
 
     const irAResultado = (conToken, demora) => {
       const url = "html/resultado.html?total=" + total + (conToken && publicToken ? "&r=" + publicToken : "");
@@ -914,6 +924,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const r = await postEvaluacion(payload);
 
     if (r.ok) {
+      sacarDeCola();
       guardarEvaluador();
       cerrarBorrador();
       if (publicToken) ls.set("last_public_token", publicToken);
