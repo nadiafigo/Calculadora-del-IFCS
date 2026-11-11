@@ -156,7 +156,9 @@ async function cargarDesdeSupabase(token) {
       nombre: row.fuente_nombre, fecha: row.fuente_fecha,
       org: row.fuente_org, correo: row.fuente_correo
     },
-    token
+    token,
+    // Migración 012: token de la evaluación vigente si ésta fue reemplazada.
+    reemplazoToken: typeof row.reemplazo_token === "string" ? row.reemplazo_token : ""
   };
 }
 
@@ -327,6 +329,15 @@ document.addEventListener("DOMContentLoaded", async () => {
   const pendienteEnvio = params.get("pendiente") === "1";
   const avisoPendiente = document.getElementById("aviso-pendiente");
   if (avisoPendiente) avisoPendiente.hidden = !pendienteEnvio;
+
+  // El puente se volvió a evaluar: este reporte sigue abriendo, pero se avisa
+  // y se enlaza a la evaluación vigente.
+  const avisoReemplazo = document.getElementById("aviso-reemplazo");
+  if (avisoReemplazo && store.reemplazoToken) {
+    const enlace = avisoReemplazo.querySelector("a");
+    if (enlace) enlace.href = `${window.location.pathname}?r=${encodeURIComponent(store.reemplazoToken)}`;
+    avisoReemplazo.hidden = false;
+  }
 
   const permalinkUrl = (store.token && !pendienteEnvio)
     ? `${window.location.origin}${window.location.pathname}?r=${encodeURIComponent(store.token)}`
@@ -594,7 +605,9 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (pendienteId === "PtePendiente_6menos") {
         liAcceso.style.display = "none";
       } else {
-        const pendienteTxt = limpio(getStoredTxt("PtePendiente"));
+        // «No pude medirla» (0 puntos): no es una pendiente, así que no se
+        // redacta como tal; cae en las frases de «no se registró».
+        const pendienteTxt = pendienteId === "PtePendiente_nomedida" ? "" : limpio(getStoredTxt("PtePendiente"));
         const distDescTxt = limpio(getStoredTxt("PteDistDesc"));
         if (pendienteTxt) {
           liAcceso.append("Su tipo de acceso es de rampa, sin embargo su pendiente es de ", fuerte(pendienteTxt));

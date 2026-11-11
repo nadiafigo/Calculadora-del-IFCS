@@ -69,6 +69,7 @@ a.ficha:hover { border-color: var(--tinta); transform: translateY(-2px); }
 .barra i { position: absolute; inset: 0 auto 0 0; }
 .barra::after { content: ""; position: absolute; top: -3px; bottom: -3px; left: 50%; border-left: 1px solid var(--tinta-2); }
 .ficha-acceso { font-size: .8125rem; color: var(--tinta-2); border-top: 1px dashed var(--filete); padding-top: 10px; }
+.ficha-fecha { font: 500 .6875rem/1.2 var(--mono); letter-spacing: .06em; color: var(--tinta-2); text-transform: uppercase; }
 .ficha--sustituido { border-color: var(--verde); background: var(--verde-claro); }
 .plazo--sustituido { background: var(--verde-tinta); color: var(--blanco); }
 .archivo-pie { display: flex; justify-content: center; margin-top: 28px; }

@@ -35,6 +35,79 @@ const els = {
 
 let activeTab = "pendientes";  // "pendientes" | "aprobadas"
 
+// Aprobadas de la última carga: de aquí salen las opciones de «Reemplaza a».
+let aprobadasCargadas = [];
+
+function folio(id) {
+  return "P-" + String(id).padStart(3, "0");
+}
+
+function claveCiudad(s) {
+  return String(s || "").trim().normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+}
+
+/**
+ * Reemplazo de evaluaciones (migración 012). Cuando el entorno de un puente
+ * cambió y se volvió a evaluar, en la tarjeta de la evaluación NUEVA se elige
+ * cuál evaluación anterior sustituye. La anterior deja de salir en el archivo,
+ * el mapa y las estadísticas; su link permanente sigue abriendo, con un aviso.
+ * Sólo se ofrecen evaluaciones aprobadas de la misma ciudad.
+ */
+function renderReemplazo(e) {
+  const vigente = e.reemplazada_por != null;
+  const aviso = vigente
+    ? `<p class="admin-reemplazo-aviso">Reemplazada por ${folio(e.reemplazada_por)}: ya no sale en el archivo, el mapa ni las estadísticas.</p>`
+    : "";
+  const actual = aprobadasCargadas.find(o => o.reemplazada_por === e.id);
+  const candidatas = aprobadasCargadas.filter(o =>
+    o.id !== e.id
+    && o.id !== e.reemplazada_por
+    && claveCiudad(o.loc_ciudad) === claveCiudad(e.loc_ciudad)
+    && (o.reemplazada_por == null || o.reemplazada_por === e.id));
+  const opciones = candidatas.map(o => {
+    const partes = [folio(o.id), o.loc_vialidad || "Sin vialidad", o.loc_colonia, o.fuente_fecha ? "datos del " + o.fuente_fecha : ""];
+    return `<option value="${o.id}"${actual && actual.id === o.id ? " selected" : ""}>${escapeHtml(partes.filter(Boolean).join(" · "))}</option>`;
+  }).join("");
+  return `
+    <div class="admin-reemplazo" data-eval-id="${e.id}">
+      ${aviso}
+      <label for="reemplaza-${e.id}">
+        Reemplaza a (evaluación anterior del mismo puente):
+        <select id="reemplaza-${e.id}">
+          <option value="">— Ninguna —</option>
+          ${opciones}
+        </select>
+      </label>
+      <button class="btn-guardar-reemplazo" data-id="${e.id}">Guardar reemplazo</button>
+    </div>
+  `;
+}
+
+async function guardarReemplazo(id, btn) {
+  const sel = btn.closest(".admin-reemplazo").querySelector("select");
+  const anterior = sel.value ? parseInt(sel.value, 10) : null;
+
+  btn.disabled = true;
+  btn.textContent = "Guardando…";
+
+  // Primero se suelta lo que esta evaluación reemplazaba; luego se marca la elegida.
+  let { error } = await client.from("evaluaciones").update({ reemplazada_por: null }).eq("reemplazada_por", id);
+  if (!error && anterior !== null) {
+    ({ error } = await client.from("evaluaciones").update({ reemplazada_por: id }).eq("id", anterior));
+  }
+
+  if (error) {
+    btn.disabled = false;
+    btn.textContent = "Guardar reemplazo";
+    showMsg(els.adminMsg, "Error guardando el reemplazo de #" + id + ": " + error.message, "error");
+    return;
+  }
+  await loadPending();
+  showMsg(els.adminMsg, anterior !== null
+    ? folio(id) + " ahora reemplaza a " + folio(anterior) + "."
+    : folio(id) + " ya no reemplaza a ninguna evaluación.", "success");
+}
+
 function showMsg(el, text, type) {
   el.textContent = text;
   el.className = "admin-msg admin-msg--" + (type || "info");
@@ -78,7 +151,7 @@ async function loadPending() {
   const isApproved = activeTab === "aprobadas";
   const { data, error } = await client
     .from("evaluaciones")
-    .select("id, created_at, loc_pais, loc_ciudad, loc_vialidad, loc_colonia, loc_referencia, loc_x, loc_y, total_ifcs, factibilidad, fuente_nombre, fuente_org, fuente_correo, status_retiro, fecha_retiro, public_token")
+    .select("id, created_at, loc_pais, loc_ciudad, loc_vialidad, loc_colonia, loc_referencia, loc_x, loc_y, total_ifcs, factibilidad, fuente_nombre, fuente_org, fuente_correo, fuente_fecha, status_retiro, fecha_retiro, public_token, reemplazada_por")
     .eq("aprobado_mapa", isApproved)
     .order("created_at", { ascending: false });
 
@@ -97,7 +170,12 @@ async function loadPending() {
     return;
   }
 
+  aprobadasCargadas = isApproved ? data : [];
   els.pendingList.innerHTML = data.map(e => renderCard(e, isApproved)).join("");
+
+  els.pendingList.querySelectorAll(".btn-guardar-reemplazo").forEach(btn => {
+    btn.addEventListener("click", () => guardarReemplazo(parseInt(btn.dataset.id, 10), btn));
+  });
 
   els.pendingList.querySelectorAll("[data-action=approve]").forEach(btn => {
     btn.addEventListener("click", () => approve(parseInt(btn.dataset.id, 10), btn));
@@ -183,10 +261,12 @@ function renderCard(e, isApproved) {
         <div><dt>Coords (lat, lng)</dt><dd>${coordsHtml}</dd></div>
         <div><dt>Fuente</dt><dd>${escapeHtml(e.fuente_nombre || "—")} (${escapeHtml(e.fuente_org || "—")})</dd></div>
         <div><dt>Correo</dt><dd>${escapeHtml(e.fuente_correo || "—")}</dd></div>
+        <div><dt>Datos del</dt><dd>${escapeHtml(e.fuente_fecha || "—")}</dd></div>
         <div><dt>Enviado</dt><dd>${escapeHtml(fecha)}</dd></div>
         <div><dt>Reporte</dt><dd>${reporteHtml}</dd></div>
       </dl>
       ${statusRetiroHtml}
+      ${isApproved ? renderReemplazo(e) : ""}
       ${actionsHtml}
     </article>
   `;

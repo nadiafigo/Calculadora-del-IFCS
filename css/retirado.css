@@ -165,7 +165,8 @@
 .admin-status-retiro select:focus-visible,
 .admin-status-retiro input[type="text"]:focus-visible { outline: 2px solid var(--verde-tinta); outline-offset: 2px; }
 
-.admin-status-retiro .btn-guardar-retiro {
+.admin-status-retiro .btn-guardar-retiro,
+.admin-reemplazo .btn-guardar-reemplazo {
     justify-self: start;
     display: inline-flex;
     align-items: center;
@@ -180,8 +181,10 @@
     cursor: pointer;
     transition: background-color var(--transition), color var(--transition);
 }
-.admin-status-retiro .btn-guardar-retiro:hover { background: var(--verde-tinta); color: var(--blanco); }
-.admin-status-retiro .btn-guardar-retiro:disabled { opacity: .55; cursor: not-allowed; }
+.admin-status-retiro .btn-guardar-retiro:hover,
+.admin-reemplazo .btn-guardar-reemplazo:hover { background: var(--verde-tinta); color: var(--blanco); }
+.admin-status-retiro .btn-guardar-retiro:disabled,
+.admin-reemplazo .btn-guardar-reemplazo:disabled { opacity: .55; cursor: not-allowed; }
 
 /* --- Pestañas del admin --------------------------------------------------- */
 .admin-tabs {
@@ -212,5 +215,44 @@
 
 @media (min-width: 600px) {
     .admin-status-retiro { grid-template-columns: 1fr 1fr auto; align-items: end; }
-    .admin-status-retiro .btn-guardar-retiro { align-self: end; }
+    .admin-status-retiro .btn-guardar-retiro,
+.admin-reemplazo .btn-guardar-reemplazo { align-self: end; }
+}
+
+/* ==========================================================================
+   ADMIN — bloque «Reemplaza a» en cada tarjeta aprobada (migración 012)
+   ========================================================================== */
+
+.admin-reemplazo {
+    display: grid;
+    gap: 10px;
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px dashed var(--filete);
+}
+.admin-reemplazo label {
+    display: grid;
+    gap: 6px;
+    font: 500 .6875rem/1.2 var(--mono);
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    color: var(--tinta-2);
+}
+.admin-reemplazo select {
+    width: 100%;
+    min-height: 40px;
+    padding: 6px 10px;
+    border: 1px solid var(--tinta);
+    border-radius: var(--r);
+    background: var(--blanco);
+    color: var(--tinta);
+    font: 500 var(--t-sm)/1.2 var(--sans);
+    letter-spacing: 0;
+    text-transform: none;
+}
+.admin-reemplazo-aviso {
+    padding: 8px 10px;
+    background: var(--filete-2);
+    border-left: 3px solid var(--tinta);
+    font-size: var(--t-sm);
 }
