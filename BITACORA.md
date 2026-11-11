@@ -6,28 +6,51 @@
 
 ---
 
-## 📸 ESTADO AL 10/11/2026
+## 📸 ESTADO AL 11/11/2026
 
 *(Esta sección se reescribe completa en cada actualización.)*
 
 **Hecho y funcionando**
-- Base de datos en el proyecto Supabase de Cuervo Café (org Pro, no se pausa por inactividad). Verificado en producción el 15/10/2026 12:20: el mapa recibe 88 evaluaciones aprobadas y pinta 7 clusters, estadísticas con las mismas 88, link permanente `?r=e0a0ce9a…` (Rey Tangaxoan, 37%) regenera el reporte, consola sin errores.
-- 114 evaluaciones copiadas con los mismos `id` (máx. 238) y `public_token` (114 distintos); checksum de las filas idéntico en origen y destino (`md5 f03a4d8c…`). Esquema, índices, RLS, grants y `get_evaluacion_publica` iguales a los del proyecto viejo.
-- Admins del panel recreados en el proyecto nuevo: `adiospuentesantipeatonales@ligapeatonal.org` y el de Memo. Nadia además ya tenía su gmail ahí por Cuervo Café. Redirects del magic link registrados (producción, GitHub Pages y localhost:8080).
-- Lo anterior (03/09/2026 y 06/05/2026): link permanente, formulario con validación, resultado con propuestas y PDF, mapa con filtros, estadísticas, admin con aprobación manual y status de retiro.
+- Sitio rediseñado («El plano y el archivo») y auditoría del 10/11 en producción, con migraciones 001→012 aplicadas en `cuervo-cafe`. Verificado en vivo el 11/11/2026 ~22:45 UTC: archivo con 88 fichas (las 88 con «Datos de <mes año>»), mapa, estadísticas con 88 filas, formulario con «No pude medirla», consola sin errores, `test:prod-smoke` 9/9.
+- Reemplazo de evaluaciones: columna `reemplazada_por`, control «Reemplaza a» en la pestaña Aprobadas del panel, y páginas públicas que sólo piden las vigentes. Hoy ninguna evaluación está reemplazada.
+- Panel: sólo los 3 correos de `ifcs_admins`; anon no lee `fuente_correo` ni puede insertar filas aprobadas, retiradas o con reemplazo.
 
 **A medias**
-- Nada.
+- El control «Reemplaza a» está probado con sesión simulada (spec `reemplazo`), no con una sesión real de admin: falta que Nadia o Memo lo usen una vez en el panel de verdad.
 
-**Rediseño en producción (10/11/2026)**
-- «El plano y el archivo» publicado en las 7 páginas + página nueva `html/archivo.html`. PR #2 mergeado (`79b91d3`), Pages desplegó en 53 s. Verificado en vivo: inicio, archivo, mapa, estadísticas, metodología y reporte responden 200 en 1440 y 390, con Schibsted Grotesk, datos reales (88 puntos/fichas, reporte 65%), sin scroll horizontal ni errores de consola.
-
-**Bloqueado**
-- Nada del lado del cliente.
+**Bloqueado (depende de Nadia, desde el 11/11/2026)**
+- Corte mediano/corto de 60 a 55: lo confirma con su compañera; falta saber si se reclasifican las ya guardadas (56 a 60) y el texto de la nota en la página.
+- Tabla de ponderación: «Características del puente: 15» pero sus renglones suman 23.
+- Oficio modelo para autoridades (dijo «deja te paso el oficio»), fotos de los 2 puentes sustituidos, y ~28 evaluaciones pendientes de aprobar en su panel.
 
 **Siguiente paso**
-- Memo decide si cierra la lectura pública de `fuente_nombre`/`fuente_correo` (ver entrada del 10/11/2026).
-- Decidir qué hacer con el proyecto `CouncilAI` pausado: ya no tiene nada que no esté en `cuervo-cafe`, se puede borrar cuando Memo quiera.
+- Cuando Nadia confirme el 55: cambiar el corte en `js/form.js` (≈línea 791), la marca de la barra del reporte, metodología y, si lo pide, reclasificar `factibilidad` en la base.
+
+**De Memo, sin prisa**
+- Borrar el proyecto `CouncilAI` pausado; decidir si se reescribe el historial por el correo en el commit `0fd8ad1`.
+
+---
+
+## 11/11/2026 — Nadia vio el rediseño y pidió reemplazo de evaluaciones, fecha en la ficha y «No pude medirla»
+
+**Qué pasó**
+- Nadia: «Wooooow, está increíble», «si es un cambiazo», «Se ve más geek 🤓 me gusta». En nota de voz planteó dos cosas: bajar el corte mediano/corto a 55 «así como estaba antes» (los de 56-57 le parecen factibles a corto plazo) y que algunos puentes de Morelia ya tienen abajo un puente vehicular que no existía cuando se levantaron los datos.
+- Se le propuso fecha visible + que la evaluación nueva reemplace a la anterior; contestó «Me late lo del reemplazo». Sobre los condicionales: siguen obligatorios («al menos con Google Earth se puede medir») y sólo la pendiente de la rampa lleva «no pude medirlo», con 0 puntos, por las rampas circulares.
+
+**Qué cambió** (PR #4, merge `66eb486`; suite 132/132)
+- `012_reemplazo_de_evaluaciones.sql`, **aplicada el 11/11/2026 antes del deploy**: `reemplazada_por` (FK a la misma tabla, `ON DELETE SET NULL`), GRANT de esa columna a anon, `insert_pendiente` exige que venga nula, y `get_evaluacion_publica` agrega `reemplazo_token` (token de la vigente, sólo si está aprobada).
+- `ARCHIVO_FILTRO_VIGENTES` (`aprobado_mapa=eq.true&reemplazada_por=is.null`) en archivo, portada, mapa y estadísticas. El reporte de una reemplazada sigue abriendo y muestra `#aviso-reemplazo` con enlace a la vigente.
+- Ficha y popup del mapa muestran `fuente_fecha` (fecha de levantamiento), no `created_at`: 86 de las 88 se capturaron en mayo de 2026 pero 57 son datos de 2019.
+- `PtePendiente_nomedida` (valor 0); el reporte la redacta como «no se registró su pendiente».
+
+**Decisiones y descartes**
+- El reemplazo lo marca el admin a mano, no se detecta por coordenadas: las capturadas a mano no coinciden exactas. Se marca desde la tarjeta de la evaluación NUEVA y sólo ofrece aprobadas de la misma ciudad; por eso el control vive sólo en la pestaña Aprobadas (si la nueva estuviera pendiente, el puente desaparecería del sitio).
+- La columna va en la fila vieja para que el filtro público sea un `is.null` sin joins.
+- Orden obligado: migración primero. Con los privilegios por columna de la 011, filtrar por una columna sin GRANT da 401 y el sitio se queda vacío.
+- La lista de ciudades sugeridas del formulario (`form.js`, `select=loc_ciudad`) no lleva el filtro de vigentes, a propósito.
+
+**Datos raros vistos, sin tocar**
+- P-205 dice datos de mayo de 1996 y P-212 trae `fuente_fecha` 2026-08-01, posterior a su captura (02/07/2026). Son de antes de la validación de fecha; avisarle a Nadia si se quiere corregir.
 
 ---
 
