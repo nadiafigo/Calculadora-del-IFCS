@@ -11,7 +11,7 @@ concurrency:
 
 jobs:
   playwright:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04  # ubuntu-latest (26.04) no lo soporta Playwright 1.58
     timeout-minutes: 20
     env:
       CI: "true"
