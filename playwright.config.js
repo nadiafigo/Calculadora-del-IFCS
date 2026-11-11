@@ -24,7 +24,7 @@ module.exports = defineConfig({
   // En CI Playwright levanta el sitio estático; en local se usa el servidor que ya esté corriendo.
   webServer: process.env.CI
     ? {
-        command: `python -m http.server ${PUERTO} --bind 127.0.0.1`,
+        command: `npx --yes http-server . -p ${PUERTO} -a 127.0.0.1 -s -c-1`,
         url: BASE_URL,
         reuseExistingServer: true,
         timeout: 60000,

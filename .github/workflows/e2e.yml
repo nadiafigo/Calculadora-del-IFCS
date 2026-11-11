@@ -11,11 +11,14 @@ concurrency:
 
 jobs:
   playwright:
-    runs-on: ubuntu-24.04  # ubuntu-latest (26.04) no lo soporta Playwright 1.58
+    runs-on: ubuntu-24.04
+    # Imagen oficial con Chromium ya instalado: `playwright install` se colgaba descargando.
+    # Al subir @playwright/test, subir también esta etiqueta.
+    container: mcr.microsoft.com/playwright:v1.58.2-noble
     timeout-minutes: 20
     env:
       CI: "true"
-      # playwright.config.js levanta el sitio estático (python -m http.server) en este puerto
+      # playwright.config.js levanta el sitio estático (npx http-server) en este puerto
       # cuando CI está definido; ver la sección webServer del config.
       BASE_URL: http://127.0.0.1:8080
     steps:
@@ -26,15 +29,8 @@ jobs:
           node-version: lts/*
           cache: npm
 
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.x"
-
       - name: Instalar dependencias
         run: npm ci
-
-      - name: Instalar Chromium de Playwright
-        run: npx playwright install --with-deps chromium
 
       # prod-smoke está etiquetado @prod: corre contra producción y se lanza a mano
       # (npm run test:prod-smoke), no en cada PR.
